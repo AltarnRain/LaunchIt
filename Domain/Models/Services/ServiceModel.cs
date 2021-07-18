@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Models.Services
+﻿namespace Domain.Models.Services
 {
     public class ServiceModel
     {
-        
+        public string ServiceName { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public bool Running { get; set; }
     }
 }

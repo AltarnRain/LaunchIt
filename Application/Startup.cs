@@ -1,20 +1,26 @@
 ﻿using Logic.Common;
-using System;
 
 namespace Logic
 {
     public class Startup
     {
         private readonly IWindowServicesProvider windowServicesProvider;
+        private readonly ILogger logger;
 
-        public Startup(Common.IWindowServicesProvider windowServicesProvider)
+        public Startup(IWindowServicesProvider windowServicesProvider, ILogger logger)
         {
             this.windowServicesProvider = windowServicesProvider;
+            this.logger = logger;
         }
 
         public void Start()
         {
-            Console.WriteLine("Started application");
+            var services = this.windowServicesProvider.GetServices();
+
+            foreach(var service in services)
+            {
+                this.logger.Log(service.DisplayName);
+            }
         }
     }
 }
