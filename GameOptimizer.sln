@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOptimizer", "GameOptimizer\GameOptimizer.csproj", "{B369BA9F-3288-471A-BBF7-9625E33722E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOptimizer", "GameOptimizer\GameOptimizer.csproj", "{B369BA9F-3288-471A-BBF7-9625E33722E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{845CF1D7-42D6-4989-A506-6A40961BBDC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{845CF1D7-42D6-4989-A506-6A40961BBDC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{34AE3E33-AD40-4C34-B23F-BCFAF10D4DD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Application\Logic.csproj", "{34AE3E33-AD40-4C34-B23F-BCFAF10D4DD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E3E7BB08-7171-42AC-AFF7-1FE911CD142E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{E3E7BB08-7171-42AC-AFF7-1FE911CD142E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOptimizer.Tests", "GameOptimizer.Tests\GameOptimizer.Tests.csproj", "{448044F6-B722-4DC5-95E7-8A01C80917ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOptimizer.Tests", "GameOptimizer.Tests\GameOptimizer.Tests.csproj", "{448044F6-B722-4DC5-95E7-8A01C80917ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{203CD8A9-6B7B-4BAD-B936-BC51D5831C1B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Shared.targets = Shared.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

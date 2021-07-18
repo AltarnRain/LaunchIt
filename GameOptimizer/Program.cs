@@ -1,12 +1,14 @@
-﻿using System;
+﻿using GameOptimizer.DependencyInjection;
+using StrongInject;
 
 namespace GameOptimizer
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using var container = new DIContainer();
+            container.Run(x => x.Start());
         }
     }
 }
