@@ -19,7 +19,8 @@ namespace Infrastructure.Common
                 {
                     ServiceName = service.ServiceName,
                     DisplayName = service.DisplayName,
-                    Running = service.Status == ServiceControllerStatus.Running
+                    Running = service.Status == ServiceControllerStatus.Running,
+                    Enabled = service.StartType != ServiceStartMode.Disabled,
                 };
             }
         }
