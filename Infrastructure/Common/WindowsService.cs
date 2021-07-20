@@ -20,20 +20,6 @@ namespace Infrastructure.Common
     public class WindowsService : Logic.Common.IWindowServices
     {
         /// <summary>
-        /// The unstoppable service provider.
-        /// </summary>
-        private readonly IUnstoppableServiceProvider unstoppableServiceProvider;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WindowsService"/> class.
-        /// </summary>
-        /// <param name="unstoppableServiceProvider">The unstoppable service provider.</param>
-        public WindowsService(IUnstoppableServiceProvider unstoppableServiceProvider)
-        {
-            this.unstoppableServiceProvider = unstoppableServiceProvider;
-        }
-
-        /// <summary>
         /// Gets the services.
         /// </summary>
         /// <returns>
@@ -42,8 +28,6 @@ namespace Infrastructure.Common
         public IEnumerable<ServiceModel> GetServices()
         {
             var services = ServiceController.GetServices();
-
-            var unstoppableServices = this.unstoppableServiceProvider.GetUnstoppableServices();
 
             foreach (var service in services)
             {
@@ -56,7 +40,6 @@ namespace Infrastructure.Common
                     CanStop = service.CanStop,
                     CanPauseAndContinue = service.CanPauseAndContinue,
                     CanShutdown = service.CanShutdown,
-                    Ignored = unstoppableServices.Contains(service.ServiceName),
                 };
             }
         }

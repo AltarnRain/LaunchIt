@@ -13,7 +13,6 @@ namespace GameLauncher.DependencyInjection
     [Register(typeof(Logic.Startup), Scope.SingleInstance)]
     [Register(typeof(Infrastructure.Common.WindowsService), Scope.SingleInstance, typeof(Logic.Common.IWindowServices))]
     [Register(typeof(Infrastructure.Common.ConsoleLogService), Scope.SingleInstance, typeof(Logic.Common.ILogger))]
-    [Register(typeof(Infrastructure.Providers.UnstoppableServicesProvider), Scope.SingleInstance, typeof(Logic.Providers.IUnstoppableServiceProvider))]
     [Register(typeof(Infrastructure.Providers.PathProvider), Scope.SingleInstance, typeof(Logic.Providers.IPathProvider))]
 
     public partial class DIContainer : IContainer<Logic.Startup>

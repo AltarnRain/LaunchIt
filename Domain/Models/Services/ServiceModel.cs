@@ -46,10 +46,5 @@ namespace Domain.Models.Services
         /// Gets or sets a value indicating whether this instance can shutdown.
         /// </summary>
         public bool CanShutdown { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ServiceModel"/> is ignored.
-        /// </summary>
-        public bool Ignored { get; set; }
     }
 }
