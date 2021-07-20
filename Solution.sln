@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{203CD8A9-6B7B-4BAD-B936-BC51D5831C1B}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		GameOptimizer\bin\Debug\net5.0\ignoredservices.dat = GameOptimizer\bin\Debug\net5.0\ignoredservices.dat
 		Shared.targets = Shared.targets
 	EndProjectSection
 EndProject
