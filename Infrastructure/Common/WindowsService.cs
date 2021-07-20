@@ -1,5 +1,5 @@
-﻿// <copyright file="WindowsService.cs" company="Onno Invernizzi">
-// Copyright (c) Onno Invernizzi. All rights reserved.
+﻿// <copyright file="WindowsService.cs" company="Antonio Invernizzi V">
+// Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Infrastructure.Common
