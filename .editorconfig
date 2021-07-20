@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# SA0001: XML comment analysis disabled
+dotnet_diagnostic.SA0001.severity = none
+
+# SA1000: Keywords should be spaced correctly
+dotnet_diagnostic.SA1000.severity = none
+
+# SA1011: Closing square brackets should be spaced correctly
+dotnet_diagnostic.SA1011.severity = none

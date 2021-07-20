@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿// <copyright file="ExtensionClass.cs" company="Onno Invernizzi">
+// Copyright (c) Onno Invernizzi. All rights reserved.
+// </copyright>
 
 namespace Infrastructure
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    /// <summary>
+    /// Class that provides various extension methods.
+    /// </summary>
     public static class ExtensionClass
     {
+        /// <summary>
+        /// Gets the maximum column sizes.
+        /// </summary>
+        /// <param name="rows">The rows.</param>
+        /// <returns>A dictionary whose key is the column and whose value is the maximum number of characters in said column.</returns>
         public static Dictionary<int, int> GetMaximumColumnSizes(this List<object[]> rows)
         {
             var returnValue = new Dictionary<int, int>();
@@ -35,6 +47,13 @@ namespace Infrastructure
             return returnValue;
         }
 
+        /// <summary>
+        /// Formats the table.
+        /// </summary>
+        /// <param name="rows">The rows.</param>
+        /// <param name="headers">The headers.</param>
+        /// <param name="seperationCharacter">The seperation character.</param>
+        /// <returns>An array of string formatted for readability.</returns>
         public static string[] FormatTable(this List<object[]> rows, string[]? headers = null, char seperationCharacter = ' ')
         {
             // Create a new list so we can add he headers.
