@@ -5,7 +5,6 @@
 namespace Infrastructure.Common
 {
     using Domain.Models.Services;
-    using Logic.Providers;
     using System;
     using System.Collections.Generic;
     using System.Linq;

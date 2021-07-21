@@ -15,6 +15,11 @@ namespace GameLauncher.DependencyInjection
     [Register(typeof(Infrastructure.Common.ConsoleLogService), Scope.SingleInstance, typeof(Logic.Common.ILogger))]
     [Register(typeof(Infrastructure.Providers.PathProvider), Scope.SingleInstance, typeof(Logic.Providers.IPathProvider))]
 
+#if DEBUG
+    [Register(typeof(Infrastructure.Providers.FixedRootFolderProvider), Scope.SingleInstance, typeof(Logic.Providers.IRootFolderProvider))]
+#else
+    [Register(typeof(Infrastructure.Providers.AssemblyFolderProvider), Scope.SingleInstance, typeof(Logic.Providers.IRootFolderProvider))]
+#endif
     public partial class DIContainer : IContainer<Logic.Startup>
     {
         // Code is generated. Do not write implementation here.

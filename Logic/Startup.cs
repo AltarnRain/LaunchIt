@@ -5,6 +5,7 @@
 namespace Logic
 {
     using Logic.Common;
+    using Logic.Providers;
 
     /// <summary>
     /// Startup class for the program.
@@ -20,16 +21,19 @@ namespace Logic
         /// The logger.
         /// </summary>
         private readonly ILogger logger;
+        private readonly IPathProvider pathProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="windowServicesProvider">The window services provider.</param>
         /// <param name="logger">The logger.</param>
-        public Startup(IWindowServices windowServicesProvider, ILogger logger)
+        /// <param name="pathProvider">The path provider.</param>
+        public Startup(IWindowServices windowServicesProvider, ILogger logger, IPathProvider pathProvider)
         {
             this.windowServices = windowServicesProvider;
             this.logger = logger;
+            this.pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -38,6 +42,10 @@ namespace Logic
         /// <param name="args">The arguments.</param>
         public void Start(string[] args)
         {
+            this.logger.Log("I ran");
+            var p = this.pathProvider.MapPath("~/");
+
+            this.logger.Log(p);
         }
     }
 }

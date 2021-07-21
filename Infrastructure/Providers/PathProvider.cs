@@ -5,9 +5,7 @@
 namespace Infrastructure.Providers
 {
     using Logic.Providers;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Reflection;
 
     /// <summary>
     /// Provides paths relative to the application's folders.
@@ -15,6 +13,17 @@ namespace Infrastructure.Providers
     /// <seealso cref="Logic.Providers.IPathProvider" />
     public class PathProvider : IPathProvider
     {
+        private readonly IRootFolderProvider rootFolderProvider;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathProvider"/> class.
+        /// </summary>
+        /// <param name="rootFolderProvider">The root folder provider.</param>
+        public PathProvider(IRootFolderProvider rootFolderProvider)
+        {
+            this.rootFolderProvider = rootFolderProvider;
+        }
+
         /// <summary>
         /// Maps the path.
         /// </summary>
@@ -33,14 +42,15 @@ namespace Infrastructure.Providers
             }
 
             var strippedPath = relativePath[2..];
-            var assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            if (assemblyLocation is null)
+            var location = this.rootFolderProvider.Get();
+
+            if (location is null)
             {
                 throw new System.Exception("Could not find the execution directory of the executable");
             }
 
-            var returnValue = Path.Combine(assemblyLocation, strippedPath);
+            var returnValue = Path.Combine(location, strippedPath);
 
             return returnValue;
         }
