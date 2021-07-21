@@ -29,7 +29,7 @@ namespace Tests.Base
                 throw new System.Exception("TestContext is not set.");
             }
 
-            return DIContainer.GetTestServiceProvider(this.TestContext.DeploymentDirectory);
+            return DIContainer.GetScope(this.TestContext.TestRunDirectory);
         }
     }
 }

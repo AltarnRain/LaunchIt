@@ -5,6 +5,7 @@
 namespace Tests.DependencyInjection
 {
     using global::Infrastructure.Providers;
+    using Logic.Providers;
     using StrongInject;
 
     /// <summary>
@@ -23,18 +24,18 @@ namespace Tests.DependencyInjection
         }
 
         /// <summary>
-        /// Gets the test service provider.
+        /// Gets the test scope.
         /// </summary>
         /// <param name="rootFolder">The root folder.</param>
         /// <returns>A Service provider for unit tests.</returns>
-        public static TestScope GetTestServiceProvider(string rootFolder)
+        public static TestScope GetScope(string rootFolder)
         {
             var container = new DIContainer(rootFolder);
             return container.Resolve().Value;
         }
 
         [Factory]
-        private Logic.Providers.IPathProvider GetPathProvider()
+        private IPathProvider GetPathProvider()
         {
             return new PathProvider(this.rootFolder);
         }

@@ -1,0 +1,10 @@
+# I am a comment.
+[Services]
+Service A
+
+Service B
+
+# I am also a comment
+[Executables]
+Executable A
+Executable B

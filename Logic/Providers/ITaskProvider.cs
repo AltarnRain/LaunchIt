@@ -17,6 +17,6 @@ namespace Logic.Providers
         /// <returns>
         /// Task model's.
         /// </returns>
-        public TaskModel[] GetTasks2();
+        public TaskModel[] GetTasks();
     }
 }

@@ -31,7 +31,7 @@ namespace Infrastructure.Providers
         /// <returns>
         /// Task model's.
         /// </returns>
-        public TaskModel[] GetTasks2()
+        public TaskModel[] GetTasks()
         {
             var taskFile = this.pathProvider.MapPath("~/Tasks.txt");
 
@@ -44,7 +44,8 @@ namespace Infrastructure.Providers
 
             var returnValue = new List<TaskModel>();
 
-            foreach(var line in taskFileContent)
+            TaskTarget? taskTarget = null;
+            foreach (var line in taskFileContent)
             {
                 // Ignore line, this is a comment.
                 if (line.StartsWith("#"))
@@ -58,16 +59,15 @@ namespace Infrastructure.Providers
                     continue;
                 }
 
-                TaskTarget? taskTarget = null;
-
                 if (line == Domain.Constants.Sections.Services)
                 {
                     taskTarget = TaskTarget.Services;
+                    continue;
                 }
-
-                if (line == Domain.Constants.Sections.Executables)
+                else if (line == Domain.Constants.Sections.Executables)
                 {
                     taskTarget = TaskTarget.Executable;
+                    continue;
                 }
 
                 if (taskTarget is null)
