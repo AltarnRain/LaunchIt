@@ -4,8 +4,10 @@
 
 namespace Infrastructure.Providers
 {
+    using Logic.Common;
     using Logic.Providers;
     using System.IO;
+    using System.Reflection;
 
     /// <summary>
     /// Provides paths relative to the application's folders.
@@ -13,15 +15,16 @@ namespace Infrastructure.Providers
     /// <seealso cref="Logic.Providers.IPathProvider" />
     public class PathProvider : IPathProvider
     {
-        private readonly IRootFolderProvider rootFolderProvider;
+        private readonly string root;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PathProvider"/> class.
+        /// Initializes a new instance of the <see cref="PathProvider" /> class.
         /// </summary>
-        /// <param name="rootFolderProvider">The root folder provider.</param>
-        public PathProvider(IRootFolderProvider rootFolderProvider)
+        /// <param name="logger">The logger.</param>
+        /// <param name="root">The root.</param>
+        public PathProvider(string root)
         {
-            this.rootFolderProvider = rootFolderProvider;
+            this.root = root;
         }
 
         /// <summary>
@@ -43,7 +46,7 @@ namespace Infrastructure.Providers
 
             var strippedPath = relativePath[2..];
 
-            var location = this.rootFolderProvider.Get();
+            var location = this.root ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (location is null)
             {

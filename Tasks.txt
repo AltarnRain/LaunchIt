@@ -1,0 +1,9 @@
+# Here you define what you want GameLauncher to do before launching a game. There's two sections:
+#  * [Services]
+#  * [Executables]
+#
+# List in each section what you want GL to shutdown.
+
+[Services]
+
+[Executables]

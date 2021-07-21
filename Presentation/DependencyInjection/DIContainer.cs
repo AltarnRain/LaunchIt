@@ -4,24 +4,40 @@
 
 namespace GameLauncher.DependencyInjection
 {
+    using Infrastructure.Common;
+    using Infrastructure.Providers;
+    using Logic.Common;
+    using Logic.Providers;
     using StrongInject;
 
     /// <summary>
     /// Dependency injection container.
     /// </summary>
-    /// <seealso cref="StrongInject.IContainer{Logic.Startup}" />
+    /// <seealso cref="IContainer{Logic.Startup}" />
     [Register(typeof(Logic.Startup), Scope.SingleInstance)]
-    [Register(typeof(Infrastructure.Common.WindowsService), Scope.SingleInstance, typeof(Logic.Common.IWindowServices))]
-    [Register(typeof(Infrastructure.Common.ConsoleLogService), Scope.SingleInstance, typeof(Logic.Common.ILogger))]
-    [Register(typeof(Infrastructure.Providers.PathProvider), Scope.SingleInstance, typeof(Logic.Providers.IPathProvider))]
-
-#if DEBUG
-    [Register(typeof(Infrastructure.Providers.FixedRootFolderProvider), Scope.SingleInstance, typeof(Logic.Providers.IRootFolderProvider))]
-#else
-    [Register(typeof(Infrastructure.Providers.AssemblyFolderProvider), Scope.SingleInstance, typeof(Logic.Providers.IRootFolderProvider))]
-#endif
+    [Register(typeof(WindowsService), Scope.SingleInstance, typeof(IWindowServices))]
+    [Register(typeof(ConsoleLogService), Scope.SingleInstance, typeof(ILogger))]
     public partial class DIContainer : IContainer<Logic.Startup>
     {
-        // Code is generated. Do not write implementation here.
+        private readonly string rootPath;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DIContainer"/> class.
+        /// </summary>
+        /// <param name="rootPath">Application root path.</param>
+        public DIContainer(string rootPath)
+        {
+            this.rootPath = rootPath;
+        }
+
+        /// <summary>
+        /// Gets the path provider.
+        /// </summary>
+        /// <returns>An IPathProvider.</returns>
+        [Factory]
+        private IPathProvider GetPathProvider()
+        {
+            return new PathProvider(this.rootPath);
+        }
     }
 }
