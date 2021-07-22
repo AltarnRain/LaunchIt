@@ -2,11 +2,11 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace GameOptimizer
+namespace Presentation
 {
-    using GameLauncher.DependencyInjection;
+    using Logic;
     using Microsoft.Extensions.Configuration;
-    using StrongInject;
+    using Ninject;
     using System.IO;
     using System.Reflection;
 
@@ -25,9 +25,10 @@ namespace GameOptimizer
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
 
-            // Create a DIContainer and run the main application passing any command line arguments.
-            using var container = new DIContainer(rootPath);
-            container.Run(x => x.Start(args));
+            using var kernel = new StandardKernel(new PresentationBindings(rootPath));
+
+            var startUp = kernel.Get<Startup>();
+            startUp.Start(args);
         }
 
         private static string GetRootPath()

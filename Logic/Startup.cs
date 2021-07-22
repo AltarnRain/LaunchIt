@@ -15,7 +15,7 @@ namespace Logic
         /// <summary>
         /// The window service.
         /// </summary>
-        private readonly IWindowServices windowServices;
+        private readonly IRunningProgramsHelper windowServices;
 
         /// <summary>
         /// The logger.
@@ -29,7 +29,7 @@ namespace Logic
         /// <param name="windowServicesProvider">The window services provider.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="pathProvider">The path provider.</param>
-        public Startup(IWindowServices windowServicesProvider, ILogger logger, IPathProvider pathProvider)
+        public Startup(IRunningProgramsHelper windowServicesProvider, ILogger logger, IPathProvider pathProvider)
         {
             this.windowServices = windowServicesProvider;
             this.logger = logger;

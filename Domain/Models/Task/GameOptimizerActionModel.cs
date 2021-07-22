@@ -1,13 +1,13 @@
-﻿// <copyright file="TaskModel.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="GameOptimizerActionModel.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Domain.Models.Task
 {
     /// <summary>
-    /// Defines a task performed by the application.
+    /// Defines a action performed by the application.
     /// </summary>
-    public class TaskModel
+    public class GameOptimizerActionModel
     {
         /// <summary>
         /// Gets or sets the task action.

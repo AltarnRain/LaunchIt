@@ -15,16 +15,16 @@ namespace Infrastructure.Providers
     /// <seealso cref="Logic.Providers.IPathProvider" />
     public class PathProvider : IPathProvider
     {
-        private readonly string root;
+        private readonly string rootPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PathProvider" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="root">The root.</param>
-        public PathProvider(string root)
+        /// <param name="rootPath">The root.</param>
+        public PathProvider(string rootPath)
         {
-            this.root = root;
+            this.rootPath = rootPath;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Infrastructure.Providers
 
             var strippedPath = relativePath[2..];
 
-            var location = this.root ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var location = this.rootPath ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (location is null)
             {

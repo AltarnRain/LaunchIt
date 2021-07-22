@@ -31,7 +31,7 @@ namespace Infrastructure.Providers
         /// <returns>
         /// Task model's.
         /// </returns>
-        public TaskModel[] GetTasks()
+        public GameOptimizerActionModel[] GetGameOptimizerActions()
         {
             var taskFile = this.pathProvider.MapPath("~/Tasks.txt");
 
@@ -42,7 +42,7 @@ namespace Infrastructure.Providers
 
             var taskFileContent = File.ReadAllLines(taskFile);
 
-            var returnValue = new List<TaskModel>();
+            var returnValue = new List<GameOptimizerActionModel>();
 
             TaskTarget? taskTarget = null;
             foreach (var line in taskFileContent)
@@ -75,7 +75,7 @@ namespace Infrastructure.Providers
                     continue;
                 }
 
-                var taskModel = new TaskModel
+                var taskModel = new GameOptimizerActionModel
                 {
                     Name = line,
                     TaskAction = TaskAction.Stop,

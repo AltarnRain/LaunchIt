@@ -5,7 +5,7 @@
 namespace Tests.Base
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Tests.DependencyInjection;
+    using Ninject;
 
     /// <summary>
     /// Base class tests that require Dependency Injection.
@@ -29,7 +29,7 @@ namespace Tests.Base
                 throw new System.Exception("TestContext is not set.");
             }
 
-            return DIContainer.GetScope(this.TestContext.TestRunDirectory);
+            return new TestScope(this.TestContext.TestRunDirectory);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Tests.Infrastructure
             }
 
             // Act
-            var result = target.GetTasks();
+            var result = target.GetGameOptimizerActions();
 
             // Assert
             Assert.AreEqual(4, result.Length);
@@ -70,7 +70,6 @@ namespace Tests.Infrastructure
             Assert.AreEqual("Executable B", task4.Name);
             Assert.AreEqual(TaskAction.Stop, task4.TaskAction);
             Assert.AreEqual(TaskTarget.Executable, task4.TaskTarget);
-
         }
     }
 }
