@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{3C44607C-82E5-481A-B4BF-7850B9668B3B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{72126920-4622-4347-B2FB-680459175F8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C44607C-82E5-481A-B4BF-7850B9668B3B} = {3C44607C-82E5-481A-B4BF-7850B9668B3B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1FE0015D-ED4A-433A-A5CA-19E798061C94}"
 EndProject
