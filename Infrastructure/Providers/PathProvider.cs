@@ -4,7 +4,6 @@
 
 namespace Infrastructure.Providers
 {
-    using Logic.Common;
     using Logic.Providers;
     using System.IO;
     using System.Reflection;

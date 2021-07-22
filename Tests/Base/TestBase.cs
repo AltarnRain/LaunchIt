@@ -5,7 +5,6 @@
 namespace Tests.Base
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Ninject;
 
     /// <summary>
     /// Base class tests that require Dependency Injection.
