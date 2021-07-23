@@ -10,7 +10,7 @@ namespace Infrastructure.Common.Tests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Tests <see cref="GameOptimizedActionHandler"/>.
+    /// Tests <see cref="GameOptimizerActionHandler"/>.
     /// </summary>
     /// <seealso cref="Tests.Base.TestBase" />
     [TestClass]
@@ -20,26 +20,52 @@ namespace Infrastructure.Common.Tests
         /// Handles the test.
         /// </summary>
         [TestMethod]
-        public void HandleTest()
+        public void HandleServiceTest()
         {
             // Arrange
-            var scope = this.GetTestContext();
-
-            var target = scope.GameOptimizedActionHandler;
-            var testWindowsService = (TestWindowsService)scope.WindowsServices;
-
-            var action = new GameOptimizerActionModel
+            using (var scope = this.StartTestScope())
             {
-                Name = "A Name",
-                TaskAction = TaskAction.Stop,
-                TaskTarget = TaskTarget.Services,
-            };
+                var testRunningProgramsHelper = scope.TestRunningProgramsHelper;
+                var target = scope.GameOptimizerActionHandler;
 
-            // Act
-            target.Handle(action);
+                var action = new GameOptimizerActionModel
+                {
+                    Name = "A Name",
+                    TaskTarget = TaskTarget.Services,
+                };
 
-            // Assert
-            Assert.IsTrue(testWindowsService.ServiceStopCalled);
+                // Act
+                target.Handle(action);
+
+                // Assert
+                Assert.IsTrue(testRunningProgramsHelper.ServiceStopCalled);
+            }
+        }
+
+        /// <summary>
+        /// Handles the test.
+        /// </summary>
+        [TestMethod]
+        public void HandleExecutableTest()
+        {
+            // Arrange
+            using (var scope = this.StartTestScope())
+            {
+                var testRunningProgramsHelper = scope.TestRunningProgramsHelper;
+                var target = scope.GameOptimizerActionHandler;
+
+                var action = new GameOptimizerActionModel
+                {
+                    Name = "A Name",
+                    TaskTarget = TaskTarget.Executable,
+                };
+
+                // Act
+                target.Handle(action);
+
+                // Assert
+                Assert.IsTrue(testRunningProgramsHelper.StopExecutableCalled);
+            }
         }
     }
 }

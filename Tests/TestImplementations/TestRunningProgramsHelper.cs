@@ -1,10 +1,10 @@
-﻿// <copyright file="TestWindowsService.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="TestRunningProgramsHelper.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Tests.TestImplementations
 {
-    using Domain.Models.Services;
+    using Domain.Models.Programs;
     using Logic.Common;
     using System.Collections.Generic;
 
@@ -12,12 +12,12 @@ namespace Tests.TestImplementations
     /// Test implementation for IWindowsServices.
     /// </summary>
     /// <seealso cref="Logic.Common.IRunningProgramsHelper" />
-    public class TestWindowsService : IRunningProgramsHelper
+    public class TestRunningProgramsHelper : IRunningProgramsHelper
     {
         /// <summary>
         /// Gets or sets the serviemodels to return.
         /// </summary>
-        public List<ServiceModel> ServiemodelsToReturn { get; set; } = new();
+        public List<ProgramModel> ServiemodelsToReturn { get; set; } = new();
 
         /// <summary>
         /// Gets a value indicating whether [start called].
@@ -43,33 +43,9 @@ namespace Tests.TestImplementations
         /// Gets the services.
         /// </summary>
         /// <returns>Service Model's.</returns>
-        public IEnumerable<ServiceModel> GetServices()
+        public IEnumerable<ProgramModel> GetRunningPrograms()
         {
             return this.ServiemodelsToReturn;
-        }
-
-        /// <summary>
-        /// Starts the executable.
-        /// </summary>
-        /// <param name="executableName">Name of the executable.</param>
-        /// <returns>A boolean.</returns>
-        public bool StartExecutable(string executableName)
-        {
-            this.StartExecutableCalled = true;
-            return true;
-        }
-
-        /// <summary>
-        /// Starts the specified service.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>
-        /// A boolean.
-        /// </returns>
-        public bool StartService(string serviceName)
-        {
-            this.ServiceStartCalled = true;
-            return true;
         }
 
         /// <summary>

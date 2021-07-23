@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Common
 {
+    using Logic.Extensions;
     using System;
     using System.Collections.Generic;
 

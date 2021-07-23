@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Common
 {
-    using Domain.Models.Services;
+    using Domain.Models.Programs;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,35 +24,17 @@ namespace Infrastructure.Common
         /// <returns>
         /// ServicesModel's.
         /// </returns>
-        public IEnumerable<ServiceModel> GetServices()
+        public IEnumerable<ProgramModel> GetRunningPrograms()
         {
-            var services = ServiceController.GetServices();
-
-            foreach (var service in services)
+            foreach (var x in YieldService())
             {
-                yield return new ServiceModel
-                {
-                    ServiceName = service.ServiceName,
-                    DisplayName = service.DisplayName,
-                    Running = service.Status == ServiceControllerStatus.Running,
-                    Enabled = service.StartType != ServiceStartMode.Disabled,
-                    CanStop = service.CanStop,
-                    CanPauseAndContinue = service.CanPauseAndContinue,
-                    CanShutdown = service.CanShutdown,
-                };
+                yield return x;
             }
-        }
 
-        /// <summary>
-        /// Starts the specified service.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>
-        /// True if succesfull, false otherwise.
-        /// </returns>
-        public bool StartService(string serviceName)
-        {
-            return DoActionOnService(serviceName, (actualService) => actualService.Stop());
+            foreach (var x in YieldProcess())
+            {
+                yield return x;
+            }
         }
 
         /// <summary>
@@ -81,16 +63,45 @@ namespace Infrastructure.Common
         }
 
         /// <summary>
-        /// Starts the executable.
+        /// Yields the service.
         /// </summary>
-        /// <param name="executableName">Name of the executable.</param>
-        /// <returns>
-        /// A boolean.
-        /// </returns>
-        public bool StartExecutable(string executableName)
+        /// <returns>Yield a service in a running program model.</returns>
+        private static IEnumerable<ProgramModel> YieldService()
         {
-            // TODO
-            return true;
+            var services = ServiceController.GetServices();
+
+            foreach (var service in services)
+            {
+                yield return new ProgramModel
+                {
+                    Name = service.ServiceName,
+                    ProgramType = ProgramType.Service,
+                    ServiceInfo = new ServiceInfo
+                    {
+                        Running = service.Status == ServiceControllerStatus.Running,
+                        DisplayName = service.DisplayName,
+                        Enabled = service.StartType != ServiceStartMode.Disabled,
+                        CanStop = service.CanStop,
+                        CanPauseAndContinue = service.CanPauseAndContinue,
+                        CanShutdown = service.CanShutdown,
+                    },
+                };
+            }
+        }
+
+        private static IEnumerable<ProgramModel> YieldProcess()
+        {
+            var processes = System.Diagnostics.Process.GetProcesses();
+
+            foreach (var process in processes)
+            {
+                yield return new ProgramModel
+                {
+                    Name = process.ProcessName,
+                    ProgramType = ProgramType.Executable,
+                    Running = true,
+                };
+            }
         }
 
         /// <summary>

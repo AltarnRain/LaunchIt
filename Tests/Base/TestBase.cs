@@ -21,7 +21,7 @@ namespace Tests.Base
         /// Starts the test scope.
         /// </summary>
         /// <returns>A TestScope object.</returns>
-        public TestScope GetTestContext()
+        public TestScope StartTestScope()
         {
             if (this.TestContext is null)
             {

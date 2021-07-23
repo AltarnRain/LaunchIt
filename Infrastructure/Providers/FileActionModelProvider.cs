@@ -1,26 +1,27 @@
-﻿// <copyright file="FileTaskProvider.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="FileActionModelProvider.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Infrastructure.Providers
 {
     using Domain.Models.Task;
+    using Logic.Extensions;
     using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
-    /// Provides tasks configured in the Tasks.txt file.
+    /// Provides tasks configured in the Actions.txt file.
     /// </summary>
-    /// <seealso cref="Logic.Providers.ITaskProvider" />
-    public class FileTaskProvider : Logic.Providers.ITaskProvider
+    /// <seealso cref="Logic.Providers.IActionModelProvider" />
+    public class FileActionModelProvider : Logic.Providers.IActionModelProvider
     {
         private readonly Logic.Providers.IPathProvider pathProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileTaskProvider" /> class.
+        /// Initializes a new instance of the <see cref="FileActionModelProvider" /> class.
         /// </summary>
         /// <param name="pathProvider">The path provider.</param>
-        public FileTaskProvider(Logic.Providers.IPathProvider pathProvider)
+        public FileActionModelProvider(Logic.Providers.IPathProvider pathProvider)
         {
             this.pathProvider = pathProvider;
         }
@@ -31,9 +32,9 @@ namespace Infrastructure.Providers
         /// <returns>
         /// Task model's.
         /// </returns>
-        public GameOptimizerActionModel[] GetGameOptimizerActions()
+        public GameOptimizerActionModel[] GetActions()
         {
-            var taskFile = this.pathProvider.MapPath("~/Tasks.txt");
+            var taskFile = this.pathProvider.GetActionFilePath();
 
             if (!File.Exists(taskFile))
             {
@@ -78,7 +79,6 @@ namespace Infrastructure.Providers
                 var taskModel = new GameOptimizerActionModel
                 {
                     Name = line,
-                    TaskAction = TaskAction.Stop,
                     TaskTarget = taskTarget.Value,
                 };
 

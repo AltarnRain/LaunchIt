@@ -38,11 +38,11 @@ namespace Tests.Base
                 .InSingletonScope();
 
             this.Bind<IRunningProgramsHelper>()
-                .To<TestWindowsService>()
+                .To<TestRunningProgramsHelper>()
                 .InSingletonScope();
 
-            this.Bind<IGameOptimizedActionHandler>()
-                .To<GameOptimizedActionHandler>()
+            this.Bind<IGameOptimizerActionHandler>()
+                .To<GameOptimizerActionHandler>()
                 .InSingletonScope();
 
             this.Bind<IPathProvider>()

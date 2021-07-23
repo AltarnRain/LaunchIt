@@ -10,11 +10,6 @@ namespace Domain.Models.Task
     public class GameOptimizerActionModel
     {
         /// <summary>
-        /// Gets or sets the task action.
-        /// </summary>
-        public TaskAction TaskAction { get; set; }
-
-        /// <summary>
         /// Gets or sets the task target.
         /// </summary>
         public TaskTarget TaskTarget { get; set; }

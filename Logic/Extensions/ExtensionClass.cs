@@ -2,8 +2,9 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure
+namespace Logic.Extensions
 {
+    using Logic.Providers;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -65,7 +66,7 @@ namespace Infrastructure
                 table.Insert(0, headers);
             }
 
-            var returnValue = new string[table.Count()];
+            var returnValue = new string[table.Count];
 
             // Only pad columns if the seperation character is a space.
             var padColumns = seperationCharacter == ' ';
@@ -105,6 +106,16 @@ namespace Infrastructure
             }
 
             return returnValue;
+        }
+
+        /// <summary>
+        /// Gets the action file path.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <returns>Location of the actions.txt file.</returns>
+        public static string GetActionFilePath(this IPathProvider self)
+        {
+            return self.MapPath("~/Actions.txt");
         }
     }
 }

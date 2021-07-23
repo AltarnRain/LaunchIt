@@ -9,7 +9,7 @@ namespace Logic.Common
     /// <summary>
     /// Defines a contract for a class that handles a <see cref="GameOptimizerActionModel"/>.
     /// </summary>
-    public interface IGameOptimizedActionHandler
+    public interface IGameOptimizerActionHandler
     {
         /// <summary>
         /// Resolves the specified action.

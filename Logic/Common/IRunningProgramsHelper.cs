@@ -4,7 +4,7 @@
 
 namespace Logic.Common
 {
-    using Domain.Models.Services;
+    using Domain.Models.Programs;
     using System.Collections.Generic;
 
     /// <summary>
@@ -18,16 +18,7 @@ namespace Logic.Common
         /// <returns>
         /// ServicesModel's.
         /// </returns>
-        IEnumerable<ServiceModel> GetServices();
-
-        /// <summary>
-        /// Starts the specified service.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>
-        /// True if succesfull, false otherwise.
-        /// </returns>
-        bool StartService(string serviceName);
+        IEnumerable<ProgramModel> GetRunningPrograms();
 
         /// <summary>
         /// Stops the specified service.
@@ -44,12 +35,5 @@ namespace Logic.Common
         /// <param name="executableName">Name of the executable.</param>
         /// <returns>A boolean.</returns>
         bool StopExecutable(string executableName);
-
-        /// <summary>
-        /// Starts the executable.
-        /// </summary>
-        /// <param name="executableName">Name of the executable.</param>
-        /// <returns>A boolean.</returns>
-        bool StartExecutable(string executableName);
     }
 }

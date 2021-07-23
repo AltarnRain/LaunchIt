@@ -4,11 +4,13 @@
 
 namespace Tests.Base
 {
+    using global::Infrastructure.Common;
     using global::Infrastructure.Providers;
     using Logic.Common;
     using Logic.Providers;
     using Ninject;
     using System;
+    using Tests.TestImplementations;
 
     /// <summary>
     /// Test Scope.
@@ -29,7 +31,7 @@ namespace Tests.Base
         /// <summary>
         /// Gets the file task provider.
         /// </summary>
-        public FileTaskProvider FileTaskProvider => this.kernel.Get<FileTaskProvider>();
+        public FileActionModelProvider FileActionModelProvider => this.kernel.Get<FileActionModelProvider>();
 
         /// <summary>
         /// Gets the path provider.
@@ -39,12 +41,17 @@ namespace Tests.Base
         /// <summary>
         /// Gets the game optimized action handler.
         /// </summary>
-        public IGameOptimizedActionHandler GameOptimizedActionHandler => this.kernel.Get<IGameOptimizedActionHandler>();
+        public IGameOptimizerActionHandler GameOptimizerActionHandler => this.kernel.Get<GameOptimizerActionHandler>();
 
         /// <summary>
         /// Gets the window services.
         /// </summary>
-        public IRunningProgramsHelper WindowsServices => this.kernel.Get<IRunningProgramsHelper>();
+        public TestRunningProgramsHelper TestRunningProgramsHelper => (TestRunningProgramsHelper)this.kernel.Get<IRunningProgramsHelper>();
+
+        /// <summary>
+        /// Gets the action file service.
+        /// </summary>
+        public ActionFileService ActionFileService => this.kernel.Get<ActionFileService>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

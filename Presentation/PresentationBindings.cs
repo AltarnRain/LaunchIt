@@ -41,14 +41,18 @@ namespace Presentation
                 .To<WindowsRunningProgramsHelper>()
                 .InSingletonScope();
 
-            this.Bind<IGameOptimizedActionHandler>()
-                .To<GameOptimizedActionHandler>()
+            this.Bind<IGameOptimizerActionHandler>()
+                .To<GameOptimizerActionHandler>()
                 .InSingletonScope();
 
             this.Bind<IPathProvider>()
                 .To<PathProvider>()
                 .InSingletonScope()
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
+
+            this.Bind<IActionModelProvider>()
+                .To<FileActionModelProvider>()
+                .InSingletonScope();
 
             this.Bind<Startup>()
                 .ToSelf()

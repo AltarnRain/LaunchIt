@@ -1,0 +1,6 @@
+# Welcome to the action file. This file is used to instruct Game Launcher which services and executables you want to shut down.
+# The file is split up into two sections. [Services] and [Executables].
+# 
+[Services]
+A name
+

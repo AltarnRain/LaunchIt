@@ -5,6 +5,8 @@
 namespace Tests.Infrastructure
 {
     using global::Infrastructure;
+    using Logic;
+    using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
     using System.Linq;
