@@ -29,7 +29,7 @@ namespace Logic.Common.Tests
                 var target = scope.ActionFileService;
                 var pathProvider = scope.PathProvider;
 
-                var file = pathProvider.MapPath("~/TestAction.txts");
+                var file = pathProvider.MapPath("~/TestAction.txt");
 
                 var programModels = new List<ProgramModel>
                 {
@@ -57,6 +57,7 @@ namespace Logic.Common.Tests
                     {
                         ProgramType = ProgramType.Executable,
                         Name = "An Executable",
+                        Running = true,
                     },
                 };
 
@@ -66,8 +67,20 @@ namespace Logic.Common.Tests
                 // Assert
                 Assert.IsTrue(File.Exists(file));
 
-                var allText = File.ReadAllText(file);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(allText));
+                var allLines = File.ReadAllLines(file);
+                Assert.IsTrue(allLines.Length > 0);
+
+                var serviceSection = allLines[3];
+                Assert.AreEqual(Domain.Constants.Sections.Services, serviceSection);
+
+                var service = allLines[4];
+                Assert.AreEqual("A name", service);
+
+                var executableSection = allLines[6];
+                Assert.AreEqual(Domain.Constants.Sections.Executables, executableSection);
+
+                var executable = allLines[7];
+                Assert.AreEqual("An Executable", executable);
             }
         }
     }

@@ -2,14 +2,14 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Domain
+namespace Domain.IO
 {
     using System.IO;
 
     /// <summary>
     /// Stream writer class for an Action file.
     /// </summary>
-    /// <seealso cref="System.IO.StreamWriter" />
+    /// <seealso cref="StreamWriter" />
     public class ActionFileWriter : StreamWriter
     {
         /// <summary>

@@ -5,6 +5,7 @@
 namespace Tests.Infrastructure
 {
     using Domain;
+    using Domain.IO;
     using Domain.Models.Action;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

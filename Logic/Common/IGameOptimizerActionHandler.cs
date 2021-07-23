@@ -1,4 +1,4 @@
-﻿// <copyright file="IGameOptimizedActionHandler.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="IGameOptimizerActionHandler.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 

@@ -4,7 +4,7 @@
 
 namespace Logic.Common
 {
-    using Domain;
+    using Domain.IO;
     using Domain.Models.Programs;
     using Logic.Extensions;
     using Logic.Providers;
@@ -69,6 +69,7 @@ namespace Logic.Common
                 }
 
                 fs.WriteLine(string.Empty);
+                fs.WriteExecutableSection();
 
                 foreach (var program in programModels.Where(x => x.ProgramType == ProgramType.Executable && x.Running == true))
                 {
@@ -84,7 +85,7 @@ namespace Logic.Common
         {
             fs.WriteComment("Welcome to the action file. This file is used to instruct Game Launcher which services and executables you want to shut down.");
             fs.WriteComment("The file is split up into two sections. [Services] and [Executables].");
-            fs.WriteComment(string.Empty);
+            fs.WriteLine(string.Empty);
         }
     }
 }
