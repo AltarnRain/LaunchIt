@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Common
 {
-    using Domain.Models.Task;
+    using Domain.Models.Action;
     using Logic.Common;
 
     /// <summary>
@@ -30,14 +30,14 @@ namespace Infrastructure.Common
         /// <param name="action">The action.</param>
         public void Handle(GameOptimizerActionModel action)
         {
-            if (action.TaskTarget == TaskTarget.Services)
+            if (action.TaskTarget == ActionTarget.Services)
             {
                 this.runningProgramsHelper.StopService(action.Name);
 
                 return;
             }
 
-            if (action.TaskTarget == TaskTarget.Executable)
+            if (action.TaskTarget == ActionTarget.Executable)
             {
                 this.runningProgramsHelper.StopExecutable(action.Name);
 

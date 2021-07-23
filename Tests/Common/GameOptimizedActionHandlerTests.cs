@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Common.Tests
 {
+    using Domain.Models.Action;
     using Domain.Models.Task;
     using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,7 @@ namespace Infrastructure.Common.Tests
                 var action = new GameOptimizerActionModel
                 {
                     Name = "A Name",
-                    TaskTarget = TaskTarget.Services,
+                    TaskTarget = ActionTarget.Services,
                 };
 
                 // Act
@@ -56,7 +57,7 @@ namespace Infrastructure.Common.Tests
                 var action = new GameOptimizerActionModel
                 {
                     Name = "A Name",
-                    TaskTarget = TaskTarget.Executable,
+                    TaskTarget = ActionTarget.Executable,
                 };
 
                 // Act

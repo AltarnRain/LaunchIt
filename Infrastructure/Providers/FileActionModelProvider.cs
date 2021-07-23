@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Providers
 {
-    using Domain.Models.Task;
+    using Domain.Models.Action;
     using Logic.Extensions;
     using System.Collections.Generic;
     using System.IO;
@@ -45,7 +45,7 @@ namespace Infrastructure.Providers
 
             var returnValue = new List<GameOptimizerActionModel>();
 
-            TaskTarget? taskTarget = null;
+            ActionTarget? taskTarget = null;
             foreach (var line in taskFileContent)
             {
                 // Ignore line, this is a comment.
@@ -62,12 +62,12 @@ namespace Infrastructure.Providers
 
                 if (line == Domain.Constants.Sections.Services)
                 {
-                    taskTarget = TaskTarget.Services;
+                    taskTarget = ActionTarget.Services;
                     continue;
                 }
                 else if (line == Domain.Constants.Sections.Executables)
                 {
-                    taskTarget = TaskTarget.Executable;
+                    taskTarget = ActionTarget.Executable;
                     continue;
                 }
 

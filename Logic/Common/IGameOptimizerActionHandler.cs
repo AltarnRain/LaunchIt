@@ -4,7 +4,7 @@
 
 namespace Logic.Common
 {
-    using Domain.Models.Task;
+    using Domain.Models.Action;
 
     /// <summary>
     /// Defines a contract for a class that handles a <see cref="GameOptimizerActionModel"/>.

@@ -1,13 +1,13 @@
-﻿// <copyright file="TaskTarget.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="ActionTarget.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Domain.Models.Task
+namespace Domain.Models.Action
 {
     /// <summary>
-    /// The target of the task.
+    /// The target of the action.
     /// </summary>
-    public enum TaskTarget
+    public enum ActionTarget
     {
         /// <summary>
         /// The services

@@ -4,7 +4,7 @@
 
 namespace Logic.Providers
 {
-    using Domain.Models.Task;
+    using Domain.Models.Action;
 
     /// <summary>
     /// Defines a contract for a class that provides tasks models.

@@ -5,7 +5,7 @@
 namespace Tests.Infrastructure
 {
     using Domain;
-    using Domain.Models.Task;
+    using Domain.Models.Action;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -57,16 +57,16 @@ namespace Tests.Infrastructure
             var task4 = result[i++];
 
             Assert.AreEqual("Service A", task1.Name);
-            Assert.AreEqual(TaskTarget.Services, task1.TaskTarget);
+            Assert.AreEqual(ActionTarget.Services, task1.TaskTarget);
 
             Assert.AreEqual("Service B", task2.Name);
-            Assert.AreEqual(TaskTarget.Services, task2.TaskTarget);
+            Assert.AreEqual(ActionTarget.Services, task2.TaskTarget);
 
             Assert.AreEqual("Executable A", task3.Name);
-            Assert.AreEqual(TaskTarget.Executable, task3.TaskTarget);
+            Assert.AreEqual(ActionTarget.Executable, task3.TaskTarget);
 
             Assert.AreEqual("Executable B", task4.Name);
-            Assert.AreEqual(TaskTarget.Executable, task4.TaskTarget);
+            Assert.AreEqual(ActionTarget.Executable, task4.TaskTarget);
         }
     }
 }

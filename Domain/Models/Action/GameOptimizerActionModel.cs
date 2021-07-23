@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Domain.Models.Task
+namespace Domain.Models.Action
 {
     /// <summary>
     /// Defines a action performed by the application.
@@ -12,7 +12,7 @@ namespace Domain.Models.Task
         /// <summary>
         /// Gets or sets the task target.
         /// </summary>
-        public TaskTarget TaskTarget { get; set; }
+        public ActionTarget TaskTarget { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
