@@ -49,6 +49,10 @@ namespace Tests.Base
                 .To<PathProvider>()
                 .InSingletonScope()
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
+
+            this.Bind<ICommandLineArgumentParser>()
+                .To<CommandLineArgumentParser>()
+                .InSingletonScope();
         }
     }
 }

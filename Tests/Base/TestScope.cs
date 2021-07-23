@@ -54,6 +54,11 @@ namespace Tests.Base
         public ActionFileService ActionFileService => this.kernel.Get<ActionFileService>();
 
         /// <summary>
+        /// Gets the command line argument parser.
+        /// </summary>
+        public ICommandLineArgumentParser CommandLineArgumentParser => this.kernel.Get<ICommandLineArgumentParser>();
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()

@@ -57,6 +57,10 @@ namespace Presentation
             this.Bind<Startup>()
                 .ToSelf()
                 .InSingletonScope();
+
+            this.Bind<ICommandLineArgumentParser>()
+                .To<CommandLineArgumentParser>()
+                .InSingletonScope();
         }
     }
 }

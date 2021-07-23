@@ -7,7 +7,7 @@ namespace Domain.Models.Action
     /// <summary>
     /// Defines a action performed by the application.
     /// </summary>
-    public class GameOptimizerActionModel
+    public record GameOptimizerActionModel
     {
         /// <summary>
         /// Gets or sets the task target.

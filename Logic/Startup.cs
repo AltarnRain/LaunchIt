@@ -21,6 +21,7 @@ namespace Logic
         /// The logger.
         /// </summary>
         private readonly ILogger logger;
+
         private readonly IPathProvider pathProvider;
 
         /// <summary>
