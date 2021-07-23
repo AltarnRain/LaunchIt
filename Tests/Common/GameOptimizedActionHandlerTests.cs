@@ -6,7 +6,6 @@ namespace Infrastructure.Common.Tests
 {
     using Domain.Models.Task;
     using global::Tests.Base;
-    using global::Tests.TestImplementations;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

@@ -23,7 +23,7 @@ namespace Logic.Common.Tests
         [TestMethod]
         public void WriteTest()
         {
-            using(var scope = this.StartTestScope())
+            using (var scope = this.StartTestScope())
             {
                 // Arrange
                 var target = scope.ActionFileService;

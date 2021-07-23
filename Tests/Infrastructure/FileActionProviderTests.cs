@@ -4,9 +4,8 @@
 
 namespace Tests.Infrastructure
 {
+    using Domain;
     using Domain.Models.Task;
-    using global::Infrastructure;
-    using Logic;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,16 +28,16 @@ namespace Tests.Infrastructure
 
             var actionFile = pathProvider.GetActionFilePath();
 
-            using (var sw = System.IO.File.AppendText(actionFile))
+            using (var sw = new ActionFileWriter(actionFile))
             {
-                sw.WriteLine("# I am a comment.");
-                sw.WriteLine(Domain.Constants.Sections.Services);
+                sw.WriteComment("I am a comment.");
+                sw.WriteServiceSection();
                 sw.WriteLine("Service A");
                 sw.WriteLine(string.Empty);
                 sw.WriteLine("Service B");
                 sw.WriteLine(string.Empty);
-                sw.WriteLine("# I am also a comment");
-                sw.WriteLine(Domain.Constants.Sections.Executables);
+                sw.WriteComment("I am also a comment");
+                sw.WriteExecutableSection();
                 sw.WriteLine("Executable A");
                 sw.WriteLine("Executable B");
                 sw.Flush();
