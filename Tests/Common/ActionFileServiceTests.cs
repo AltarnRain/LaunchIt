@@ -2,18 +2,18 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Common.Tests
+namespace Tests.Common
 {
     using Domain.Models.Programs;
-    using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Collections.Generic;
     using System.IO;
+    using Tests.Base;
 
     /// <summary>
     /// Tests the <see cref="ActionFileService"/>.
     /// </summary>
-    /// <seealso cref="Tests.Base.TestBase" />
+    /// <seealso cref="TestBase" />
     [TestClass]
     public class ActionFileServiceTests : TestBase
     {

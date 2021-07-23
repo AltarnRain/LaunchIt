@@ -2,17 +2,16 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common.Tests
+namespace Tests.Common
 {
     using Domain.Models.Parsing;
-    using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Linq;
+    using Tests.Base;
 
     /// <summary>
     /// Tests the <see cref="CommandLineArgumentParser"/> class.
     /// </summary>
-    /// <seealso cref="Tests.Base.TestBase" />
+    /// <seealso cref="TestBase" />
     [TestClass]
     public class CommandLineArgumentParserTests : TestBase
     {

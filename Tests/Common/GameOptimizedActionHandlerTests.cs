@@ -2,16 +2,16 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common.Tests
+namespace Tests.Common
 {
     using Domain.Models.Action;
-    using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Tests.Base;
 
     /// <summary>
     /// Tests <see cref="GameOptimizerActionHandler"/>.
     /// </summary>
-    /// <seealso cref="Tests.Base.TestBase" />
+    /// <seealso cref="TestBase" />
     [TestClass]
     public class GameOptimizedActionHandlerTests : TestBase
     {
