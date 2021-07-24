@@ -34,6 +34,10 @@ namespace Presentation
             launch.Run(argument);
         }
 
+        /// <summary>
+        /// Gets the root path.
+        /// </summary>
+        /// <returns>The root path for the application.</returns>
         private static string GetRootPath()
         {
             var production = IsProduction();

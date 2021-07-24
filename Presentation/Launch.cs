@@ -18,7 +18,7 @@ namespace Presentation
         /// <summary>
         /// The main.
         /// </summary>
-        private readonly GameLauncher gameLauncher;
+        private readonly LaunchIt gameLauncher;
 
         /// <summary>
         /// The logger.
@@ -37,7 +37,7 @@ namespace Presentation
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
         public Launch(
-            GameLauncher main,
+            LaunchIt main,
             ILogger logger,
             IConfigurationService configurationService)
         {
@@ -61,6 +61,10 @@ namespace Presentation
             switch (argument.ToLower())
             {
                 case "edit":
+                    this.configurationService.EditInNotepad();
+                    break;
+                case "reset":
+                    this.configurationService.WriteExampleConfigurationFile();
                     this.configurationService.EditInNotepad();
                     break;
                 default:

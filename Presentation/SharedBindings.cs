@@ -46,11 +46,15 @@ namespace Presentation
                 .To<YamlConfigurationService>()
                 .InSingletonScope();
 
-            this.Bind<IProgramHelper>()
-                .To<WindowsProgramHelper>()
+            this.Bind<IStartupService>()
+                .To<BatchFileStartupService>()
                 .InSingletonScope();
 
-            this.Bind<GameLauncher>()
+            this.Bind<IMonitoringService>()
+                .To<WindowsMonitoringService>()
+                .InSingletonScope();
+
+            this.Bind<LaunchIt>()
                 .ToSelf()
                 .InSingletonScope();
         }

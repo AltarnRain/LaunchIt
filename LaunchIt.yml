@@ -1,0 +1,9 @@
+MonitorRestarts: false
+ShutdownExplorer: false
+Priority: Normal
+Services:
+- Example Service 1
+- Example Service 2
+Executables:
+- Example executable 1
+- Example executable 2

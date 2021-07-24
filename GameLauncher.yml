@@ -1,6 +1,0 @@
-MonitorRestarts: false
-Services:
-- Windows Image Acquisition (WIA)
-Executables:
-- GoogleCrashHandler
-- GoogleCrashHandler64.exe

@@ -5,6 +5,7 @@
 namespace Domain.Models.Configuration
 {
     using System;
+    using System.Diagnostics;
 
     /// <summary>
     /// Configuration.
@@ -15,6 +16,16 @@ namespace Domain.Models.Configuration
         /// Gets or sets a value indicating whether [monitor restarts].
         /// </summary>
         public bool MonitorRestarts { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [shutdown explorer].
+        /// </summary>
+        public bool ShutdownExplorer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the process priority class.
+        /// </summary>
+        public string Priority { get; set; } = ProcessPriorityClass.Normal.ToString();
 
         /// <summary>
         /// Gets or sets the services.
