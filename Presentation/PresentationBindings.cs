@@ -37,29 +37,13 @@ namespace Presentation
                 .To<ConsoleLogService>()
                 .InSingletonScope();
 
-            this.Bind<IRunningProgramsHelper>()
-                .To<WindowsRunningProgramsHelper>()
-                .InSingletonScope();
-
-            this.Bind<IGameOptimizerActionHandler>()
-                .To<GameOptimizerActionHandler>()
-                .InSingletonScope();
-
             this.Bind<IPathProvider>()
                 .To<PathProvider>()
                 .InSingletonScope()
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
 
-            this.Bind<IActionModelProvider>()
-                .To<FileActionModelProvider>()
-                .InSingletonScope();
-
             this.Bind<Startup>()
                 .ToSelf()
-                .InSingletonScope();
-
-            this.Bind<ICommandLineArgumentParser>()
-                .To<CommandLineArgumentParser>()
                 .InSingletonScope();
         }
     }

@@ -9,7 +9,6 @@ namespace Tests.Base
     using Logic.Common;
     using Logic.Providers;
     using Ninject.Parameters;
-    using Tests.TestImplementations;
 
     /// <summary>
     /// Module for dependency injection for the presentation layer.
@@ -37,22 +36,10 @@ namespace Tests.Base
                 .To<ConsoleLogService>()
                 .InSingletonScope();
 
-            this.Bind<IRunningProgramsHelper>()
-                .To<TestRunningProgramsHelper>()
-                .InSingletonScope();
-
-            this.Bind<IGameOptimizerActionHandler>()
-                .To<GameOptimizerActionHandler>()
-                .InSingletonScope();
-
             this.Bind<IPathProvider>()
                 .To<PathProvider>()
                 .InSingletonScope()
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
-
-            this.Bind<ICommandLineArgumentParser>()
-                .To<CommandLineArgumentParser>()
-                .InSingletonScope();
         }
     }
 }
