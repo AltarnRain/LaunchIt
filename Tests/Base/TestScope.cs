@@ -4,8 +4,10 @@
 
 namespace Tests.Base
 {
+    using Infrastructure.Common;
     using Logic.Providers;
     using Ninject;
+    using Presentation;
     using System;
 
     /// <summary>
@@ -21,13 +23,18 @@ namespace Tests.Base
         /// <param name="rootPath">The root path.</param>
         public TestScope(string rootPath)
         {
-            this.kernel = new StandardKernel(new TestsBindings(rootPath));
+            this.kernel = new StandardKernel(new SharedBindings(rootPath));
         }
 
         /// <summary>
         /// Gets the path provider.
         /// </summary>
         public IPathProvider PathProvider => this.kernel.Get<IPathProvider>();
+
+        /// <summary>
+        /// Gets the yaml configuration service.
+        /// </summary>
+        public YamlConfigurationService YamlConfigurationService => this.kernel.Get<YamlConfigurationService>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

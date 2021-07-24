@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationBindings.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="SharedBindings.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -15,15 +15,15 @@ namespace Presentation
     /// Module for dependency injection for the presentation layer.
     /// </summary>
     /// <seealso cref="Ninject.Modules.NinjectModule" />
-    public class PresentationBindings : Ninject.Modules.NinjectModule
+    public class SharedBindings : Ninject.Modules.NinjectModule
     {
         private readonly string rootPath;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PresentationBindings" /> class.
+        /// Initializes a new instance of the <see cref="SharedBindings" /> class.
         /// </summary>
         /// <param name="rootPath">The root path.</param>
-        public PresentationBindings(string rootPath)
+        public SharedBindings(string rootPath)
         {
             this.rootPath = rootPath;
         }
@@ -42,7 +42,15 @@ namespace Presentation
                 .InSingletonScope()
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
 
-            this.Bind<Startup>()
+            this.Bind<IConfigurationService>()
+                .To<YamlConfigurationService>()
+                .InSingletonScope();
+
+            this.Bind<IProgramHelper>()
+                .To<WindowsProgramHelper>()
+                .InSingletonScope();
+
+            this.Bind<GameLauncher>()
                 .ToSelf()
                 .InSingletonScope();
         }

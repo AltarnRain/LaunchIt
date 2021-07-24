@@ -8,6 +8,7 @@ namespace Infrastructure.Common
     using Logic.Common;
     using Logic.Extensions;
     using Logic.Providers;
+    using System.Diagnostics;
     using System.IO;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
@@ -30,24 +31,39 @@ namespace Infrastructure.Common
         }
 
         /// <summary>
+        /// Configurations the file exists.
+        /// </summary>
+        /// <returns>
+        /// True if the configuration file exists.
+        /// </returns>
+        public bool ConfigurationFileExists()
+        {
+            var configurationFile = this.pathProvider.ConfigurationFile();
+            return File.Exists(configurationFile);
+        }
+
+        /// <summary>
+        /// Writes the example configuration file.
+        /// </summary>
+        public void WriteExampleConfigurationFile()
+        {
+            var configurationModel = new ConfigurationModel
+            {
+                Executables = new[] { "Example executable 1", "Example executable 2" },
+                Services = new[] { "Example Service 1", "Example Service 2" },
+            };
+
+            this.Write(configurationModel);
+        }
+
+        /// <summary>
         /// Reads the default configuration file and returns a model for it.
         /// </summary>
         /// <returns>A ConfigurationModel.</returns>
         public ConfigurationModel Read()
         {
-            var configFile = this.pathProvider.ConfigurationFile();
-            return this.Read(configFile);
-        }
-
-        /// <summary>
-        /// Reads the specified configuration file.
-        /// </summary>
-        /// <param name="configurationFile">The configuration file.</param>
-        /// <returns>A ConfigurationModel.</returns>
-        /// <exception cref="FileNotFoundException">Throw if the file is not found.</exception>
-        public ConfigurationModel Read(string configurationFile)
-        {
-            if (File.Exists(configurationFile))
+            var configurationFile = this.pathProvider.ConfigurationFile();
+            if (!File.Exists(configurationFile))
             {
                 throw new FileNotFoundException(configurationFile);
             }
@@ -57,7 +73,7 @@ namespace Infrastructure.Common
             var input = new StringReader(configFileContent);
 
             var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
                 .Build();
 
             return deserializer.Deserialize<ConfigurationModel>(input);
@@ -70,23 +86,30 @@ namespace Infrastructure.Common
         public void Write(ConfigurationModel configuration)
         {
             var configurationFile = this.pathProvider.ConfigurationFile();
-            this.Write(configurationFile, configuration);
-        }
-
-        /// <summary>
-        /// Writes the specified configuration file.
-        /// </summary>
-        /// <param name="configurationFile">The configuration file.</param>
-        /// <param name="configuration">The configuration.</param>
-        public void Write(string configurationFile, ConfigurationModel configuration)
-        {
             var serializer = new SerializerBuilder()
-                .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
                 .Build();
 
             var yamlContent = serializer.Serialize(configuration);
 
             File.WriteAllText(configurationFile, yamlContent);
+        }
+
+        /// <summary>
+        /// Edits the in notepad.
+        /// </summary>
+        public void EditInNotepad()
+        {
+            var configurationFile = this.pathProvider.ConfigurationFile();
+
+            var processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = "notepad.exe",
+                Arguments = configurationFile,
+            };
+
+            Process.Start(processStartInfo)?.WaitForExit();
         }
     }
 }

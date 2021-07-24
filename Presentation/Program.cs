@@ -4,15 +4,16 @@
 
 namespace Presentation
 {
-    using Logic;
     using Microsoft.Extensions.Configuration;
     using Ninject;
     using System.IO;
     using System.Reflection;
+    using System.Runtime.Versioning;
 
     /// <summary>
     /// Program entry point.
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class Program
     {
         /// <summary>
@@ -25,10 +26,12 @@ namespace Presentation
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
 
-            using var kernel = new StandardKernel(new PresentationBindings(rootPath));
+            using var kernel = new StandardKernel(new SharedBindings(rootPath));
+            var launch = kernel.Get<Launch>();
 
-            var startUp = kernel.Get<Startup>();
-            startUp.Start(args);
+            var argument = args.Length == 1 ? args[0] : string.Empty;
+
+            launch.Run(argument);
         }
 
         private static string GetRootPath()

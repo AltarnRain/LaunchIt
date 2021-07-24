@@ -12,6 +12,12 @@ namespace Logic.Common
     public interface IConfigurationService
     {
         /// <summary>
+        /// Configurations the file exists.
+        /// </summary>
+        /// <returns>True if the configuration file exists.</returns>
+        public bool ConfigurationFileExists();
+
+        /// <summary>
         /// Reads the default configuration file.
         /// </summary>
         /// <param name="configurationFile">The configuration file.</param>
@@ -20,26 +26,19 @@ namespace Logic.Common
         public ConfigurationModel Read();
 
         /// <summary>
-        /// Reads the specified configuration file.
-        /// </summary>
-        /// <param name="configurationFile">The configuration file.</param>
-        /// <returns>
-        /// A ConfigurationModel.
-        /// </returns>
-        /// <exception cref="FileNotFoundException">Throw if the file is not found.</exception>
-        public ConfigurationModel Read(string configurationFile);
-
-        /// <summary>
         /// Writes the specified configuration.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public void Write(ConfigurationModel configuration);
 
         /// <summary>
-        /// Writes the specified configuration file.
+        /// Writes the example configuration file.
         /// </summary>
-        /// <param name="configurationFile">The configuration file.</param>
-        /// <param name="configuration">The configuration.</param>
-        public void Write(string configurationFile, ConfigurationModel configuration);
+        void WriteExampleConfigurationFile();
+
+        /// <summary>
+        /// Edits the in notepad.
+        /// </summary>
+        void EditInNotepad();
     }
 }

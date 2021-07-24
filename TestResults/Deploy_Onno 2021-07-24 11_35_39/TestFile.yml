@@ -1,0 +1,7 @@
+monitorRestarts: false
+services:
+- Service a
+- Service b
+executables:
+- Executable a
+- Executable b
