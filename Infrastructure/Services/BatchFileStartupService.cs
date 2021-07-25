@@ -62,7 +62,9 @@ namespace Infrastructure.Services
             if (configuration.ShutdownExplorer)
             {
                 // Shut down explorer before any other process is terminated.
-                batchBuilder.Echo("Shutting down explorer. Your desktop will disappear. This is completely normal. Also, if your keyboard has volume keys and the like they will no longer work.");
+                batchBuilder.Echo("Shutting down explorer. Your desktop will disappear.");
+                batchBuilder.Echo("This is completely normal!");
+                batchBuilder.Echo("If your keyboard has volume keys and the like they will no longer work. Explorer handles that.");
                 batchBuilder.Add("taskkill /f /im explorer.exe");
             }
 
