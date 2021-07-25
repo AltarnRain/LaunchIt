@@ -20,6 +20,12 @@ namespace Domain.Models.Configuration
         public bool MonitorRestarts { get; set; }
 
         /// <summary>
+        /// Gets or sets the monitoring interval.
+        /// </summary>
+        [Description("Specifies the time in milliseconds LaunchIt will wait before checking for services or processes that were started.")]
+        public int MonitoringInterval { get; set; } = 5000;
+
+        /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
         [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables.")]

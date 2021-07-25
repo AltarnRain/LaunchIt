@@ -13,7 +13,7 @@ namespace Infrastructure.Common
     using System.Timers;
 
     /// <summary>
-    /// Monitors servcices and executables that were started.
+    /// Monitors servcices and executables that were started. Call <see cref="StartMonitoring"/> to begin, call <see cref="EndMonitoring"/> to finish.
     /// </summary>
     /// <seealso cref="Logic.Common.IMonitoringService" />
     public class WindowsMonitoringService : IMonitoringService
@@ -21,7 +21,7 @@ namespace Infrastructure.Common
         private readonly ILogger logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
-
+        private readonly IConfigurationService configurationService;
         private Timer? timer;
 
         private string[]? runningServices;
@@ -39,11 +39,13 @@ namespace Infrastructure.Common
         /// <param name="logger">The logger.</param>
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="processHelper">The process helper.</param>
-        public WindowsMonitoringService(ILogger logger, IServiceHelper serviceHelper, IProcessHelper processHelper)
+        /// <param name="configurationService">The configuration service.</param>
+        public WindowsMonitoringService(ILogger logger, IServiceHelper serviceHelper, IProcessHelper processHelper, IConfigurationService configurationService)
         {
             this.logger = logger;
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;
+            this.configurationService = configurationService;
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace Infrastructure.Common
                 throw new Exception("No timer running... now that's weird.");
             }
 
-            if(this.serviceLogFileWriter is null)
+            if (this.serviceLogFileWriter is null)
             {
                 throw new Exception("No log writer for services... now that's weird.");
             }
@@ -84,7 +86,7 @@ namespace Infrastructure.Common
                 throw new Exception("No temp log file for services... now that's weird.");
             }
 
-            if(this.processLogFile is null)
+            if (this.processLogFile is null)
             {
                 throw new Exception("No process log file either... now that's weird.");
             }
@@ -138,19 +140,23 @@ namespace Infrastructure.Common
             this.serviceLogFileWriter = File.AppendText(this.serviceLogFile);
             this.processLogFileWriter = File.AppendText(this.serviceLogFile);
 
+            var configuration = this.configurationService.Read();
+
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
-            this.timer = new Timer(5000);
+            this.timer = new Timer(configuration.MonitoringInterval);
             this.timer.Elapsed += (sender, eventArgs) =>
             {
-                this.logger.Log($"{DateTime.Now} monitoring activity...");
+                this.logger.Log($"{DateTime.Now} monitoring activity.... Next check at {DateTime.Now.AddMilliseconds(configuration.MonitoringInterval)}");
 
                 var runningProcesses = this.processHelper.GetRunningProcesses();
                 var newProcesses = runningProcesses.Where(rp => !this.runningProcesses.Contains(rp));
                 this.serviceLogFileWriter.WriteLine(newProcesses);
+                this.serviceLogFileWriter.Flush();
 
                 var runningServices = this.serviceHelper.GetRunningServices();
                 var newServices = runningServices.Where(rp => !this.runningServices.Contains(rp));
                 this.processLogFileWriter.WriteLine(newServices);
+                this.processLogFileWriter.Flush();
             };
 
             this.timer.Start();

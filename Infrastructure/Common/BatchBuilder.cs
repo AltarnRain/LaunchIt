@@ -6,7 +6,6 @@ namespace Infrastructure.Common
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
     /// Class to build a batch file.

@@ -91,7 +91,15 @@ namespace Infrastructure.Common
                 var folder = Path.GetDirectoryName(executablePath);
                 var executableName = Path.GetFileName(executablePath);
 
-                batchBuilder.Add(GetFolderCDCommand(folder));
+                if (folder == string.Empty)
+                {
+                    this.logger.Log($"Looks like you didn't specify a folder. No worries, I'll try to start {executableName}.");
+                }
+                else
+                {
+                    batchBuilder.Add(GetFolderCDCommand(folder));
+                }
+
                 batchBuilder.Add(GetExecutableExecutionCommand(executableName, priorityClass));
             }
 

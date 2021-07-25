@@ -4,7 +4,6 @@
 
 namespace Presentation
 {
-    using Microsoft.Extensions.Configuration;
     using Ninject;
     using System.IO;
     using System.Reflection;

@@ -76,7 +76,7 @@ namespace Logic
                 if (monitoringResult.StartedServices.Length > 0)
                 {
                     this.logger.Log("Some services were (re)started!");
-                    foreach(var service in monitoringResult.StartedServices)
+                    foreach (var service in monitoringResult.StartedServices)
                     {
                         this.logger.Log($"  {service}");
                     }
@@ -91,7 +91,7 @@ namespace Logic
                     }
                 }
 
-                if(monitoringResult.StartedProcesses.Length + monitoringResult.StartedServices.Length > 0)
+                if (monitoringResult.StartedProcesses.Length + monitoringResult.StartedServices.Length > 0)
                 {
                     this.logger.Log(string.Empty);
                     this.logger.Log("Press any key to close...");
