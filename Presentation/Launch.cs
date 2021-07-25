@@ -43,8 +43,8 @@ namespace Presentation
         {
             if (!IsElevated())
             {
-                this.logger.Log("This program requires Administrative access");
-                return;
+                this.logger.Log("Hey, I noticed you're not running me as administrator.");
+                this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
             }
 
             switch (argument.ToLower())

@@ -1,12 +1,56 @@
 # Set this to true if you want LaunchIt to monitor executables and services that were (re)started.
 MonitorRestarts: true
 # When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables.
-ShutdownExplorer: false
+ShutdownExplorer: true
 # The process priority LauncIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.
 Priority: Normal
 # List services you wish to shut down by their full name in this section. For example: - My Service
 Services:
+- Debug Diagnostic Service
+- Function Discovery Resource Publication
+- Function Discovery Provider Host
+- Application Host Helper Service
+- Data Usage
+- Display Enhancement Service
+- Display Policy Service
+- Distributed Link Tracking Client
+- SQL Server (SQLEXPRESS)
+- NVIDIA Telemetry Container
+- Remote Access Connection Manager
+- Remote Desktop Configuration
+- Secure Socket Tunneling Protocol Service
+- SynTPEnhService
+- TCP/IP NetBIOS Helper
+- Themes
 - Windows Image Acquisition (WIA)
+- Update Orchestrator Service
+- Windows Update
+- World Wide Web Publishing Service
+- Windows Process Activation Service
+- NVIDIA Display Container LS
+- NVIDIA LocalSystem Container
+- Visual Studio Standard Collector Service 150
+- Microsoft Office Click-to-Run Service
+- AppX Deployment Service (AppXSVC)
+- AVCTP service
+- Capability Access Manager Service
+- Client License Service (ClipSVC)
+- SNMP Service
+- SSDP Discovery
+- Remote Desktop Services UserMode Port Redirector
+- Remote Desktop Services
+- Distributed Transaction Coordinator
+- Windows Search	
 # List executables you wish to shut down. For example: - MyExecutable
 Executables:
+- chrome.exe
+- TGitCache.exe
+- greenshot.exe
+- googledrivesync.exe
+- Skype.exe
+- AutoHotkey.exe
+- NVIDIA Web Helper.exe
+- SynTPEnh.exe
+- Teams.exe
+- GoogleCrashHandler.exe
 - GoogleCrashHandler64.exe

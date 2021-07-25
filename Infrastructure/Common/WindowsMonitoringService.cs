@@ -8,7 +8,7 @@ namespace Infrastructure.Common
     using Logic.Common;
     using Logic.Helpers;
     using System;
-    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Timers;
 
@@ -21,13 +21,17 @@ namespace Infrastructure.Common
         private readonly ILogger logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
-        private readonly List<string> startedServices = new();
-        private readonly List<string> startedProcesses = new();
 
         private Timer? timer;
 
-        private string[]? runningProcesses;
         private string[]? runningServices;
+        private string[]? runningProcesses;
+
+        private string? serviceLogFile;
+        private string? processLogFile;
+
+        private StreamWriter? serviceLogFileWriter;
+        private StreamWriter? processLogFileWriter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMonitoringService" /> class.
@@ -65,21 +69,48 @@ namespace Infrastructure.Common
                 throw new Exception("No timer running... now that's weird.");
             }
 
+            if(this.serviceLogFileWriter is null)
+            {
+                throw new Exception("No log writer for services... now that's weird.");
+            }
+
+            if (this.processLogFileWriter is null)
+            {
+                throw new Exception("No log writer for processes... now that's weird.");
+            }
+
+            if (this.serviceLogFile is null)
+            {
+                throw new Exception("No temp log file for services... now that's weird.");
+            }
+
+            if(this.processLogFile is null)
+            {
+                throw new Exception("No process log file either... now that's weird.");
+            }
+
             this.timer.Stop();
             this.timer.Dispose();
+
+            this.serviceLogFileWriter.Close();
+            this.processLogFileWriter.Close();
 
             // Prepare a return value before clearing the state.
             var returnValue = new MonitoringResultModel
             {
-                StartedProcesses = this.startedProcesses.Distinct().ToArray(),
-                StartedServices = this.startedServices.Distinct().ToArray(),
+                StartedProcesses = File.ReadAllLines(this.serviceLogFile).Distinct().ToArray(),
+                StartedServices = File.ReadAllLines(this.processLogFile).Distinct().ToArray(),
             };
 
             // Reset.
             this.runningProcesses = null;
             this.runningServices = null;
-            this.startedServices.Clear();
-            this.startedProcesses.Clear();
+
+            this.processLogFile = null;
+            this.serviceLogFile = null;
+
+            this.processLogFileWriter = null;
+            this.serviceLogFileWriter = null;
 
             return returnValue;
         }
@@ -101,6 +132,12 @@ namespace Infrastructure.Common
             this.runningProcesses = this.processHelper.GetRunningProcesses();
             this.runningServices = this.serviceHelper.GetRunningServices();
 
+            this.serviceLogFile = Path.GetTempFileName();
+            this.processLogFile = Path.GetTempFileName();
+
+            this.serviceLogFileWriter = File.AppendText(this.serviceLogFile);
+            this.processLogFileWriter = File.AppendText(this.serviceLogFile);
+
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
             this.timer = new Timer(5000);
             this.timer.Elapsed += (sender, eventArgs) =>
@@ -109,11 +146,11 @@ namespace Infrastructure.Common
 
                 var runningProcesses = this.processHelper.GetRunningProcesses();
                 var newProcesses = runningProcesses.Where(rp => !this.runningProcesses.Contains(rp));
-                this.startedProcesses.AddRange(newProcesses);
+                this.serviceLogFileWriter.WriteLine(newProcesses);
 
                 var runningServices = this.serviceHelper.GetRunningServices();
                 var newServices = runningServices.Where(rp => !this.runningServices.Contains(rp));
-                this.startedServices.AddRange(newServices);
+                this.processLogFileWriter.WriteLine(newServices);
             };
 
             this.timer.Start();

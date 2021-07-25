@@ -40,25 +40,7 @@ namespace Presentation
         /// <returns>The root path for the application.</returns>
         private static string GetRootPath()
         {
-            var production = IsProduction();
-            if (production)
-            {
-                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
-            }
-            else
-            {
-                return @"C:\Reps\LaunchIt\";
-            }
-        }
-
-        private static bool IsProduction()
-        {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var production = configuration["Environment:Production"] == "True";
-            return production;
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
         }
     }
 }

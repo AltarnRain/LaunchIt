@@ -82,15 +82,8 @@ namespace Infrastructure.Common
             batchBuilder.Echo("Shutting down executables...");
             foreach (var exe in configuration.Executables)
             {
-                if (this.processHelper.IsRunning(exe))
-                {
-                    this.logger.Log($"Adding kill command for executable {exe}");
-                    batchBuilder.Add(GetExecutableShutDownCommand(exe));
-                }
-                else
-                {
-                    this.logger.Log($"Doesn't look like there's a process named '{exe}'. Skipping...");
-                }
+                this.logger.Log($"Adding kill command for executable {exe}");
+                batchBuilder.Add(GetExecutableShutDownCommand(exe));
             }
 
             if (executablePath is not null)
