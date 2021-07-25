@@ -100,8 +100,8 @@ namespace Infrastructure.Services
             // Prepare a return value before clearing the state.
             var returnValue = new MonitoringResultModel
             {
-                StartedProcesses = File.ReadAllLines(this.serviceLogFile).Distinct().ToArray(),
-                StartedServices = File.ReadAllLines(this.processLogFile).Distinct().ToArray(),
+                StartedServices = File.ReadAllLines(this.serviceLogFile).Distinct().ToArray(),
+                StartedProcesses = File.ReadAllLines(this.processLogFile).Distinct().ToArray(),
             };
 
             // Reset.
@@ -138,7 +138,7 @@ namespace Infrastructure.Services
             this.processLogFile = Path.GetTempFileName();
 
             this.serviceLogFileWriter = File.AppendText(this.serviceLogFile);
-            this.processLogFileWriter = File.AppendText(this.serviceLogFile);
+            this.processLogFileWriter = File.AppendText(this.processLogFile);
 
             var configuration = this.configurationService.Read();
 
@@ -148,19 +148,27 @@ namespace Infrastructure.Services
             {
                 this.logger.Log($"{DateTime.Now} monitoring activity.... Next check at {DateTime.Now.AddMilliseconds(configuration.MonitoringInterval)}");
 
-                var runningProcesses = this.processHelper.GetRunningProcesses();
-                var newProcesses = runningProcesses.Where(rp => !this.runningProcesses.Contains(rp));
-                this.serviceLogFileWriter.WriteLine(newProcesses);
-                this.serviceLogFileWriter.Flush();
-
                 var runningServices = this.serviceHelper.GetRunningServices();
-                var newServices = runningServices.Where(rp => !this.runningServices.Contains(rp));
-                this.processLogFileWriter.WriteLine(newServices);
-                this.processLogFileWriter.Flush();
+                var runningProcesses = this.processHelper.GetRunningProcesses();
+
+                LogMonitorResults(runningServices, this.runningServices, this.serviceLogFileWriter);
+                LogMonitorResults(runningProcesses, this.runningProcesses, this.processLogFileWriter);
             };
 
             this.timer.Start();
             this.Monitoring = true;
+        }
+
+        private static void LogMonitorResults(string[] currentItems, string[] orignalItems, StreamWriter streamWriter)
+        {
+            var newItems = currentItems.Where(rp => !orignalItems.Contains(rp));
+
+            foreach (var item in newItems)
+            {
+                streamWriter.WriteLine(item);
+            }
+
+            streamWriter.Flush();
         }
     }
 }

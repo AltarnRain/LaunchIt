@@ -19,7 +19,13 @@ namespace Infrastructure.Services
         /// </summary>
         public void Cleanup()
         {
-            // Do nothing.
+            // Clean .NET Memory
+            // Link: https://stackoverflow.com/questions/1852929/can-i-force-memory-cleanup-in-c
+            System.GC.Collect();
+            System.GC.WaitForPendingFinalizers();
         }
+
+        // [DllImport("KERNEL32.DLL", EntryPoint = "SetProcessWorkingSetSize", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        // private static extern bool SetProcessWorkingSetSize32Bit(IntPtr pProcess, int dwMinimumWorkingSetSize, int dwMaximumWorkingSetSize);
     }
 }
