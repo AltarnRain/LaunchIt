@@ -1,13 +1,13 @@
-﻿// <copyright file="ILogger.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="ILoggerService.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Common
+namespace Logic.Services
 {
     /// <summary>
     /// Define a contract for a logger.
     /// </summary>
-    public interface ILogger
+    public interface ILoggerService
     {
         /// <summary>
         /// Logs the specified message.

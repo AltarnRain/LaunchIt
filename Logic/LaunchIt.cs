@@ -4,7 +4,7 @@
 
 namespace Logic
 {
-    using Logic.Common;
+    using Logic.Services;
     using System;
     using System.Diagnostics;
 
@@ -14,9 +14,10 @@ namespace Logic
     public class LaunchIt
     {
         private readonly IConfigurationService configurationService;
-        private readonly ILogger logger;
+        private readonly ILoggerService logger;
         private readonly IStartupService startupService;
         private readonly IMonitoringService monitoringService;
+        private readonly IMemoryCleaningService memoryCleaningService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -25,16 +26,19 @@ namespace Logic
         /// <param name="logger">The logger.</param>
         /// <param name="startupService">The startup service.</param>
         /// <param name="monitoringService">The monitoring service.</param>
+        /// <param name="memoryCleaningService">The memory cleaning service.</param>
         public LaunchIt(
             IConfigurationService configurationService,
-            ILogger logger,
+            ILoggerService logger,
             IStartupService startupService,
-            IMonitoringService monitoringService)
+            IMonitoringService monitoringService,
+            IMemoryCleaningService memoryCleaningService)
         {
             this.configurationService = configurationService;
             this.logger = logger;
             this.startupService = startupService;
             this.monitoringService = monitoringService;
+            this.memoryCleaningService = memoryCleaningService;
         }
 
         /// <summary>

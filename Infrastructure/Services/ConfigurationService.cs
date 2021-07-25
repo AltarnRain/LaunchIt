@@ -2,13 +2,13 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common
+namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
-    using Logic.Common;
     using Logic.Extensions;
     using Logic.Providers;
     using Logic.Serialization;
+    using Logic.Services;
     using System;
     using System.Diagnostics;
     using System.IO;
@@ -28,7 +28,7 @@ namespace Infrastructure.Common
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger logger;
+        private readonly ILoggerService logger;
 
         /// <summary>
         /// The serialization service.
@@ -46,7 +46,7 @@ namespace Infrastructure.Common
         /// <param name="pathProvider">The path provider.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public ConfigurationService(IPathProvider pathProvider, ILogger logger, ISerializationService serializationService)
+        public ConfigurationService(IPathProvider pathProvider, ILoggerService logger, ISerializationService serializationService)
         {
             this.pathProvider = pathProvider;
             this.logger = logger;

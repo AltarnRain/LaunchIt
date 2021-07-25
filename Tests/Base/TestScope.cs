@@ -4,7 +4,7 @@
 
 namespace Tests.Base
 {
-    using Infrastructure.Common;
+    using Infrastructure.Services;
     using Logic.Providers;
     using Ninject;
     using Presentation;

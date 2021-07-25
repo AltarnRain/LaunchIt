@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Common
+namespace Logic.Services
 {
     using System.Diagnostics;
 

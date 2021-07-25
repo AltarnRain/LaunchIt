@@ -5,7 +5,7 @@
 namespace Presentation
 {
     using Logic;
-    using Logic.Common;
+    using Logic.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;
 
@@ -16,7 +16,7 @@ namespace Presentation
     public class Launch
     {
         private readonly LaunchIt launchIt;
-        private readonly ILogger logger;
+        private readonly ILoggerService logger;
         private readonly IConfigurationService configurationService;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Presentation
         /// <param name="configurationService">The configuration service.</param>
         public Launch(
             LaunchIt main,
-            ILogger logger,
+            ILoggerService logger,
             IConfigurationService configurationService)
         {
             this.launchIt = main;

@@ -6,6 +6,7 @@ namespace Infrastructure.Common.Tests
 {
     using Domain.Models.Configuration;
     using global::Tests.Base;
+    using Infrastructure.Services;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;

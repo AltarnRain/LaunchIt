@@ -2,11 +2,11 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common
+namespace Infrastructure.Services
 {
     using Domain.Models.Common;
-    using Logic.Common;
     using Logic.Helpers;
+    using Logic.Services;
     using System;
     using System.IO;
     using System.Linq;
@@ -15,10 +15,10 @@ namespace Infrastructure.Common
     /// <summary>
     /// Monitors servcices and executables that were started. Call <see cref="StartMonitoring"/> to begin, call <see cref="EndMonitoring"/> to finish.
     /// </summary>
-    /// <seealso cref="Logic.Common.IMonitoringService" />
+    /// <seealso cref="IMonitoringService" />
     public class WindowsMonitoringService : IMonitoringService
     {
-        private readonly ILogger logger;
+        private readonly ILoggerService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
         private readonly IConfigurationService configurationService;
@@ -40,7 +40,7 @@ namespace Infrastructure.Common
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="processHelper">The process helper.</param>
         /// <param name="configurationService">The configuration service.</param>
-        public WindowsMonitoringService(ILogger logger, IServiceHelper serviceHelper, IProcessHelper processHelper, IConfigurationService configurationService)
+        public WindowsMonitoringService(ILoggerService logger, IServiceHelper serviceHelper, IProcessHelper processHelper, IConfigurationService configurationService)
         {
             this.logger = logger;
             this.serviceHelper = serviceHelper;

@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common
+namespace Infrastructure.Helpers
 {
     using System;
     using System.Collections.Generic;

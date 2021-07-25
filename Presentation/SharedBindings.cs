@@ -4,15 +4,15 @@
 
 namespace Presentation
 {
-    using Infrastructure.Common;
     using Infrastructure.Helpers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
+    using Infrastructure.Services;
     using Logic;
-    using Logic.Common;
     using Logic.Helpers;
     using Logic.Providers;
     using Logic.Serialization;
+    using Logic.Services;
     using Ninject.Parameters;
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace Presentation
         /// </summary>
         public override void Load()
         {
-            this.Bind<ILogger>()
+            this.Bind<ILoggerService>()
                 .To<ConsoleLogService>()
                 .InSingletonScope();
 
