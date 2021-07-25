@@ -43,7 +43,7 @@ namespace Presentation
             var production = IsProduction();
             if (production)
             {
-                return Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+                return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             }
             else
             {
