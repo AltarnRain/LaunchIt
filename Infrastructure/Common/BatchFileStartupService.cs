@@ -111,7 +111,7 @@ namespace Infrastructure.Common
             }
 
             var batchFileContent = batchBuilder.ToString();
-            var batchRunner = new BatchRunner(batchFileContent);
+            var batchRunner = new BatchRunner(batchFileContent, this.logger);
 
             var process = batchRunner.Run();
 
