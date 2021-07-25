@@ -5,10 +5,10 @@
 namespace Infrastructure.Common
 {
     using Logic.Common;
+    using Logic.Helpers;
     using System;
     using System.Diagnostics;
     using System.IO;
-    using System.Text;
 
     /// <summary>
     /// Start an executable using a batchfile.
@@ -17,21 +17,27 @@ namespace Infrastructure.Common
     public class BatchFileStartupService : IStartupService
     {
         private readonly IConfigurationService configurationService;
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
         private readonly ILogger logger;
+        private readonly IServiceHelper serviceHelper;
+        private readonly IProcessHelper processHelper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BatchFileStartupService"/> class.
+        /// Initializes a new instance of the <see cref="BatchFileStartupService" /> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="logger">The logger.</param>
-        public BatchFileStartupService(IConfigurationService configurationService, ILogger logger)
+        /// <param name="serviceHelper">The service helper.</param>
+        /// <param name="processHelper">The process helper.</param>
+        public BatchFileStartupService(
+            IConfigurationService configurationService,
+            ILogger logger,
+            IServiceHelper serviceHelper,
+            IProcessHelper processHelper)
         {
             this.configurationService = configurationService;
             this.logger = logger;
+            this.serviceHelper = serviceHelper;
+            this.processHelper = processHelper;
         }
 
         /// <summary>
@@ -60,15 +66,31 @@ namespace Infrastructure.Common
             }
 
             batchBuilder.Echo("Shutting down services...");
-            foreach(var service in configuration.Services)
+            foreach (var service in configuration.Services)
             {
-                batchBuilder.Add(GetServiceShutDownCommand(service));
+                if (this.serviceHelper.IsRunning(service))
+                {
+                    this.logger.Log($"Adding shutdown command for service '{service}'");
+                    batchBuilder.Add(GetServiceShutDownCommand(service));
+                }
+                else
+                {
+                    this.logger.Log($"Service '{service}' is not running. Skipping...");
+                }
             }
 
             batchBuilder.Echo("Shutting down executables...");
-            foreach(var exe in configuration.Executables)
+            foreach (var exe in configuration.Executables)
             {
-                batchBuilder.Add(GetExecutableShutDownCommand(exe));
+                if (this.processHelper.IsRunning(exe))
+                {
+                    this.logger.Log($"Adding kill command for executable {exe}");
+                    batchBuilder.Add(GetExecutableShutDownCommand(exe));
+                }
+                else
+                {
+                    this.logger.Log($"Doesn't look like there's a process named '{exe}'. Skipping...");
+                }
             }
 
             if (executablePath is not null)
@@ -81,7 +103,12 @@ namespace Infrastructure.Common
             }
 
             batchBuilder.Pause();
-            batchBuilder.Add("explorer.exe");
+
+            // Reboot explorer if it was shut down.
+            if (configuration.ShutdownExplorer)
+            {
+                batchBuilder.Add("explorer.exe");
+            }
 
             var batchFileContent = batchBuilder.ToString();
             var batchRunner = new BatchRunner(batchFileContent);

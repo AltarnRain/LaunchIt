@@ -15,19 +15,8 @@ namespace Presentation
     [SupportedOSPlatform("windows")]
     public class Launch
     {
-        /// <summary>
-        /// The main.
-        /// </summary>
-        private readonly LaunchIt gameLauncher;
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
+        private readonly LaunchIt launchIt;
         private readonly ILogger logger;
-
-        /// <summary>
-        /// The configuration service.
-        /// </summary>
         private readonly IConfigurationService configurationService;
 
         /// <summary>
@@ -41,7 +30,7 @@ namespace Presentation
             ILogger logger,
             IConfigurationService configurationService)
         {
-            this.gameLauncher = main;
+            this.launchIt = main;
             this.logger = logger;
             this.configurationService = configurationService;
         }
@@ -68,14 +57,11 @@ namespace Presentation
                     this.configurationService.EditInNotepad();
                     break;
                 default:
-                    this.gameLauncher.Start(argument);
+                    this.launchIt.Start(argument);
                     break;
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is elevated.
-        /// </summary>
         private static bool IsElevated()
         {
             var owner = WindowsIdentity.GetCurrent().Owner;

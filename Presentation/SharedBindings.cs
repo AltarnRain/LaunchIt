@@ -5,10 +5,12 @@
 namespace Presentation
 {
     using Infrastructure.Common;
+    using Infrastructure.Helpers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
     using Logic;
     using Logic.Common;
+    using Logic.Helpers;
     using Logic.Providers;
     using Logic.Serialization;
     using Ninject.Parameters;
@@ -58,6 +60,14 @@ namespace Presentation
 
             this.Bind<ISerializationService>()
                 .To<YamlSerializationService>()
+                .InSingletonScope();
+
+            this.Bind<IServiceHelper>()
+                .To<WindowsServiceHelper>()
+                .InSingletonScope();
+
+            this.Bind<IProcessHelper>()
+                .To<WindowsProcessHelper>()
                 .InSingletonScope();
 
             this.Bind<LaunchIt>()

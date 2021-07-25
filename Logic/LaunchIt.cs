@@ -6,11 +6,7 @@ namespace Logic
 {
     using Logic.Common;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Startup class for the program.
@@ -82,9 +78,9 @@ namespace Logic
             if (!this.configurationService.ConfigurationFileExists())
             {
                 this.configurationService.WriteExampleConfigurationFile();
-                this.logger.Log($"Looks like you're starting GameLauncher for the first time. I'll setup an example configuration file and open it in notepad.");
-                this.logger.Log($"If you want to to edit your configuration file just run GameLauncher with the 'edit' argument. For example:");
-                this.logger.Log($"   GameLauncher edit");
+                this.logger.Log($"Looks like you're starting LaunchIt for the first time. I'll setup an example configuration file and open it in notepad.");
+                this.logger.Log($"If you want to to edit your configuration file just run LaunchIt with the 'edit' argument. For example:");
+                this.logger.Log($"   LaunchIt edit");
                 return true;
             }
 

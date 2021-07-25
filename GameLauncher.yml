@@ -6,9 +6,7 @@ ShutdownExplorer: false
 Priority: Normal
 # List services you wish to shut down by their full name in this section. For example: - My Service
 Services:
-- Example Service 1
-- Example Service 2
+- Windows Image Acquisition (WIA)
 # List executables you wish to shut down. For example: - MyExecutable
 Executables:
-- Example executable 1
-- Example executable 2
+- GoogleCrashHandler64.exe

@@ -4,7 +4,6 @@
 
 namespace Infrastructure.Common
 {
-    using System;
     using System.Text;
 
     /// <summary>
