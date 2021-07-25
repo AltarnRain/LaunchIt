@@ -141,11 +141,28 @@ namespace Infrastructure.Common
             var processStartInfo = new ProcessStartInfo
             {
                 UseShellExecute = true,
-                FileName = "notepad.exe",
+                FileName = this.GetEditor(),
                 Arguments = configurationFile,
             };
 
             Process.Start(processStartInfo)?.WaitForExit();
+        }
+
+        private string GetEditor()
+        {
+            var returnValue = "notepad.exe";
+
+            try
+            {
+                var configuration = this.Read();
+                return configuration.PreferredEditor;
+            }
+            catch
+            {
+                // Swallow.
+            }
+
+            return returnValue;
         }
     }
 }

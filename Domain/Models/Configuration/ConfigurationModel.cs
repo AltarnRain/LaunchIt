@@ -38,6 +38,12 @@ namespace Domain.Models.Configuration
         public string Priority { get; set; } = ProcessPriorityClass.Normal.ToString();
 
         /// <summary>
+        /// Gets or sets the preferred editor.
+        /// </summary>
+        [Description("Here you can specify which editor you want to use to edit settings. If your editor can be found using a PATH, just specify the exe. Otherwise use the full path.")]
+        public string PreferredEditor { get; set; } = "notepad.exe";
+
+        /// <summary>
         /// Gets or sets the services.
         /// </summary>
         [Description("List services you wish to shut down by their full name in this section. For example: - My Service")]
