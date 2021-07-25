@@ -17,6 +17,21 @@ namespace Infrastructure.Helpers
     public class WindowsServiceHelper : IServiceHelper
     {
         /// <summary>
+        /// Gets the running services.
+        /// </summary>
+        /// <returns>
+        /// List is service names that have status 'Running'.
+        /// </returns>
+        public string[] GetRunningServices()
+        {
+            return ServiceController
+                .GetServices()
+                .Where(s => s.Status == ServiceControllerStatus.Running)
+                .Select(s => s.DisplayName)
+                .ToArray();
+        }
+
+        /// <summary>
         /// Determines whether the specified service name is running.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>

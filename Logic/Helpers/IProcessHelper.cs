@@ -10,6 +10,12 @@ namespace Logic.Helpers
     public interface IProcessHelper
     {
         /// <summary>
+        /// Gets the running processes.
+        /// </summary>
+        /// <returns>Running processes.</returns>
+        string[] GetRunningProcesses();
+
+        /// <summary>
         /// Determines whether the specified process name is running.
         /// </summary>
         /// <param name="processName">Name of the process.</param>

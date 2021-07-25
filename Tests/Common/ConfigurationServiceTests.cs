@@ -1,4 +1,4 @@
-﻿// <copyright file="YamlConfigurationServiceTests.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="ConfigurationServiceTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -15,7 +15,7 @@ namespace Infrastructure.Common.Tests
     /// </summary>
     /// <seealso cref="Tests.Base.TestBase" />
     [TestClass]
-    public class YamlConfigurationServiceTests : TestBase
+    public class ConfigurationServiceTests : TestBase
     {
         /// <summary>
         /// Reads the test.
@@ -24,7 +24,7 @@ namespace Infrastructure.Common.Tests
         public void ReadTest()
         {
             using var scope = this.StartTestScope();
-            var target = scope.YamlConfigurationService;
+            var target = scope.ConfigurationService;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Infrastructure.Common.Tests
         {
             // Arrange
             using var scope = this.StartTestScope();
-            var target = scope.YamlConfigurationService;
+            var target = scope.ConfigurationService;
 
             var file = scope.PathProvider.ConfigurationFile();
 

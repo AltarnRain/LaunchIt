@@ -19,7 +19,7 @@ namespace Logic.Extensions
         /// <returns>Location of the actions.txt file.</returns>
         public static string ConfigurationFile(this IPathProvider self)
         {
-            return self.MapPath("~/GameLauncher.yml");
+            return self.MapPath("~/LaunchIt.yml");
         }
 
         /// <summary>

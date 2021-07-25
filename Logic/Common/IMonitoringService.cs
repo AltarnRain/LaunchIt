@@ -25,6 +25,6 @@ namespace Logic.Common
         /// Ends the monitoring.
         /// </summary>
         /// <returns>A list of names of things that were restarted while monitoring.</returns>
-        MonitoringModel[] EndMonitoring();
+        MonitoringResultModel EndMonitoring();
     }
 }

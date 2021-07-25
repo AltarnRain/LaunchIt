@@ -13,36 +13,28 @@ namespace Logic
     /// </summary>
     public class LaunchIt
     {
-        /// <summary>
-        /// The configuration service.
-        /// </summary>
         private readonly IConfigurationService configurationService;
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
         private readonly ILogger logger;
-
-        /// <summary>
-        /// The startup service.
-        /// </summary>
         private readonly IStartupService startupService;
+        private readonly IMonitoringService monitoringService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
-        /// <param name="programHelper">The program helper.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="startupService">The startup service.</param>
+        /// <param name="monitoringService">The monitoring service.</param>
         public LaunchIt(
             IConfigurationService configurationService,
             ILogger logger,
-            IStartupService startupService)
+            IStartupService startupService,
+            IMonitoringService monitoringService)
         {
             this.configurationService = configurationService;
             this.logger = logger;
             this.startupService = startupService;
+            this.monitoringService = monitoringService;
         }
 
         /// <summary>
@@ -70,7 +62,42 @@ namespace Logic
             var enumValue = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
             var process = this.startupService.Start(executable, enumValue);
 
+            if (configuration.MonitorRestarts)
+            {
+                this.monitoringService.StartMonitoring();
+            }
+
             process.WaitForExit();
+
+            if (configuration.MonitorRestarts)
+            {
+                var monitoringResult = this.monitoringService.EndMonitoring();
+
+                if (monitoringResult.StartedServices.Length > 0)
+                {
+                    this.logger.Log("Some services were (re)started!");
+                    foreach(var service in monitoringResult.StartedServices)
+                    {
+                        this.logger.Log($"  {service}");
+                    }
+                }
+
+                if (monitoringResult.StartedProcesses.Length > 0)
+                {
+                    this.logger.Log("Some processes were (re)started!");
+                    foreach (var exe in monitoringResult.StartedProcesses)
+                    {
+                        this.logger.Log($"  {exe}");
+                    }
+                }
+
+                if(monitoringResult.StartedProcesses.Length + monitoringResult.StartedServices.Length > 0)
+                {
+                    this.logger.Log(string.Empty);
+                    this.logger.Log("Press any key to close...");
+                    System.Console.ReadKey();
+                }
+            }
         }
 
         private bool CheckForConfigurationFile()

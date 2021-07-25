@@ -17,5 +17,11 @@ namespace Logic.Helpers
         ///   <c>true</c> if the specified service name is running; otherwise, <c>false</c>.
         /// </returns>
         bool IsRunning(string serviceName);
+
+        /// <summary>
+        /// Gets the running services.
+        /// </summary>
+        /// <returns>List is service names that have status 'Running'.</returns>
+        string[] GetRunningServices();
     }
 }

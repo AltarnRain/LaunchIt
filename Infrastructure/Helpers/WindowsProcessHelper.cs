@@ -6,6 +6,7 @@ namespace Infrastructure.Helpers
 {
     using Logic.Helpers;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Process helper for windows.
@@ -13,6 +14,20 @@ namespace Infrastructure.Helpers
     /// <seealso cref="Logic.Helpers.IProcessHelper" />
     public class WindowsProcessHelper : IProcessHelper
     {
+        /// <summary>
+        /// Gets the running processes.
+        /// </summary>
+        /// <returns>
+        /// Running processes.
+        /// </returns>
+        public string[] GetRunningProcesses()
+        {
+            return Process
+                .GetProcesses()
+                .Select(p => p.ProcessName)
+                .ToArray();
+        }
+
         /// <summary>
         /// Determines whether the specified process name is running.
         /// </summary>
