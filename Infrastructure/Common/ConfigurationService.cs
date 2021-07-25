@@ -1,4 +1,4 @@
-﻿// <copyright file="YamlConfigurationService.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="ConfigurationService.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -8,18 +8,17 @@ namespace Infrastructure.Common
     using Logic.Common;
     using Logic.Extensions;
     using Logic.Providers;
+    using Logic.Serialization;
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
 
     /// <summary>
-    /// Provides a configuration model using a Yaml file.
+    /// Provides configuration services.
     /// </summary>
     /// <seealso cref="IConfigurationService" />
-    public class YamlConfigurationService : IConfigurationService
+    public class ConfigurationService : IConfigurationService
     {
         /// <summary>
         /// The path provider.
@@ -32,19 +31,26 @@ namespace Infrastructure.Common
         private readonly ILogger logger;
 
         /// <summary>
+        /// The serialization service.
+        /// </summary>
+        private readonly ISerializationService serializationService;
+
+        /// <summary>
         /// The warned about explorer configuration.
         /// </summary>
         private bool warnedAboutExplorerConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="YamlConfigurationService" /> class.
+        /// Initializes a new instance of the <see cref="ConfigurationService" /> class.
         /// </summary>
         /// <param name="pathProvider">The path provider.</param>
         /// <param name="logger">The logger.</param>
-        public YamlConfigurationService(IPathProvider pathProvider, ILogger logger)
+        /// <param name="serializationService">The serialization service.</param>
+        public ConfigurationService(IPathProvider pathProvider, ILogger logger, ISerializationService serializationService)
         {
             this.pathProvider = pathProvider;
             this.logger = logger;
+            this.serializationService = serializationService;
         }
 
         /// <summary>
@@ -87,14 +93,7 @@ namespace Infrastructure.Common
             }
 
             var configFileContent = File.ReadAllText(configurationFile);
-
-            var input = new StringReader(configFileContent);
-
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance)
-                .Build();
-
-            var model = deserializer.Deserialize<ConfigurationModel>(input);
+            var model = this.serializationService.Deserialize<ConfigurationModel>(configFileContent);
 
             if (model.Services is null)
             {
@@ -127,13 +126,9 @@ namespace Infrastructure.Common
         public void Write(ConfigurationModel configuration)
         {
             var configurationFile = this.pathProvider.ConfigurationFile();
-            var serializer = new SerializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance)
-                .Build();
+            var content = this.serializationService.Serialize(configuration);
 
-            var yamlContent = serializer.Serialize(configuration);
-
-            File.WriteAllText(configurationFile, yamlContent);
+            File.WriteAllText(configurationFile, content);
         }
 
         /// <summary>

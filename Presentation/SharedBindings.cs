@@ -6,9 +6,11 @@ namespace Presentation
 {
     using Infrastructure.Common;
     using Infrastructure.Providers;
+    using Infrastructure.Serialization;
     using Logic;
     using Logic.Common;
     using Logic.Providers;
+    using Logic.Serialization;
     using Ninject.Parameters;
 
     /// <summary>
@@ -43,7 +45,7 @@ namespace Presentation
                 .WithParameter(new ConstructorArgument("rootPath", this.rootPath));
 
             this.Bind<IConfigurationService>()
-                .To<YamlConfigurationService>()
+                .To<ConfigurationService>()
                 .InSingletonScope();
 
             this.Bind<IStartupService>()
@@ -52,6 +54,10 @@ namespace Presentation
 
             this.Bind<IMonitoringService>()
                 .To<WindowsMonitoringService>()
+                .InSingletonScope();
+
+            this.Bind<ISerializationService>()
+                .To<YamlSerializationService>()
                 .InSingletonScope();
 
             this.Bind<LaunchIt>()

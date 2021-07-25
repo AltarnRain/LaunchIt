@@ -34,7 +34,7 @@ namespace Tests.Base
         /// <summary>
         /// Gets the yaml configuration service.
         /// </summary>
-        public YamlConfigurationService YamlConfigurationService => this.kernel.Get<YamlConfigurationService>();
+        public ConfigurationService YamlConfigurationService => this.kernel.Get<ConfigurationService>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

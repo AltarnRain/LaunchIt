@@ -1,0 +1,14 @@
+# Set this to true if you want LaunchIt to monitor executables and services that were (re)started.
+MonitorRestarts: false
+# When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables.
+ShutdownExplorer: false
+# The process priority LauncIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.
+Priority: Normal
+# List services you wish to shut down by their full name in this section. For example: - My Service
+Services:
+- Example Service 1
+- Example Service 2
+# List executables you wish to shut down. For example: - MyExecutable
+Executables:
+- Example executable 1
+- Example executable 2

@@ -29,7 +29,7 @@ namespace Presentation
             using var kernel = new StandardKernel(new SharedBindings(rootPath));
             var launch = kernel.Get<Launch>();
 
-            var argument = args.Length == 1 ? args[0] : string.Empty;
+            var argument = args.Length >= 1 ? args[0] : string.Empty;
 
             launch.Run(argument);
         }
@@ -47,7 +47,7 @@ namespace Presentation
             }
             else
             {
-                return @"C:\Reps\GameLauncher\";
+                return @"C:\Reps\LaunchIt\";
             }
         }
 

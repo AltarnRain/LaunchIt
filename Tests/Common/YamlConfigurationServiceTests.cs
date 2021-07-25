@@ -11,7 +11,7 @@ namespace Infrastructure.Common.Tests
     using System.IO;
 
     /// <summary>
-    /// Tests the <see cref="YamlConfigurationService"/>.
+    /// Tests the <see cref="ConfigurationService"/>.
     /// </summary>
     /// <seealso cref="Tests.Base.TestBase" />
     [TestClass]
