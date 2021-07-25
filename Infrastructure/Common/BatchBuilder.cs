@@ -4,6 +4,8 @@
 
 namespace Infrastructure.Common
 {
+    using System;
+    using System.Collections.Generic;
     using System.Text;
 
     /// <summary>
@@ -11,16 +13,15 @@ namespace Infrastructure.Common
     /// </summary>
     public class BatchBuilder
     {
-        private readonly StringBuilder stringBuilder;
+        private readonly List<string> lines = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchBuilder"/> class.
         /// </summary>
         public BatchBuilder()
         {
-            this.stringBuilder = new StringBuilder();
-            this.stringBuilder.AppendLine("@echo off");
-            this.stringBuilder.AppendLine("@cls");
+            this.lines.Add("@echo off");
+            this.lines.Add("@cls");
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Infrastructure.Common
         /// <param name="line">The line.</param>
         public void Add(string line)
         {
-            this.stringBuilder.AppendLine(line);
+            this.lines.Add(line);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Infrastructure.Common
         /// <param name="message">The message.</param>
         public void Echo(string message)
         {
-            this.stringBuilder.AppendLine($"@echo {message}");
+            this.lines.Add($"@echo {message}");
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Infrastructure.Common
         /// <param name="message">The message.</param>
         public void Rem(string message)
         {
-            this.stringBuilder.AppendLine($"@rem {message}");
+            this.lines.Add($"@rem {message}");
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Infrastructure.Common
         /// </summary>
         public void Pause()
         {
-            this.stringBuilder.AppendLine("@pause");
+            this.lines.Add("@pause");
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Infrastructure.Common
         /// </summary>
         public void AddEmptyLine()
         {
-            this.stringBuilder.AppendLine(string.Empty);
+            this.lines.Add(string.Empty);
         }
 
         /// <summary>
@@ -74,7 +75,18 @@ namespace Infrastructure.Common
         /// </returns>
         public override string ToString()
         {
-            return this.stringBuilder.ToString();
+            var content = string.Join(Environment.NewLine, this.lines);
+            return content;
+        }
+
+        /// <summary>
+        /// Lines at.
+        /// </summary>
+        /// <param name="index">The line index.</param>
+        /// <returns>Line at the specified index.</returns>
+        public string LineAt(int index)
+        {
+            return this.lines[index];
         }
     }
 }
