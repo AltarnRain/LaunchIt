@@ -44,6 +44,12 @@ namespace Domain.Models.Configuration
         public string PreferredEditor { get; set; } = "notepad.exe";
 
         /// <summary>
+        /// Gets or sets a value indicating whether [clean memory].
+        /// </summary>
+        [Description("When true, LaunchIt will attempt to clean as much memory it can before launching the executable you specified.")]
+        public bool CleanupMemory { get; set; }
+
+        /// <summary>
         /// Gets or sets the services.
         /// </summary>
         [Description("List services you wish to shut down by their full name in this section. For example: - My Service")]

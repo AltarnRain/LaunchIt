@@ -17,7 +17,7 @@ namespace Logic
         private readonly ILoggerService logger;
         private readonly IStartupService startupService;
         private readonly IMonitoringService monitoringService;
-        private readonly IMemoryCleaningService memoryCleaningService;
+        private readonly IMemoryCleanupService memoryCleaningService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -32,7 +32,7 @@ namespace Logic
             ILoggerService logger,
             IStartupService startupService,
             IMonitoringService monitoringService,
-            IMemoryCleaningService memoryCleaningService)
+            IMemoryCleanupService memoryCleaningService)
         {
             this.configurationService = configurationService;
             this.logger = logger;
@@ -69,6 +69,11 @@ namespace Logic
             if (configuration.MonitorRestarts)
             {
                 this.monitoringService.StartMonitoring();
+            }
+
+            if (configuration.CleanupMemory)
+            {
+                this.memoryCleaningService.Cleanup();
             }
 
             process.WaitForExit();

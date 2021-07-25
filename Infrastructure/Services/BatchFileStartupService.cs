@@ -92,7 +92,7 @@ namespace Infrastructure.Services
                 var folder = Path.GetDirectoryName(executablePath);
                 var executableName = Path.GetFileName(executablePath);
 
-                if (folder == string.Empty)
+                if (string.IsNullOrWhiteSpace(folder))
                 {
                     this.logger.Log($"Looks like you didn't specify a folder. No worries, I'll try to start {executableName}.");
                 }
@@ -104,11 +104,15 @@ namespace Infrastructure.Services
                 batchBuilder.Add(GetExecutableExecutionCommand(executableName, priorityClass));
             }
 
-            batchBuilder.Pause();
+            batchBuilder.Echo($"Running {executablePath}.");
 
             // Reboot explorer if it was shut down.
             if (configuration.ShutdownExplorer)
             {
+                batchBuilder.Echo($"Explorer.exe has been shut down.");
+                batchBuilder.Echo($"Press any key to restart it.");
+                batchBuilder.Echo($"Note that you really want to do this once you're done with {executablePath}");
+                batchBuilder.Pause();
                 batchBuilder.Add("explorer.exe");
             }
 
@@ -133,7 +137,7 @@ namespace Infrastructure.Services
         /// <returns>A startup command for the executable.</returns>
         private static string GetExecutableExecutionCommand(string executableName, ProcessPriorityClass priorityClass)
         {
-            return $"start \"Game\" /{priorityClass.ToString().ToUpper()} {executableName}";
+            return $"start \"{executableName}\" /{priorityClass.ToString().ToUpper()} {executableName}";
         }
 
         /// <summary>

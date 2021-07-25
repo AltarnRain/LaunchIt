@@ -70,6 +70,10 @@ namespace Presentation
                 .To<WindowsProcessHelper>()
                 .InSingletonScope();
 
+            this.Bind<IMemoryCleanupService>()
+                .To<WindowsMemoryCleanupService>()
+                .InSingletonScope();
+
             this.Bind<LaunchIt>()
                 .ToSelf()
                 .InSingletonScope();
