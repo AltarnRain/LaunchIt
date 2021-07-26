@@ -5,6 +5,7 @@
 namespace Infrastructure.Helpers
 {
     using Logic.Helpers;
+    using Logic.Services;
     using System.Linq;
     using System.Runtime.Versioning;
     using System.ServiceProcess;
@@ -16,6 +17,18 @@ namespace Infrastructure.Helpers
     [SupportedOSPlatform("windows")]
     public class WindowsServiceHelper : IServiceHelper
     {
+        private readonly ILoggerService logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WindowsServiceHelper" /> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        public WindowsServiceHelper(
+            ILoggerService logger)
+        {
+            this.logger = logger;
+        }
+
         /// <summary>
         /// Gets the running services.
         /// </summary>
@@ -48,6 +61,30 @@ namespace Infrastructure.Helpers
             }
 
             return service.Status == ServiceControllerStatus.Running;
+        }
+
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <param name="serviceName">Name of the service.</param>
+        public void Stop(string serviceName)
+        {
+            var service = ServiceController.GetServices().SingleOrDefault(s => s.DisplayName == serviceName);
+
+            if (service is null)
+            {
+                this.logger.Log($"Could not find service {serviceName}. Skipping.");
+                return;
+            }
+
+            if (service.Status == ServiceControllerStatus.Running)
+            {
+                this.logger.Log($"Stopping service {serviceName}");
+                service.Stop();
+                return;
+            }
+
+            this.logger.Log($"Service {serviceName} is not running. Skipping.");
         }
     }
 }

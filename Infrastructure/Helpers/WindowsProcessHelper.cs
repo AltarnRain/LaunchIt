@@ -46,5 +46,38 @@ namespace Infrastructure.Helpers
 
             return true;
         }
+
+        /// <summary>
+        /// Stops the specified executable.
+        /// </summary>
+        /// <param name="executable">The executable.</param>
+        public void Stop(string executable)
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = "taskkill",
+                Arguments = $"/f /im {executable}",
+                CreateNoWindow = true,
+            };
+
+            Process.Start(processStartInfo);
+        }
+
+        /// <summary>
+        /// Stops the specified executable.
+        /// </summary>
+        /// <param name="executable">The executable.</param>
+        public void Start(string executable)
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = executable,
+                CreateNoWindow = true,
+            };
+
+            Process.Start(processStartInfo);
+        }
     }
 }

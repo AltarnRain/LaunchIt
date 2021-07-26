@@ -50,10 +50,6 @@ namespace Presentation
                 .To<ConfigurationService>()
                 .InSingletonScope();
 
-            this.Bind<IStartupService>()
-                .To<BatchFileStartupService>()
-                .InSingletonScope();
-
             this.Bind<IMonitoringService>()
                 .To<WindowsMonitoringService>()
                 .InSingletonScope();
@@ -68,10 +64,6 @@ namespace Presentation
 
             this.Bind<IProcessHelper>()
                 .To<WindowsProcessHelper>()
-                .InSingletonScope();
-
-            this.Bind<IMemoryCleanupService>()
-                .To<WindowsMemoryCleanupService>()
                 .InSingletonScope();
 
             this.Bind<LaunchIt>()

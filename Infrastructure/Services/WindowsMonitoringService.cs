@@ -93,11 +93,11 @@ namespace Infrastructure.Services
             var configuration = this.configurationService.Read();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
-            this.timer = new Timer(configuration.MonitoringInterval);
+            this.timer = new Timer(configuration.MonitoringConfiguration.MonitoringInterval);
+            this.logger.Log($"Monitoring activity.");
+
             this.timer.Elapsed += (sender, eventArgs) =>
             {
-                this.logger.Log($"{DateTime.Now} monitoring activity.... Next check at {DateTime.Now.AddMilliseconds(configuration.MonitoringInterval)}");
-
                 var runningServices = this.serviceHelper.GetRunningServices();
                 var runningProcesses = this.processHelper.GetRunningProcesses();
 

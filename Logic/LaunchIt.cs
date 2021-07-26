@@ -5,9 +5,11 @@
 namespace Logic
 {
     using Domain.Models.Events;
+    using Logic.Extensions;
+    using Logic.Helpers;
     using Logic.Services;
     using System;
-    using System.Diagnostics;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Startup class for the program.
@@ -18,7 +20,8 @@ namespace Logic
         private readonly ILoggerService logger;
         private readonly IStartupService startupService;
         private readonly IMonitoringService monitoringService;
-        private readonly IMemoryCleanupService memoryCleaningService;
+        private readonly IProcessHelper processHelper;
+        private readonly IServiceHelper serviceHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -28,25 +31,29 @@ namespace Logic
         /// <param name="startupService">The startup service.</param>
         /// <param name="monitoringService">The monitoring service.</param>
         /// <param name="memoryCleaningService">The memory cleaning service.</param>
+        /// <param name="processHelper">The process helper.</param>
+        /// <param name="serviceHelper">The service helper.</param>
         public LaunchIt(
             IConfigurationService configurationService,
             ILoggerService logger,
             IStartupService startupService,
             IMonitoringService monitoringService,
-            IMemoryCleanupService memoryCleaningService)
+            IProcessHelper processHelper,
+            IServiceHelper serviceHelper)
         {
             this.configurationService = configurationService;
             this.logger = logger;
             this.startupService = startupService;
             this.monitoringService = monitoringService;
-            this.memoryCleaningService = memoryCleaningService;
+            this.processHelper = processHelper;
+            this.serviceHelper = serviceHelper;
         }
 
         /// <summary>
         /// Starts the specified arguments.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        public void Start(string? executable)
+        public void Start(string executable)
         {
             var didWork = this.CheckForConfigurationFile();
 
@@ -61,36 +68,60 @@ namespace Logic
             if (configuration.Services.Length + configuration.Executables.Length == 0)
             {
                 this.logger.Log("You didn't configure and services or executables for me to shut down.");
+            }
+
+            var process = this.startupService.Start(executable);
+
+            // User wants a batchfile so we're done and can exit.
+            if (configuration.UseBatchFile)
+            {
                 return;
             }
 
-            var enumValue = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
-            var process = this.startupService.Start(executable, enumValue);
-
-            Action? monitorSubscription = null;
-            if (configuration.MonitorRestarts)
+            var monitorSubscriptions = new List<Action>();
+            if (configuration.StartMonitoring())
             {
-                monitorSubscription = this.monitoringService.Subscribe(this.LogStart);
                 this.monitoringService.StartMonitoring();
-            }
 
-            if (configuration.CleanupMemory)
-            {
-                this.memoryCleaningService.Cleanup();
+                if (configuration.MonitoringConfiguration.MonitorRestarts)
+                {
+                    monitorSubscriptions.Add(this.monitoringService.Subscribe(this.LogStart));
+                }
+
+                if (configuration.ServiceShutdownConfiguration.ShutdownRestartedServices)
+                {
+                    monitorSubscriptions.Add(this.monitoringService.Subscribe(this.StopService));
+                }
             }
 
             process.WaitForExit();
 
-            if (configuration.MonitorRestarts)
+            // Clear subscriptions.
+            monitorSubscriptions.ForEach(s => s());
+
+            if (configuration.ShutdownExplorer)
             {
-                monitorSubscription?.Invoke();
+                this.processHelper.Start("explorer.exe");
+            }
+
+            // End monitoring if its running.
+            if (this.monitoringService.Monitoring)
+            {
+                this.monitoringService.EndMonitoring();
+            }
+        }
+
+        private void StopService(MonitoringEventModel eventModel)
+        {
+            if (eventModel.ProcessType == Domain.Types.ProcessType.Service)
+            {
+                this.serviceHelper.Stop(eventModel.Name);
             }
         }
 
         private void LogStart(MonitoringEventModel eventModel)
         {
             var type = eventModel.ProcessType.ToString().ToLower();
-
             this.logger.Log($"A {type} was (re)started: {eventModel.Name}");
         }
 

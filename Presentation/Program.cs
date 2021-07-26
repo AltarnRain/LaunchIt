@@ -4,6 +4,7 @@
 
 namespace Presentation
 {
+    using Logic.Services;
     using Ninject;
     using System.IO;
     using System.Reflection;
@@ -25,7 +26,23 @@ namespace Presentation
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
 
-            using var kernel = new StandardKernel(new SharedBindings(rootPath));
+            // Initialize an empty kernel.
+            using var kernel = new StandardKernel();
+
+            // Load the initial bindings.
+            kernel.Load(new SharedBindings(rootPath));
+
+            // We now have a configuration service we can use. Lets grab it straight from the kernel to keep things simple
+            // and retrieve a ConfigurationModel.
+            var configuration = kernel.Get<IConfigurationService>().Read();
+
+            // Configure bindings that are set to different classes depending on configuration.
+            var configurationDependentBindings = new ConfigurationDependentBindings(configuration);
+
+            // Load it.
+            kernel.Load(configurationDependentBindings);
+
+            // All done. Lets launch it!
             var launch = kernel.Get<Launch>();
 
             var argument = args.Length >= 1 ? args[0] : string.Empty;

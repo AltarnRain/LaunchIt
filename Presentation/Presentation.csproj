@@ -8,6 +8,10 @@
     <AssemblyName>LaunchIt</AssemblyName>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="bin\Debug\net5.0\LaunchIt.yml" />
     <None Include="bin\Release\net5.0\LaunchIt.yml" />

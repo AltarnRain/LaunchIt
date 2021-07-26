@@ -14,43 +14,35 @@ namespace Infrastructure.Services
     /// <summary>
     /// Start an executable using a batchfile.
     /// </summary>
+    /// <seealso cref="Logic.Services.IStartupService" />
     /// <seealso cref="IStartupService" />
     public class BatchFileStartupService : IStartupService
     {
         private readonly IConfigurationService configurationService;
         private readonly ILoggerService logger;
-        private readonly IServiceHelper serviceHelper;
-        private readonly IProcessHelper processHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchFileStartupService" /> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="serviceHelper">The service helper.</param>
-        /// <param name="processHelper">The process helper.</param>
         public BatchFileStartupService(
             IConfigurationService configurationService,
-            ILoggerService logger,
-            IServiceHelper serviceHelper,
-            IProcessHelper processHelper)
+            ILoggerService logger)
         {
             this.configurationService = configurationService;
             this.logger = logger;
-            this.serviceHelper = serviceHelper;
-            this.processHelper = processHelper;
         }
 
         /// <summary>
         /// Starts the specified executable.
         /// </summary>
         /// <param name="executablePath">The executable.</param>
-        /// <param name="priorityClass">The priority class.</param>
         /// <returns>
         /// A Process.
         /// </returns>
         /// <exception cref="Exception">Failed to launch a process.</exception>
-        public Process Start(string? executablePath, ProcessPriorityClass priorityClass)
+        public Process Start(string? executablePath)
         {
             var batchBuilder = new BatchBuilder();
 
@@ -58,6 +50,7 @@ namespace Infrastructure.Services
             batchBuilder.AddEmptyLine();
 
             var configuration = this.configurationService.Read();
+            var priorityClass = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
 
             if (configuration.ShutdownExplorer)
             {
@@ -71,15 +64,8 @@ namespace Infrastructure.Services
             batchBuilder.Echo("Shutting down services...");
             foreach (var service in configuration.Services)
             {
-                if (this.serviceHelper.IsRunning(service))
-                {
-                    this.logger.Log($"Adding shutdown command for service '{service}'");
-                    batchBuilder.Add(GetServiceShutDownCommand(service));
-                }
-                else
-                {
-                    this.logger.Log($"Service '{service}' is not running. Skipping...");
-                }
+                this.logger.Log($"Adding shutdown command for service '{service}'");
+                batchBuilder.Add(GetServiceShutDownCommand(service));
             }
 
             batchBuilder.Echo("Shutting down executables...");

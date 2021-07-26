@@ -4,6 +4,7 @@
 
 namespace Logic.Extensions
 {
+    using Domain.Models.Configuration;
     using Logic.Providers;
     using System.Diagnostics;
 
@@ -23,29 +24,13 @@ namespace Logic.Extensions
         }
 
         /// <summary>
-        /// Gets the priority.
+        /// Starts the monitoring.
         /// </summary>
-        /// <param name="priority">The priority.</param>
-        /// <returns>The priority class.</returns>
-        /// <exception cref="System.ArgumentException">'{nameof(priority)}' cannot be null or whitespace. - priority.</exception>
-        /// <exception cref="System.Exception">Unknown priority '{priority}'.</exception>
-        public static ProcessPriorityClass GetPriority(this string priority)
+        /// <param name="self">The self.</param>
+        /// <returns>True if the current configuration requires monitoring.</returns>
+        public static bool StartMonitoring(this ConfigurationModel self)
         {
-            if (string.IsNullOrWhiteSpace(priority))
-            {
-                throw new System.ArgumentException($"'{nameof(priority)}' cannot be null or whitespace.", nameof(priority));
-            }
-
-            return priority.ToUpper() switch
-            {
-                "IDLE" => ProcessPriorityClass.Idle,
-                "BELOWNORMAL" => ProcessPriorityClass.BelowNormal,
-                "NORMAL" => ProcessPriorityClass.Normal,
-                "ABOVENORMAL" => ProcessPriorityClass.AboveNormal,
-                "HIGH" => ProcessPriorityClass.High,
-                "REALTIME" => ProcessPriorityClass.RealTime,
-                _ => throw new System.Exception($"Unknown priority '{priority}'"),
-            };
+            return self.MonitoringConfiguration.MonitorRestarts || self.ServiceShutdownConfiguration.ShutdownRestartedServices;
         }
     }
 }

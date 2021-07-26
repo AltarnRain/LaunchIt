@@ -23,5 +23,17 @@ namespace Logic.Helpers
         ///   <c>true</c> if the specified process name is running; otherwise, <c>false</c>.
         /// </returns>
         bool IsRunning(string processName);
+
+        /// <summary>
+        /// Stops the specified executable.
+        /// </summary>
+        /// <param name="executable">The executable.</param>
+        void Stop(string executable);
+
+        /// <summary>
+        /// Starts the specified v.
+        /// </summary>
+        /// <param name="executable">The executable.</param>
+        void Start(string executable);
     }
 }

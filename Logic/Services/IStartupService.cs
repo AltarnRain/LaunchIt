@@ -15,10 +15,9 @@ namespace Logic.Services
         /// Starts the specified executable.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        /// <param name="priorityClass">The priority class.</param>
         /// <returns>
         /// A Process.
         /// </returns>
-        public Process Start(string? executable, ProcessPriorityClass priorityClass);
+        public Process Start(string executable);
     }
 }

@@ -14,28 +14,28 @@ namespace Domain.Models.Configuration
     public class ConfigurationModel
     {
         /// <summary>
-        /// Gets or sets a value indicating whether [monitor restarts].
+        /// Gets or sets the monitoring configuration.
         /// </summary>
-        [Description("Set this to true if you want LaunchIt to monitor executables and services that were (re)started.")]
-        public bool MonitorRestarts { get; set; }
+        [Description("Configure monitoring options")]
+        public MonitoringConfiguration MonitoringConfiguration { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets the monitoring interval.
+        /// Gets or sets the service shutdown configuration.
         /// </summary>
-        [Description("Specifies the time in milliseconds LaunchIt will wait before checking for services or processes that were started.")]
-        public int MonitoringInterval { get; set; } = 5000;
+        [Description("Configure shutting down services that (re)start")]
+        public ServiceShutdownConfiguration ServiceShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
         [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables.")]
-        public bool ShutdownExplorer { get; set; }
+        public bool ShutdownExplorer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the process priority class.
         /// </summary>
         [Description("The process priority LaunchIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.")]
-        public string Priority { get; set; } = ProcessPriorityClass.Normal.ToString();
+        public string Priority { get; set; } = ProcessPriorityClass.AboveNormal.ToString();
 
         /// <summary>
         /// Gets or sets the preferred editor.
@@ -44,10 +44,10 @@ namespace Domain.Models.Configuration
         public string PreferredEditor { get; set; } = "notepad.exe";
 
         /// <summary>
-        /// Gets or sets a value indicating whether [clean memory].
+        /// Gets or sets a value indicating whether [use batch file].
         /// </summary>
-        [Description("EXPERIMENTAL: When true, LaunchIt will attempt to clean as much memory it can before launching the executable you specified.")]
-        public bool CleanupMemory { get; set; }
+        [Description("LaunchIt will make a batch file to launch the program you specified and then shut down itself.")]
+        public bool UseBatchFile { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the services.
