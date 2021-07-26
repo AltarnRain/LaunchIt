@@ -34,7 +34,7 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets the process priority class.
         /// </summary>
-        [Description("The process priority LauncIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.")]
+        [Description("The process priority LaunchIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.")]
         public string Priority { get; set; } = ProcessPriorityClass.Normal.ToString();
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [clean memory].
         /// </summary>
-        [Description("When true, LaunchIt will attempt to clean as much memory it can before launching the executable you specified.")]
+        [Description("EXPERIMENTAL: When true, LaunchIt will attempt to clean as much memory it can before launching the executable you specified.")]
         public bool CleanupMemory { get; set; }
 
         /// <summary>

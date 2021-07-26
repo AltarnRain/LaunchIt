@@ -4,7 +4,8 @@
 
 namespace Logic.Services
 {
-    using Domain.Models.Common;
+    using Domain.Models;
+    using System;
 
     /// <summary>
     /// Contracts for a class that monitors restarts of services and executables.
@@ -24,7 +25,15 @@ namespace Logic.Services
         /// <summary>
         /// Ends the monitoring.
         /// </summary>
-        /// <returns>A list of names of things that were restarted while monitoring.</returns>
-        MonitoringResultModel EndMonitoring();
+        void EndMonitoring();
+
+        /// <summary>
+        /// Subscribes the specified subscription.
+        /// </summary>
+        /// <param name="subscription">The subscription.</param>
+        /// <returns>
+        /// An action to remove the subscription.
+        /// </returns>
+        Action Subscribe(Action<MonitoringEventModel> subscription);
     }
 }

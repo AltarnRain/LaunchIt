@@ -4,6 +4,7 @@
 
 namespace Logic
 {
+    using Domain.Models;
     using Logic.Services;
     using System;
     using System.Diagnostics;
@@ -66,8 +67,10 @@ namespace Logic
             var enumValue = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
             var process = this.startupService.Start(executable, enumValue);
 
+            Action? monitorSubscription = null;
             if (configuration.MonitorRestarts)
             {
+                monitorSubscription = this.monitoringService.Subscribe(this.LogStart);
                 this.monitoringService.StartMonitoring();
             }
 
@@ -80,33 +83,15 @@ namespace Logic
 
             if (configuration.MonitorRestarts)
             {
-                var monitoringResult = this.monitoringService.EndMonitoring();
-
-                if (monitoringResult.StartedServices.Length > 0)
-                {
-                    this.logger.Log("Some services were (re)started!");
-                    foreach (var service in monitoringResult.StartedServices)
-                    {
-                        this.logger.Log($"  {service}");
-                    }
-                }
-
-                if (monitoringResult.StartedProcesses.Length > 0)
-                {
-                    this.logger.Log("Some processes were (re)started!");
-                    foreach (var exe in monitoringResult.StartedProcesses)
-                    {
-                        this.logger.Log($"  {exe}");
-                    }
-                }
-
-                if (monitoringResult.StartedProcesses.Length + monitoringResult.StartedServices.Length > 0)
-                {
-                    this.logger.Log(string.Empty);
-                    this.logger.Log("Press any key to close...");
-                    System.Console.ReadKey();
-                }
+                monitorSubscription?.Invoke();
             }
+        }
+
+        private void LogStart(MonitoringEventModel eventModel)
+        {
+            var type = eventModel.ProcessType.ToString().ToLower();
+
+            this.logger.Log($"A {type} was (re)started: {eventModel.Name}");
         }
 
         private bool CheckForConfigurationFile()

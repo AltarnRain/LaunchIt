@@ -41,12 +41,6 @@ namespace Presentation
         /// <param name="argument">The argument.</param>
         public void Run(string argument)
         {
-            if (!IsElevated())
-            {
-                this.logger.Log("Hey, I noticed you're not running me as administrator.");
-                this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
-            }
-
             switch (argument.ToLower())
             {
                 case "edit":
@@ -57,6 +51,12 @@ namespace Presentation
                     this.configurationService.EditInNotepad();
                     break;
                 default:
+                    if (!IsElevated())
+                    {
+                        this.logger.Log("Hey, I noticed you're not running me as administrator.");
+                        this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
+                    }
+
                     this.launchIt.Start(argument);
                     break;
             }

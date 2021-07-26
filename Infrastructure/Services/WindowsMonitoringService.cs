@@ -4,11 +4,12 @@
 
 namespace Infrastructure.Services
 {
-    using Domain.Models.Common;
+    using Domain;
+    using Domain.Models;
     using Logic.Helpers;
     using Logic.Services;
     using System;
-    using System.IO;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Timers;
 
@@ -22,16 +23,12 @@ namespace Infrastructure.Services
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
         private readonly IConfigurationService configurationService;
+        private readonly List<Action<MonitoringEventModel>> subscriptions = new();
+
         private Timer? timer;
 
         private string[]? runningServices;
         private string[]? runningProcesses;
-
-        private string? serviceLogFile;
-        private string? processLogFile;
-
-        private StreamWriter? serviceLogFileWriter;
-        private StreamWriter? processLogFileWriter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMonitoringService" /> class.
@@ -56,10 +53,7 @@ namespace Infrastructure.Services
         /// <summary>
         /// Ends the monitoring.
         /// </summary>
-        /// <returns>
-        /// A list of names of things that were restarted while monitoring.
-        /// </returns>
-        public MonitoringResultModel EndMonitoring()
+        public void EndMonitoring()
         {
             if (this.Monitoring == false)
             {
@@ -71,50 +65,12 @@ namespace Infrastructure.Services
                 throw new Exception("No timer running... now that's weird.");
             }
 
-            if (this.serviceLogFileWriter is null)
-            {
-                throw new Exception("No log writer for services... now that's weird.");
-            }
-
-            if (this.processLogFileWriter is null)
-            {
-                throw new Exception("No log writer for processes... now that's weird.");
-            }
-
-            if (this.serviceLogFile is null)
-            {
-                throw new Exception("No temp log file for services... now that's weird.");
-            }
-
-            if (this.processLogFile is null)
-            {
-                throw new Exception("No process log file either... now that's weird.");
-            }
-
             this.timer.Stop();
             this.timer.Dispose();
-
-            this.serviceLogFileWriter.Close();
-            this.processLogFileWriter.Close();
-
-            // Prepare a return value before clearing the state.
-            var returnValue = new MonitoringResultModel
-            {
-                StartedServices = File.ReadAllLines(this.serviceLogFile).Distinct().ToArray(),
-                StartedProcesses = File.ReadAllLines(this.processLogFile).Distinct().ToArray(),
-            };
 
             // Reset.
             this.runningProcesses = null;
             this.runningServices = null;
-
-            this.processLogFile = null;
-            this.serviceLogFile = null;
-
-            this.processLogFileWriter = null;
-            this.serviceLogFileWriter = null;
-
-            return returnValue;
         }
 
         /// <summary>
@@ -134,12 +90,6 @@ namespace Infrastructure.Services
             this.runningProcesses = this.processHelper.GetRunningProcesses();
             this.runningServices = this.serviceHelper.GetRunningServices();
 
-            this.serviceLogFile = Path.GetTempFileName();
-            this.processLogFile = Path.GetTempFileName();
-
-            this.serviceLogFileWriter = File.AppendText(this.serviceLogFile);
-            this.processLogFileWriter = File.AppendText(this.processLogFile);
-
             var configuration = this.configurationService.Read();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
@@ -151,24 +101,49 @@ namespace Infrastructure.Services
                 var runningServices = this.serviceHelper.GetRunningServices();
                 var runningProcesses = this.processHelper.GetRunningProcesses();
 
-                LogMonitorResults(runningServices, this.runningServices, this.serviceLogFileWriter);
-                LogMonitorResults(runningProcesses, this.runningProcesses, this.processLogFileWriter);
+                var startedServices = GetArrayDifference(runningServices, this.runningServices)
+                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Service });
+
+                var startedProcesses = GetArrayDifference(runningProcesses, this.runningProcesses)
+                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Process });
+
+                var allEvents = new List<MonitoringEventModel>(startedServices);
+                allEvents.AddRange(startedProcesses);
+
+                // Notify all subscribers there's been an event.
+                foreach (var subscription in this.subscriptions)
+                {
+                    foreach (var e in allEvents)
+                    {
+                        subscription(e);
+                    }
+                }
+
+                this.runningServices = runningServices;
+                this.runningProcesses = runningProcesses;
             };
 
             this.timer.Start();
             this.Monitoring = true;
         }
 
-        private static void LogMonitorResults(string[] currentItems, string[] orignalItems, StreamWriter streamWriter)
+        /// <summary>
+        /// Subscribes the specified subscription.
+        /// </summary>
+        /// <param name="subscription">The subscription.</param>
+        /// <returns>An action to remove the subscription.</returns>
+        public Action Subscribe(Action<MonitoringEventModel> subscription)
+        {
+            this.subscriptions.Add(subscription);
+
+            return () => this.subscriptions.Remove(subscription);
+        }
+
+        private static string[] GetArrayDifference(string[] currentItems, string[] orignalItems)
         {
             var newItems = currentItems.Where(rp => !orignalItems.Contains(rp));
 
-            foreach (var item in newItems)
-            {
-                streamWriter.WriteLine(item);
-            }
-
-            streamWriter.Flush();
+            return newItems.ToArray();
         }
     }
 }
