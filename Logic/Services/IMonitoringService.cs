@@ -4,7 +4,7 @@
 
 namespace Logic.Services
 {
-    using Domain.Models;
+    using Domain.Models.Events;
     using System;
 
     /// <summary>

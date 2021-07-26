@@ -4,8 +4,8 @@
 
 namespace Infrastructure.Services
 {
-    using Domain;
-    using Domain.Models;
+    using Domain.Models.Events;
+    using Domain.Types;
     using Logic.Helpers;
     using Logic.Services;
     using System;

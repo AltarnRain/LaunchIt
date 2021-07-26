@@ -2,8 +2,10 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Domain.Models
+namespace Domain.Models.Events
 {
+    using Domain.Types;
+
     /// <summary>
     /// Result model for the monitoring service.
     /// </summary>

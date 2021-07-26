@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Domain
+namespace Domain.Types
 {
     /// <summary>
     /// Type of process.
