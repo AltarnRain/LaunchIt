@@ -21,9 +21,6 @@ namespace Logic.Handlers
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
 
-        private readonly Counter serviceCounter = new();
-        private readonly Counter processCounter = new();
-
         private ConfigurationModel? configuration;
 
         /// <summary>
@@ -63,22 +60,20 @@ namespace Logic.Handlers
 
                     this.HandleEvent(
                         eventModel.Name,
-                        this.serviceCounter,
                         configuration.ServiceShutdownConfiguration.OnlyConfigured,
                         configuration.ServiceShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Services,
-                        this.serviceHelper.Stop);
+                        this.serviceHelper);
 
                     break;
                 case Domain.Types.ProcessType.Process:
 
                     this.HandleEvent(
                         eventModel.Name,
-                        this.processCounter,
                         configuration.ExecutableShutdownConfiguration.OnlyConfigured,
                         configuration.ExecutableShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Executables,
-                        this.processHelper.Stop);
+                        this.processHelper);
 
                     break;
 
@@ -91,18 +86,16 @@ namespace Logic.Handlers
         /// Handles the event for a service or executable that was (re)started.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="counter">The counter.</param>
         /// <param name="onlyConfigured">if set to <c>true</c> [only configured].</param>
         /// <param name="maximumShutdownAttempts">The maximum shutdown attempts.</param>
         /// <param name="configuredItems">The configured items.</param>
-        /// <param name="stop">Method pointer to a call that will stop either a serivce or event.</param>
+        /// <param name="stopHelper">The stop helper.</param>
         private void HandleEvent(
             string name,
-            Counter counter,
             bool onlyConfigured,
             int maximumShutdownAttempts,
             string[] configuredItems,
-            Action<string> stop)
+            IStopHelper stopHelper)
         {
             if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase))
             {
@@ -110,14 +103,13 @@ namespace Logic.Handlers
                 return;
             }
 
-            if (maximumShutdownAttempts != -1 && counter.Count(name) >= maximumShutdownAttempts)
+            if (maximumShutdownAttempts != -1 && stopHelper.GetStopCount(name) >= maximumShutdownAttempts)
             {
                 this.logger.Log($"{name} has been shut down the maximum amount of times.");
                 return;
             }
 
-            stop(name);
-            counter.Add(name);
+            stopHelper.Stop(name);
         }
 
         private ConfigurationModel GetCachedConfiguration()

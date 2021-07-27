@@ -15,7 +15,7 @@ namespace Infrastructure.Helpers
     /// </summary>
     /// <seealso cref="Logic.Helpers.IServiceHelper" />
     [SupportedOSPlatform("windows")]
-    public class WindowsServiceHelper : IServiceHelper
+    public class WindowsServiceHelper : StopHelperBase, IServiceHelper
     {
         private readonly ILoggerService logger;
 
@@ -45,29 +45,10 @@ namespace Infrastructure.Helpers
         }
 
         /// <summary>
-        /// Determines whether the specified service name is running.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>
-        /// <c>true</c> if the specified service name is running; otherwise, <c>false</c>.
-        /// </returns>
-        public bool IsRunning(string serviceName)
-        {
-            var service = ServiceController.GetServices().SingleOrDefault(s => s.DisplayName == serviceName);
-
-            if (service is null)
-            {
-                return false;
-            }
-
-            return service.Status == ServiceControllerStatus.Running;
-        }
-
-        /// <summary>
         /// Gets the service.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        public void Stop(string serviceName)
+        public override void Stop(string serviceName)
         {
             var service = ServiceController.GetServices().SingleOrDefault(s => s.DisplayName == serviceName);
 
@@ -80,7 +61,8 @@ namespace Infrastructure.Helpers
             if (service.Status == ServiceControllerStatus.Running)
             {
                 service.Stop();
-                this.logger.Log($"Stopped: service {serviceName}");
+                this.AddToStopCount(serviceName);
+                this.logger.Log($"Stopped: service {serviceName} ({this.GetStopCount(serviceName)})");
                 return;
             }
 

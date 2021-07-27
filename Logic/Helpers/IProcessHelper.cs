@@ -7,19 +7,13 @@ namespace Logic.Helpers
     /// <summary>
     /// Contract for a process helper.
     /// </summary>
-    public interface IProcessHelper
+    public interface IProcessHelper : IStopHelper
     {
         /// <summary>
         /// Gets the running processes.
         /// </summary>
         /// <returns>Running processes.</returns>
         string[] GetRunningExecutables();
-
-        /// <summary>
-        /// Stops the specified executable.
-        /// </summary>
-        /// <param name="executable">The executable.</param>
-        void Stop(string executable);
 
         /// <summary>
         /// Starts the specified v.

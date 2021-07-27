@@ -36,7 +36,7 @@ namespace Logic.Handlers
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>Count value.</returns>
-        public int Count(string item)
+        public int GetCount(string item)
         {
             if (this.registry.ContainsKey(item))
             {

@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Helpers
 {
+    using Logic.Handlers;
     using Logic.Helpers;
     using Logic.Services;
     using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Infrastructure.Helpers
     /// Process helper for windows.
     /// </summary>
     /// <seealso cref="Logic.Helpers.IProcessHelper" />
-    public class WindowsProcessHelper : IProcessHelper
+    public class WindowsProcessHelper : StopHelperBase, IProcessHelper
     {
         private readonly ILoggerService logger;
 
@@ -77,31 +78,13 @@ namespace Infrastructure.Helpers
                     // Eventually we'll have no exceptions when obtaining running executables.
                     if (!this.ignoredProcesses.Contains(process.ProcessName))
                     {
-                        this.logger.Log($"Added process {process.ProcessName} to ignore list.");
+                        this.logger.Log($"Added process {process.ProcessName} to ignore list. Unable to obtain the name of the executable.");
                         this.ignoredProcesses.Add(process.ProcessName);
                     }
                 }
             }
 
             return returnValue.ToArray();
-        }
-
-        /// <summary>
-        /// Stops the specified executable.
-        /// </summary>
-        /// <param name="executable">The executable.</param>
-        public void Stop(string executable)
-        {
-            var processStartInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = "taskkill",
-                Arguments = $"/f /im {executable}",
-                CreateNoWindow = true,
-            };
-
-            Process.Start(processStartInfo);
-            this.logger.Log($"Stopped '{executable}'");
         }
 
         /// <summary>
@@ -119,6 +102,24 @@ namespace Infrastructure.Helpers
 
             Process.Start(processStartInfo);
             this.logger.Log($"Started '{executable}'.");
+        }
+
+        /// <summary>
+        /// Stops the specified executable.
+        /// </summary>
+        /// <param name="executable">The executable.</param>
+        public override void Stop(string executable)
+        {
+            var processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = "taskkill",
+                Arguments = $"/f /im {executable}",
+                CreateNoWindow = true,
+            };
+
+            Process.Start(processStartInfo);
+            this.logger.Log($"Stopped '{executable}'");
         }
     }
 }
