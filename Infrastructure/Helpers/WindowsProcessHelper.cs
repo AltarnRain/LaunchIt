@@ -119,7 +119,8 @@ namespace Infrastructure.Helpers
             };
 
             Process.Start(processStartInfo);
-            this.logger.Log($"Stopped '{executable}'");
+            this.AddToStopCount(executable);
+            this.logger.Log($"Stopped '{executable}' ({this.GetStopCount(executable)})");
         }
     }
 }
