@@ -4,8 +4,8 @@
 
 namespace Logic
 {
-    using Domain.Models.Events;
     using Logic.Extensions;
+    using Logic.Handlers;
     using Logic.Helpers;
     using Logic.Services;
     using System;
@@ -83,15 +83,13 @@ namespace Logic
             {
                 this.monitoringService.StartMonitoring();
 
-                if (configuration.MonitoringConfiguration.MonitorRestarts)
-                {
-                    monitorSubscriptions.Add(this.monitoringService.Subscribe(this.LogStart));
-                }
+                var monitorEventHandler = new MonitorEventHandler(
+                    this.configurationService,
+                    this.logger,
+                    this.serviceHelper,
+                    this.processHelper);
 
-                if (configuration.ServiceShutdownConfiguration.ShutdownRestartedServices)
-                {
-                    monitorSubscriptions.Add(this.monitoringService.Subscribe(this.StopService));
-                }
+                monitorSubscriptions.Add(this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent));
             }
 
             process.WaitForExit();
@@ -109,20 +107,17 @@ namespace Logic
             {
                 this.monitoringService.EndMonitoring();
             }
-        }
 
-        private void StopService(MonitoringEventModel eventModel)
-        {
-            if (eventModel.ProcessType == Domain.Types.ProcessType.Service)
+            if (!configuration.ShutDownWhenProgramCloses)
             {
-                this.serviceHelper.Stop(eventModel.Name);
+                var manualResetEvent = new System.Threading.ManualResetEvent(false);
+                this.logger.Log("Click 'X' to close the program.");
+                manualResetEvent.WaitOne();
             }
-        }
-
-        private void LogStart(MonitoringEventModel eventModel)
-        {
-            var type = eventModel.ProcessType.ToString().ToLower();
-            this.logger.Log($"A {type} was (re)started: {eventModel.Name}");
+            else
+            {
+                this.logger.Log("Program stopped. Shutting down LaunchIt.");
+            }
         }
 
         private bool CheckForConfigurationFile()

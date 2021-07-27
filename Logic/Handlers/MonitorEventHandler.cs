@@ -1,0 +1,134 @@
+﻿// <copyright file="MonitorEventHandler.cs" company="Antonio Invernizzi V">
+// Copyright (c) Antonio Invernizzi V. All rights reserved.
+// </copyright>
+
+namespace Logic.Handlers
+{
+    using Domain.Models.Configuration;
+    using Domain.Models.Events;
+    using Logic.Helpers;
+    using Logic.Services;
+    using System;
+    using System.Linq;
+
+    /// <summary>
+    /// Class that handles monitoring events.
+    /// </summary>
+    public class MonitorEventHandler
+    {
+        private readonly IConfigurationService configurationService;
+        private readonly ILoggerService logger;
+        private readonly IServiceHelper serviceHelper;
+        private readonly IProcessHelper processHelper;
+
+        private readonly Counter serviceCounter = new();
+        private readonly Counter processCounter = new();
+
+        private ConfigurationModel? configuration;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MonitorEventHandler" /> class.
+        /// </summary>
+        /// <param name="configurationService">The configuration service.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="serviceHelper">The service helper.</param>
+        /// <param name="processHelper">The process helper.</param>
+        public MonitorEventHandler(
+            IConfigurationService configurationService,
+            ILoggerService logger,
+            IServiceHelper serviceHelper,
+            IProcessHelper processHelper)
+        {
+            this.configurationService = configurationService;
+            this.logger = logger;
+            this.serviceHelper = serviceHelper;
+            this.processHelper = processHelper;
+        }
+
+        /// <summary>
+        /// Handles the monitoring event.
+        /// </summary>
+        /// <param name="eventModel">The event model.</param>
+        /// <exception cref="System.Exception">Unsupported process stype.</exception>
+        public void HandleMonitoringEvent(MonitoringEventModel eventModel)
+        {
+            var type = eventModel.ProcessType.ToString().ToLower();
+
+            this.logger.Log($"(Re)started: {type} {eventModel.Name}");
+
+            var configuration = this.GetCachedConfiguration();
+            switch (eventModel.ProcessType)
+            {
+                case Domain.Types.ProcessType.Service:
+
+                    this.HandleEvent(
+                        eventModel.Name,
+                        this.serviceCounter,
+                        configuration.ServiceShutdownConfiguration.OnlyConfigured,
+                        configuration.ServiceShutdownConfiguration.MaximumShutdownAttempts,
+                        configuration.Services,
+                        this.serviceHelper.Stop);
+
+                    break;
+                case Domain.Types.ProcessType.Process:
+
+                    this.HandleEvent(
+                        eventModel.Name,
+                        this.processCounter,
+                        configuration.ExecutableShutdownConfiguration.OnlyConfigured,
+                        configuration.ExecutableShutdownConfiguration.MaximumShutdownAttempts,
+                        configuration.Executables,
+                        this.processHelper.Stop);
+
+                    break;
+
+                default:
+                    throw new System.Exception($"{eventModel.ProcessType} is unhandled.");
+            }
+        }
+
+        /// <summary>
+        /// Handles the event for a service or executable that was (re)started.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="counter">The counter.</param>
+        /// <param name="onlyConfigured">if set to <c>true</c> [only configured].</param>
+        /// <param name="maximumShutdownAttempts">The maximum shutdown attempts.</param>
+        /// <param name="configuredItems">The configured items.</param>
+        /// <param name="stop">Method pointer to a call that will stop either a serivce or event.</param>
+        private void HandleEvent(
+            string name,
+            Counter counter,
+            bool onlyConfigured,
+            int maximumShutdownAttempts,
+            string[] configuredItems,
+            Action<string> stop)
+        {
+            if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase))
+            {
+                this.logger.Log($"{name} ignored. Not configured to shutdown.");
+                return;
+            }
+
+            if (maximumShutdownAttempts != -1 && counter.Count(name) >= maximumShutdownAttempts)
+            {
+                this.logger.Log($"{name} has been shut down the maximum amount of times.");
+                return;
+            }
+
+            stop(name);
+            counter.Add(name);
+        }
+
+        private ConfigurationModel GetCachedConfiguration()
+        {
+            // Cache the configuration on a field to avoid IO when reading the config file and work when deserializing it.
+            if (this.configuration is null)
+            {
+                this.configuration = this.configurationService.Read();
+            }
+
+            return this.configuration;
+        }
+    }
+}

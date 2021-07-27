@@ -5,7 +5,6 @@
 namespace Infrastructure.Services
 {
     using Infrastructure.Helpers;
-    using Logic.Helpers;
     using Logic.Services;
     using System;
     using System.Diagnostics;

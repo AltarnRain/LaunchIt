@@ -27,8 +27,8 @@ namespace Infrastructure.Services
 
         private Timer? timer;
 
-        private string[]? runningServices;
-        private string[]? runningProcesses;
+        private string[]? serviceState;
+        private string[]? executableState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMonitoringService" /> class.
@@ -37,7 +37,11 @@ namespace Infrastructure.Services
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="processHelper">The process helper.</param>
         /// <param name="configurationService">The configuration service.</param>
-        public WindowsMonitoringService(ILoggerService logger, IServiceHelper serviceHelper, IProcessHelper processHelper, IConfigurationService configurationService)
+        public WindowsMonitoringService(
+            ILoggerService logger,
+            IServiceHelper serviceHelper,
+            IProcessHelper processHelper,
+            IConfigurationService configurationService)
         {
             this.logger = logger;
             this.serviceHelper = serviceHelper;
@@ -69,8 +73,8 @@ namespace Infrastructure.Services
             this.timer.Dispose();
 
             // Reset.
-            this.runningProcesses = null;
-            this.runningServices = null;
+            this.executableState = null;
+            this.serviceState = null;
         }
 
         /// <summary>
@@ -86,9 +90,10 @@ namespace Infrastructure.Services
 
             this.logger.Log($"Building monitoring snapshot...");
 
-            // First thing. Map which processes and services are running.
-            this.runningProcesses = this.processHelper.GetRunningProcesses();
-            this.runningServices = this.serviceHelper.GetRunningServices();
+            // First thing. Map which processes and services are running. These collections are our Tabula Rasa. Anything new that
+            // that is started will be detected and shut down.
+            this.executableState = this.processHelper.GetRunningExecutables();
+            this.serviceState = this.serviceHelper.GetRunningServices();
 
             var configuration = this.configurationService.Read();
 
@@ -99,12 +104,12 @@ namespace Infrastructure.Services
             this.timer.Elapsed += (sender, eventArgs) =>
             {
                 var runningServices = this.serviceHelper.GetRunningServices();
-                var runningProcesses = this.processHelper.GetRunningProcesses();
+                var runningProcesses = this.processHelper.GetRunningExecutables();
 
-                var startedServices = GetArrayDifference(runningServices, this.runningServices)
+                var startedServices = GetArrayDifference(runningServices, this.serviceState)
                     .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Service });
 
-                var startedProcesses = GetArrayDifference(runningProcesses, this.runningProcesses)
+                var startedProcesses = GetArrayDifference(runningProcesses, this.executableState)
                     .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Process });
 
                 var allEvents = new List<MonitoringEventModel>(startedServices);
@@ -118,9 +123,6 @@ namespace Infrastructure.Services
                         subscription(e);
                     }
                 }
-
-                this.runningServices = runningServices;
-                this.runningProcesses = runningProcesses;
             };
 
             this.timer.Start();
@@ -141,7 +143,7 @@ namespace Infrastructure.Services
 
         private static string[] GetArrayDifference(string[] currentItems, string[] orignalItems)
         {
-            var newItems = currentItems.Where(rp => !orignalItems.Contains(rp));
+            var newItems = currentItems.Where(rp => !orignalItems.Contains(rp, StringComparer.OrdinalIgnoreCase));
 
             return newItems.ToArray();
         }

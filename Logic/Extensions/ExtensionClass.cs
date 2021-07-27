@@ -6,7 +6,6 @@ namespace Logic.Extensions
 {
     using Domain.Models.Configuration;
     using Logic.Providers;
-    using System.Diagnostics;
 
     /// <summary>
     /// Class that provides various extension methods.
@@ -24,13 +23,15 @@ namespace Logic.Extensions
         }
 
         /// <summary>
-        /// Starts the monitoring.
+        /// Returns true of the LaunchIt's configuration requires the monitor service to run.
         /// </summary>
         /// <param name="self">The self.</param>
         /// <returns>True if the current configuration requires monitoring.</returns>
         public static bool StartMonitoring(this ConfigurationModel self)
         {
-            return self.MonitoringConfiguration.MonitorRestarts || self.ServiceShutdownConfiguration.ShutdownRestartedServices;
+            return self.MonitoringConfiguration.MonitorRestarts ||
+                self.ServiceShutdownConfiguration.ShutdownRestartedServices ||
+                self.ExecutableShutdownConfiguration.ShutdownRestartedExecutables;
         }
     }
 }

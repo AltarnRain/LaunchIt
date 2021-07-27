@@ -7,7 +7,6 @@ namespace Infrastructure.Services
     using Logic.Helpers;
     using Logic.Services;
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading.Tasks;

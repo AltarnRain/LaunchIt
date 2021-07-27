@@ -30,10 +30,10 @@ namespace Logic.Services
         /// <summary>
         /// Subscribes the specified subscription.
         /// </summary>
-        /// <param name="subscription">The subscription.</param>
+        /// <param name="action">The configuration.</param>
         /// <returns>
         /// An action to remove the subscription.
         /// </returns>
-        Action Subscribe(Action<MonitoringEventModel> subscription);
+        Action Subscribe(Action<MonitoringEventModel> action);
     }
 }

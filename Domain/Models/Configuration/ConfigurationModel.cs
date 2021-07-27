@@ -22,32 +22,44 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets the service shutdown configuration.
         /// </summary>
-        [Description("Configure shutting down services that (re)start")]
+        [Description("Configure shutting down services that (re)start.")]
         public ServiceShutdownConfiguration ServiceShutdownConfiguration { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the executable shutdown configuration.
+        /// </summary>
+        [Description("Configure shutting down executables that (re)start.")]
+        public ExecutableShutdownConfiguration ExecutableShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
-        [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables.")]
+        [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables. Default is true.")]
         public bool ShutdownExplorer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the process priority class.
         /// </summary>
-        [Description("The process priority LaunchIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal.")]
+        [Description("The process priority LaunchIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal. Default is 'AboveNormal'.")]
         public string Priority { get; set; } = ProcessPriorityClass.AboveNormal.ToString();
 
         /// <summary>
         /// Gets or sets the preferred editor.
         /// </summary>
-        [Description("Here you can specify which editor you want to use to edit settings. If your editor can be found using a PATH, just specify the exe. Otherwise use the full path.")]
+        [Description("Here you can specify which editor you want to use to edit settings. If your editor can be found using a PATH, just specify the exe. Otherwise use the full path. Default is notepad.exe")]
         public string PreferredEditor { get; set; } = "notepad.exe";
 
         /// <summary>
         /// Gets or sets a value indicating whether [use batch file].
         /// </summary>
-        [Description("LaunchIt will make a batch file to launch the program you specified and then shut down itself.")]
+        [Description("LaunchIt will make a batch file to launch the program you specified and then shut down itself. Default is false.")]
         public bool UseBatchFile { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [shut down when program closes].
+        /// </summary>
+        [Description("When true, Launchit will close when the launched program closes. Does not apply to batch file start ups. Default is false")]
+        public bool ShutDownWhenProgramCloses { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the services.

@@ -73,18 +73,18 @@ namespace Infrastructure.Helpers
 
             if (service is null)
             {
-                this.logger.Log($"Could not find service {serviceName}. Skipping.");
+                this.logger.Log($"Skipped: could not find service {serviceName}.");
                 return;
             }
 
             if (service.Status == ServiceControllerStatus.Running)
             {
-                this.logger.Log($"Stopping service {serviceName}");
                 service.Stop();
+                this.logger.Log($"Stopped: service {serviceName}");
                 return;
             }
 
-            this.logger.Log($"Service {serviceName} is not running. Skipping.");
+            this.logger.Log($"Skipped: service {serviceName} is not running.");
         }
     }
 }

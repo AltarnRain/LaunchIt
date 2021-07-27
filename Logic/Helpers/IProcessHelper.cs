@@ -13,16 +13,7 @@ namespace Logic.Helpers
         /// Gets the running processes.
         /// </summary>
         /// <returns>Running processes.</returns>
-        string[] GetRunningProcesses();
-
-        /// <summary>
-        /// Determines whether the specified process name is running.
-        /// </summary>
-        /// <param name="processName">Name of the process.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified process name is running; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsRunning(string processName);
+        string[] GetRunningExecutables();
 
         /// <summary>
         /// Stops the specified executable.

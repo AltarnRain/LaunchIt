@@ -5,7 +5,10 @@
 namespace Infrastructure.Helpers
 {
     using Logic.Helpers;
+    using Logic.Services;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
 
     /// <summary>
@@ -14,37 +17,73 @@ namespace Infrastructure.Helpers
     /// <seealso cref="Logic.Helpers.IProcessHelper" />
     public class WindowsProcessHelper : IProcessHelper
     {
+        private readonly ILoggerService logger;
+
+        /// <summary>
+        /// The ignored processes. These services throw an exception when accessing Process.MainModule.
+        /// </summary>
+        private readonly List<string> ignoredProcesses = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WindowsProcessHelper" /> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        public WindowsProcessHelper(ILoggerService logger)
+        {
+            this.logger = logger;
+        }
+
         /// <summary>
         /// Gets the running processes.
         /// </summary>
         /// <returns>
         /// Running processes.
         /// </returns>
-        public string[] GetRunningProcesses()
+        public string[] GetRunningExecutables()
         {
-            return Process
-                .GetProcesses()
-                .Select(p => p.ProcessName)
-                .ToArray();
-        }
+            var returnValue = new List<string>();
 
-        /// <summary>
-        /// Determines whether the specified process name is running.
-        /// </summary>
-        /// <param name="processName">Name of the process.</param>
-        /// <returns>
-        /// <c>true</c> if the specified process name is running; otherwise, <c>false</c>.
-        /// </returns>
-        public bool IsRunning(string processName)
-        {
-            var process = Process.GetProcessesByName(processName);
+            var processes = Process.GetProcesses()
+                .Where(p => !this.ignoredProcesses.Contains(p.ProcessName));
 
-            if (process is null || process.Length == 0)
+            foreach (var process in processes)
             {
-                return false;
+                try
+                {
+                    var mainModule = process.MainModule;
+                    if (mainModule is null)
+                    {
+                        continue;
+                    }
+
+                    var fileName = mainModule.FileName;
+
+                    if (fileName is null)
+                    {
+                        continue;
+                    }
+
+                    var fileNameOnly = Path.GetFileName(fileName);
+                    if (fileNameOnly is null)
+                    {
+                        continue;
+                    }
+
+                    returnValue.Add(fileNameOnly);
+                }
+                catch
+                {
+                    // Swallow. If the MainModule is not accecible, skip the process. Add it to the ignore list for next time.
+                    // Eventually we'll have no exceptions when obtaining running executables.
+                    if (!this.ignoredProcesses.Contains(process.ProcessName))
+                    {
+                        this.logger.Log($"Added process {process.ProcessName} to ignore list.");
+                        this.ignoredProcesses.Add(process.ProcessName);
+                    }
+                }
             }
 
-            return true;
+            return returnValue.ToArray();
         }
 
         /// <summary>
@@ -62,6 +101,7 @@ namespace Infrastructure.Helpers
             };
 
             Process.Start(processStartInfo);
+            this.logger.Log($"Stopped '{executable}'");
         }
 
         /// <summary>
@@ -78,6 +118,7 @@ namespace Infrastructure.Helpers
             };
 
             Process.Start(processStartInfo);
+            this.logger.Log($"Started '{executable}'.");
         }
     }
 }
