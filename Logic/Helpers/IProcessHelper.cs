@@ -16,9 +16,9 @@ namespace Logic.Helpers
         string[] GetRunningExecutables();
 
         /// <summary>
-        /// Starts the specified v.
+        /// Starts something.
         /// </summary>
-        /// <param name="executable">The executable.</param>
-        void Start(string executable);
+        /// <param name="name">Name of what you want to start.</param>
+        void Start(string name);
     }
 }

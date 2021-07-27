@@ -4,6 +4,8 @@
 
 namespace Logic.Services
 {
+    using System;
+
     /// <summary>
     /// Define a contract for a logger.
     /// </summary>
@@ -14,5 +16,12 @@ namespace Logic.Services
         /// </summary>
         /// <param name="message">The message.</param>
         public void Log(string message);
+
+        /// <summary>
+        /// Subscribes the specified log action.
+        /// </summary>
+        /// <param name="logAction">The log action.</param>
+        /// <returns>Desubscription action.</returns>
+        public Action Subscribe(Action<string> logAction);
     }
 }

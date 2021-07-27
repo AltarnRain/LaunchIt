@@ -7,9 +7,11 @@ namespace Logic
     using Logic.Extensions;
     using Logic.Handlers;
     using Logic.Helpers;
+    using Logic.Logging;
     using Logic.Services;
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Startup class for the program.
@@ -78,7 +80,12 @@ namespace Logic
                 return;
             }
 
-            var monitorSubscriptions = new List<Action>();
+            // Save everything the ILoggerService logs to a file.
+            var logFile = Path.GetTempFileName() + ".txt";
+            var fileLogger = new FileLogger(logFile);
+            var unsubscribeFileLogger = this.logger.Subscribe(fileLogger.Log);
+
+            Action? unsubscribeMonitorEventHandler = null;
             if (configuration.StartMonitoring())
             {
                 this.monitoringService.StartMonitoring();
@@ -89,13 +96,17 @@ namespace Logic
                     this.serviceHelper,
                     this.processHelper);
 
-                monitorSubscriptions.Add(this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent));
+                unsubscribeMonitorEventHandler = this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent);
             }
 
             process.WaitForExit();
 
             // Clear subscriptions.
-            monitorSubscriptions.ForEach(s => s());
+            unsubscribeMonitorEventHandler?.Invoke();
+            unsubscribeFileLogger();
+
+            // Close the file logger and write whatever is in the log cache to disk.
+            fileLogger.Close();
 
             if (configuration.ShutdownExplorer)
             {
@@ -107,6 +118,8 @@ namespace Logic
             {
                 this.monitoringService.EndMonitoring();
             }
+
+            this.processHelper.Start(logFile);
 
             if (!configuration.ShutDownWhenProgramCloses)
             {

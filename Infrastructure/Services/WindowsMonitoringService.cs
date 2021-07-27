@@ -70,6 +70,7 @@ namespace Infrastructure.Services
             }
 
             this.timer.Stop();
+            this.timer.Close();
             this.timer.Dispose();
 
             // Reset.

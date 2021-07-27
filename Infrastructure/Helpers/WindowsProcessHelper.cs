@@ -92,7 +92,7 @@ namespace Infrastructure.Helpers
                         case AccessDenied:
                         case UnableToEnumerateModules:
                             // Error such as these are thrown when accessing processes like 'System', 'Idle', etc.
-                            this.logger.Log(process.ProcessName + " will be ignored.");
+                            this.logger.Log($"Process '{process.ProcessName}' will be ignored.");
                             this.ignoredProcesses.Add(process.ProcessName);
                             break;
                         case ReadOrWriteProcessRequestFail:
