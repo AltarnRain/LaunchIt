@@ -4,6 +4,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.Linq;
+using System.ServiceProcess;
 
 namespace Tests
 {
@@ -20,7 +22,8 @@ namespace Tests
             {
                 try
                 {
-                    var m = p.MainModule;   
+                    var m = p.MainModule;
+                    var startTime = p.StartTime;
                 }
                 catch (System.Exception ex)
                 {

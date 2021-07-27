@@ -9,6 +9,7 @@ namespace Logic.Handlers
     using Logic.Helpers;
     using Logic.Services;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
@@ -20,6 +21,9 @@ namespace Logic.Handlers
         private readonly ILoggerService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
+
+        private readonly List<string> reportedIgnoredServices = new();
+        private readonly List<string> reportedIgnoredProcesses = new();
 
         private ConfigurationModel? configuration;
 
@@ -63,7 +67,8 @@ namespace Logic.Handlers
                         configuration.ServiceShutdownConfiguration.OnlyConfigured,
                         configuration.ServiceShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Services,
-                        this.serviceHelper);
+                        this.serviceHelper,
+                        this.reportedIgnoredServices);
 
                     break;
                 case Domain.Types.ProcessType.Process:
@@ -73,7 +78,8 @@ namespace Logic.Handlers
                         configuration.ExecutableShutdownConfiguration.OnlyConfigured,
                         configuration.ExecutableShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Executables,
-                        this.processHelper);
+                        this.processHelper,
+                        this.reportedIgnoredProcesses);
 
                     break;
 
@@ -95,9 +101,10 @@ namespace Logic.Handlers
             bool onlyConfigured,
             int maximumShutdownAttempts,
             string[] configuredItems,
-            IStopHelper stopHelper)
+            IStopHelper stopHelper,
+            List<string> reportOnceList)
         {
-            if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase))
+            if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase) && !reportOnceList.Contains(name, StringComparer.OrdinalIgnoreCase))
             {
                 this.logger.Log($"{name} ignored. Not configured to shutdown.");
                 return;
