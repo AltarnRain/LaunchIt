@@ -4,7 +4,6 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Handlers;
     using Logic.Helpers;
     using Logic.Services;
     using System.Collections.Generic;
@@ -18,12 +17,20 @@ namespace Infrastructure.Helpers
     /// <seealso cref="Logic.Helpers.IProcessHelper" />
     public class WindowsProcessHelper : StopHelperBase, IProcessHelper
     {
+        private const int AccessDenied = 5;
+        private const int UnableToEnumerateModules = -2147467259;
+        private const int ReadOrWriteProcessRequestFail = 299;
+
         private readonly ILoggerService logger;
 
         /// <summary>
         /// The ignored processes. These services throw an exception when accessing Process.MainModule.
         /// </summary>
-        private readonly List<string> ignoredProcesses = new();
+        private readonly List<string> ignoredProcesses = new()
+        {
+            "taskkill", // used to shut down processes.
+            "LaunchIt", // This is us.
+        };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsProcessHelper" /> class.
@@ -44,8 +51,7 @@ namespace Infrastructure.Helpers
         {
             var returnValue = new List<string>();
 
-            var processes = Process.GetProcesses()
-                .Where(p => !this.ignoredProcesses.Contains(p.ProcessName));
+            var processes = Process.GetProcesses().Where(p => !this.ignoredProcesses.Contains(p.ProcessName));
 
             foreach (var process in processes)
             {
@@ -70,17 +76,48 @@ namespace Infrastructure.Helpers
                         continue;
                     }
 
+                    if (returnValue.Contains(fileNameOnly))
+                    {
+                        continue;
+                    }
+
                     returnValue.Add(fileNameOnly);
                 }
-                catch
+                catch (System.ComponentModel.Win32Exception ex)
                 {
-                    // Swallow. If the MainModule is not accecible, skip the process. Add it to the ignore list for next time.
-                    // Eventually we'll have no exceptions when obtaining running executables.
-                    if (!this.ignoredProcesses.Contains(process.ProcessName))
+                    // Win32Exception is pretty generic. Luckly the native code can be used
+                    // to determine what went wrong. This way we can decide which processes to ignore.
+                    switch (ex.NativeErrorCode)
                     {
-                        this.logger.Log($"Added process {process.ProcessName} to ignore list. Unable to obtain the name of the executable.");
-                        this.ignoredProcesses.Add(process.ProcessName);
+                        case AccessDenied:
+                        case UnableToEnumerateModules:
+                            // Error such as these are thrown when accessing processes like 'System', 'Idle', etc.
+                            this.logger.Log(process.ProcessName + " will be ignored.");
+                            this.ignoredProcesses.Add(process.ProcessName);
+                            break;
+                        case ReadOrWriteProcessRequestFail:
+                            // Ignore this one. Can happen when a process has just been killed.
+                            break;
+                        default:
+                            // Unknown reason the process information could not be determine. Log it and diagnose it.
+                            this.logger.Log("Error: " + process.ProcessName);
+                            this.logger.Log("   Exception type :" + ex.GetType().FullName);
+                            this.logger.Log("   Native code: " + ex.NativeErrorCode.ToString());
+                            this.logger.Log("   Message: " + ex.Message);
+                            break;
                     }
+                }
+                catch (System.InvalidOperationException)
+                {
+                    // Swallow.
+                    // Thrown when a process has already exited.
+                }
+                catch (System.Exception ex)
+                {
+                    // Exception garbage shute.
+                    this.logger.Log("Error: " + process.ProcessName);
+                    this.logger.Log("   Exception type :" + ex.GetType().FullName);
+                    this.logger.Log("   Message: " + ex.Message);
                 }
             }
 
@@ -108,7 +145,8 @@ namespace Infrastructure.Helpers
         /// Stops the specified executable.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        public override void Stop(string executable)
+        /// <param name="trackCount">if set to <c>true</c> [track count].</param>
+        public override void Stop(string executable, bool trackCount = true)
         {
             var processStartInfo = new ProcessStartInfo
             {
@@ -119,8 +157,15 @@ namespace Infrastructure.Helpers
             };
 
             Process.Start(processStartInfo);
-            this.AddToStopCount(executable);
-            this.logger.Log($"Stopped '{executable}' ({this.GetStopCount(executable)})");
+
+            if (trackCount)
+            {
+                this.AddToStopCount(executable);
+                this.logger.Log($"Stopped '{executable}' ({this.GetStopCount(executable)})");
+                return;
+            }
+
+            this.logger.Log($"Stopped '{executable}'");
         }
     }
 }

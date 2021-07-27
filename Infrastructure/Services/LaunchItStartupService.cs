@@ -56,7 +56,8 @@ namespace Infrastructure.Services
 
             foreach (var service in configuration.Services)
             {
-                var stopTask = Task.Run(() => this.serviceHelper.Stop(service));
+                // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
+                var stopTask = Task.Run(() => this.serviceHelper.Stop(service, false));
                 stopTasks.Add(stopTask);
             }
 
@@ -71,7 +72,8 @@ namespace Infrastructure.Services
 
             foreach (var exe in configuration.Executables)
             {
-                var stopTask = Task.Run(() => this.processHelper.Stop(exe));
+                // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
+                var stopTask = Task.Run(() => this.processHelper.Stop(exe, false));
                 stopTasks.Add(stopTask);
             }
 

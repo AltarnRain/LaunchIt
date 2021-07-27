@@ -22,7 +22,8 @@ namespace Infrastructure.Helpers
         /// Stops the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        public abstract void Stop(string name);
+        /// <param name="trackCount">if set to <c>true</c> [track count].</param>
+        public abstract void Stop(string name, bool trackCount = true);
 
         /// <summary>
         /// Gets the stop count.

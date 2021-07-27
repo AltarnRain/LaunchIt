@@ -53,10 +53,6 @@ namespace Logic.Handlers
         /// <exception cref="System.Exception">Unsupported process stype.</exception>
         public void HandleMonitoringEvent(MonitoringEventModel eventModel)
         {
-            var type = eventModel.ProcessType.ToString().ToLower();
-
-            this.logger.Log($"(Re)started: {type} {eventModel.Name}");
-
             var configuration = this.GetCachedConfiguration();
             switch (eventModel.ProcessType)
             {
@@ -104,9 +100,14 @@ namespace Logic.Handlers
             IStopHelper stopHelper,
             List<string> reportOnceList)
         {
-            if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase) && !reportOnceList.Contains(name, StringComparer.OrdinalIgnoreCase))
+            if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase))
             {
-                this.logger.Log($"{name} ignored. Not configured to shutdown.");
+                if (!reportOnceList.Contains(name, StringComparer.OrdinalIgnoreCase))
+                {
+                    this.logger.Log($"{name} ignored. Not configured to shutdown.");
+                    reportOnceList.Add(name);
+                }
+
                 return;
             }
 

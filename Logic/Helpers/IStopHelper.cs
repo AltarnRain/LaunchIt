@@ -20,6 +20,7 @@ namespace Logic.Helpers
         /// Stops the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        void Stop(string name);
+        /// <param name="tackCount">if set to <c>true</c> [tack count].</param>
+        void Stop(string name, bool tackCount = false);
     }
 }

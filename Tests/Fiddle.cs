@@ -4,8 +4,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using System.Linq;
-using System.ServiceProcess;
 
 namespace Tests
 {
@@ -13,17 +11,15 @@ namespace Tests
     public class Fiddle
     {
         [TestMethod]
-        [Ignore]
         public void FiddleMethod1()
         {
-            var processes = Process.GetProcesses();
+            var processes = Process.GetProcessesByName("linqpad");
 
             foreach (var p in processes)
             {
                 try
                 {
                     var m = p.MainModule;
-                    var startTime = p.StartTime;
                 }
                 catch (System.Exception ex)
                 {
@@ -33,3 +29,4 @@ namespace Tests
         }
     }
 }
+#pragma warning restore CS0168

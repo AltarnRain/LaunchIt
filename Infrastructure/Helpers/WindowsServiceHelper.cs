@@ -48,25 +48,33 @@ namespace Infrastructure.Helpers
         /// Gets the service.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        public override void Stop(string serviceName)
+        /// <param name="trackCount">if set to <c>true</c> [track count].</param>
+        public override void Stop(string serviceName, bool trackCount)
         {
             var service = ServiceController.GetServices().SingleOrDefault(s => s.DisplayName == serviceName);
 
             if (service is null)
             {
-                this.logger.Log($"Skipped: could not find service {serviceName}.");
+                this.logger.Log($"Skipped: could not find service '{serviceName}'.");
                 return;
             }
 
             if (service.Status == ServiceControllerStatus.Running)
             {
                 service.Stop();
-                this.AddToStopCount(serviceName);
-                this.logger.Log($"Stopped: service {serviceName} ({this.GetStopCount(serviceName)})");
+
+                if (trackCount)
+                {
+                    this.AddToStopCount(serviceName);
+                    this.logger.Log($"Stopped: service '{serviceName}' ({this.GetStopCount(serviceName)}).");
+                    return;
+                }
+
+                this.logger.Log($"Stopped: service '{serviceName}'.");
                 return;
             }
 
-            this.logger.Log($"Skipped: service {serviceName} is not running.");
+            this.logger.Log($"Skipped: service '{serviceName}' is not running.");
         }
     }
 }
