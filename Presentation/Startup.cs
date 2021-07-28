@@ -1,4 +1,4 @@
-﻿// <copyright file="Launch.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="Startup.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -13,10 +13,10 @@ namespace Presentation
     using System.Security.Principal;
 
     /// <summary>
-    /// Launches the application.
+    /// Starts up the application.
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public class Launch
+    public class Startup
     {
         private readonly LaunchIt launchIt;
         private readonly ILogEventService logger;
@@ -24,13 +24,13 @@ namespace Presentation
         private readonly IProcessHelper processHelper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Launch" /> class.
+        /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="main">The main.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="processHelper">The process helper.</param>
-        public Launch(
+        public Startup(
             LaunchIt main,
             ILogEventService logger,
             IConfigurationService configurationService,

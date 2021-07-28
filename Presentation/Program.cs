@@ -43,7 +43,7 @@ namespace Presentation
             kernel.Load(configurationDependentBindings);
 
             // All done. Lets launch it!
-            var launch = kernel.Get<Launch>();
+            var launch = kernel.Get<Startup>();
 
             var argument = args.Length >= 1 ? args[0] : string.Empty;
 
