@@ -5,14 +5,21 @@
 namespace Domain.Models.Configuration
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
 
     /// <summary>
     /// Configuration.
     /// </summary>
-    public class ConfigurationModel
+    public class ConfigurationModel : VersionedModel
     {
+        /// <summary>
+        /// Gets or sets the version.
+        /// </summary>
+        [Description("Version of the configuration file. Do not change this!")]
+        public override int Version { get; set; } = 1;
+
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
