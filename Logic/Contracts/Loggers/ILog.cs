@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Loggers
+namespace Logic.Contracts.Loggers
 {
     /// <summary>
     /// Contract for a class that has a log method.

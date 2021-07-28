@@ -9,10 +9,9 @@ namespace Presentation
     using Infrastructure.Serialization;
     using Infrastructure.Services;
     using Logic;
-    using Logic.Helpers;
-    using Logic.Providers;
-    using Logic.Serialization;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Providers;
+    using Logic.Contracts.Services;
     using Ninject.Parameters;
 
     /// <summary>

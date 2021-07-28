@@ -7,8 +7,8 @@ namespace Presentation
     using Infrastructure.Helpers;
     using Infrastructure.Loggers;
     using Logic;
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;
 

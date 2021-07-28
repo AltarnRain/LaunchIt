@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Serialization
+namespace Logic.Contracts.Services
 {
     /// <summary>
     /// Contract for a class the provides serialization and deserialization services.

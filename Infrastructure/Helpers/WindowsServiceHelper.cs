@@ -4,8 +4,8 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System;
     using System.Linq;
     using System.Runtime.Versioning;
@@ -14,7 +14,7 @@ namespace Infrastructure.Helpers
     /// <summary>
     /// Helper class for windows service.
     /// </summary>
-    /// <seealso cref="Logic.Helpers.IServiceHelper" />
+    /// <seealso cref="Logic.Contracts.Helpers.IServiceHelper" />
     [SupportedOSPlatform("windows")]
     public class WindowsServiceHelper : StopHelperBase, IServiceHelper
     {

@@ -4,7 +4,7 @@
 
 namespace Presentation
 {
-    using Logic.Services;
+    using Logic.Contracts.Services;
     using Ninject;
     using System.IO;
     using System.Reflection;

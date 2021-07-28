@@ -4,15 +4,16 @@
 
 namespace Infrastructure.Services
 {
-    using Logic.Loggers;
+    using Logic.Contracts.Loggers;
+    using Logic.Contracts.Services;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// Service to log to the console.
     /// </summary>
-    /// <seealso cref="Logic.Services.ILogEventService" />
-    public class LogEventService : Logic.Services.ILogEventService
+    /// <seealso cref="Logic.Contracts.Services.ILogEventService" />
+    public class LogEventService : ILogEventService
     {
         private readonly List<ILog> subscriptions = new();
 

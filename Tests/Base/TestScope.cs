@@ -6,7 +6,7 @@ namespace Tests.Base
 {
     using Infrastructure.Helpers;
     using Infrastructure.Services;
-    using Logic.Providers;
+    using Logic.Contracts.Providers;
     using Ninject;
     using Presentation;
     using System;

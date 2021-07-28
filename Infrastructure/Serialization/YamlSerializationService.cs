@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Serialization
 {
-    using Logic.Serialization;
+    using Logic.Contracts.Services;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
 

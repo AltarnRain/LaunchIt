@@ -6,8 +6,8 @@ namespace Logic.Handlers
 {
     using Domain.Models.Configuration;
     using Domain.Models.Events;
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System;
     using System.Collections.Generic;
     using System.Linq;

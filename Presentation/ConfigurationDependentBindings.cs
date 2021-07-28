@@ -6,7 +6,7 @@ namespace Presentation
 {
     using Domain.Models.Configuration;
     using Infrastructure.Services;
-    using Logic.Services;
+    using Logic.Contracts.Services;
 
     /// <summary>
     /// Bindings that depend on configuration.

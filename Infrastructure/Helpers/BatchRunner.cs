@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Services;
+    using Logic.Contracts.Services;
     using System.Diagnostics;
     using System.IO;
 

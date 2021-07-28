@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Providers
+namespace Logic.Contracts.Providers
 {
     /// <summary>
     /// Contrat for a path provider.

@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Loggers
 {
-    using Logic.Loggers;
+    using Logic.Contracts.Loggers;
 
     /// <summary>
     /// Service to log to the console.

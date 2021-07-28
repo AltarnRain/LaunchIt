@@ -4,8 +4,8 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -14,7 +14,7 @@ namespace Infrastructure.Helpers
     /// <summary>
     /// Process helper for windows.
     /// </summary>
-    /// <seealso cref="Logic.Helpers.IProcessHelper" />
+    /// <seealso cref="Logic.Contracts.Helpers.IProcessHelper" />
     public class WindowsProcessHelper : StopHelperBase, IProcessHelper
     {
         private const int AccessDenied = 5;

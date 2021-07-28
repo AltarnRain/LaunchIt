@@ -4,10 +4,10 @@
 
 namespace Logic
 {
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using Logic.Extensions;
     using Logic.Handlers;
-    using Logic.Helpers;
-    using Logic.Services;
     using System;
 
     /// <summary>

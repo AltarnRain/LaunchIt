@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Helpers
+namespace Logic.Contracts.Helpers
 {
     /// <summary>
     /// Contract for a service helper.

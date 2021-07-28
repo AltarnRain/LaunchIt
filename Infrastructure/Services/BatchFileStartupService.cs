@@ -5,7 +5,7 @@
 namespace Infrastructure.Services
 {
     using Infrastructure.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Services;
     using System;
     using System.Diagnostics;
     using System.IO;
@@ -13,7 +13,7 @@ namespace Infrastructure.Services
     /// <summary>
     /// Start an executable using a batchfile.
     /// </summary>
-    /// <seealso cref="Logic.Services.IStartupService" />
+    /// <seealso cref="Logic.Contracts.Services.IStartupService" />
     /// <seealso cref="IStartupService" />
     public class BatchFileStartupService : IStartupService
     {

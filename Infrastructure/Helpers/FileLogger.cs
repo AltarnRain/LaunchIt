@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Loggers;
+    using Logic.Contracts.Loggers;
     using System.Collections.Generic;
     using System.IO;
 

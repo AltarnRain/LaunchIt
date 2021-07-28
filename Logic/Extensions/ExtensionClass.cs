@@ -5,7 +5,7 @@
 namespace Logic.Extensions
 {
     using Domain.Models.Configuration;
-    using Logic.Providers;
+    using Logic.Contracts.Providers;
 
     /// <summary>
     /// Class that provides various extension methods.

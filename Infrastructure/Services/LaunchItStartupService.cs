@@ -5,15 +5,15 @@
 namespace Infrastructure.Services
 {
     using Infrastructure.Helpers;
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System;
     using System.Diagnostics;
 
     /// <summary>
     /// LaunchIt's own start service.
     /// </summary>
-    /// <seealso cref="Logic.Services.IStartupService" />
+    /// <seealso cref="Logic.Contracts.Services.IStartupService" />
     public class LaunchItStartupService : IStartupService
     {
         private readonly IServiceHelper serviceHelper;

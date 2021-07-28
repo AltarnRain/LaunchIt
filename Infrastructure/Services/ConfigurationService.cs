@@ -6,10 +6,9 @@ namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
     using Infrastructure.Helpers;
+    using Logic.Contracts.Providers;
+    using Logic.Contracts.Services;
     using Logic.Extensions;
-    using Logic.Providers;
-    using Logic.Serialization;
-    using Logic.Services;
     using System.IO;
     using System.Linq;
 

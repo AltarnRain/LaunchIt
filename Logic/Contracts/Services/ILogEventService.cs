@@ -2,9 +2,9 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Services
+namespace Logic.Contracts.Services
 {
-    using Logic.Loggers;
+    using Logic.Contracts.Loggers;
     using System;
 
     /// <summary>

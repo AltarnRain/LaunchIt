@@ -5,12 +5,12 @@
 namespace Infrastructure.Helpers
 {
     using Domain.Utility;
-    using Logic.Helpers;
+    using Logic.Contracts.Helpers;
 
     /// <summary>
     /// Base class for classes that stop stuff.
     /// </summary>
-    /// <seealso cref="Logic.Helpers.IStopHelper" />
+    /// <seealso cref="Logic.Contracts.Helpers.IStopHelper" />
     public abstract class StopHelperBase : IStopHelper
     {
         /// <summary>

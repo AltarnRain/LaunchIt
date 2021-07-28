@@ -6,8 +6,8 @@ namespace Infrastructure.Services
 {
     using Domain.Models.Events;
     using Domain.Types;
-    using Logic.Helpers;
-    using Logic.Services;
+    using Logic.Contracts.Helpers;
+    using Logic.Contracts.Services;
     using System;
     using System.Collections.Generic;
     using System.Linq;
