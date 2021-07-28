@@ -58,6 +58,7 @@ namespace Infrastructure.Serialization
             {
                 this.deserializer = new DeserializerBuilder()
                     .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                    .IgnoreUnmatchedProperties()
                     .Build();
             }
 
