@@ -4,10 +4,8 @@
 
 namespace Infrastructure.Services
 {
-    using Infrastructure.Helpers;
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     /// <summary>
     /// Service to log to the console.

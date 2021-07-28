@@ -10,7 +10,6 @@ namespace Logic
     using Logic.Logging;
     using Logic.Services;
     using System;
-    using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
