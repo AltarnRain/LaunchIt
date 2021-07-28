@@ -2,10 +2,6 @@
 
   <Import Project="../Shared.targets" />
 
-  <ItemGroup>
-    <EmbeddedResource Include="./Help/Usage.txt" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
