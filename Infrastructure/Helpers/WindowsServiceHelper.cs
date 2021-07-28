@@ -6,6 +6,7 @@ namespace Infrastructure.Helpers
 {
     using Logic.Helpers;
     using Logic.Services;
+    using System;
     using System.Linq;
     using System.Runtime.Versioning;
     using System.ServiceProcess;
@@ -98,6 +99,11 @@ namespace Infrastructure.Helpers
             try
             {
                 service.Stop();
+
+                // Give each service a maximum time to stop of 30 seconds.
+                // That should be MORE than enough.
+                var timeSpan = TimeSpan.FromSeconds(30);
+                service.WaitForStatus(ServiceControllerStatus.Stopped, timeSpan);
                 return true;
             }
             catch
