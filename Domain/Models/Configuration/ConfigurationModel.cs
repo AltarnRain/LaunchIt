@@ -23,13 +23,13 @@ namespace Domain.Models.Configuration
         /// Gets or sets the service shutdown configuration.
         /// </summary>
         [Description("Configure shutting down services that (re)start.")]
-        public ServiceShutdownConfiguration ServiceShutdownConfiguration { get; set; } = new();
+        public ShutdownConfigurationModel ServiceShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the executable shutdown configuration.
         /// </summary>
         [Description("Configure shutting down executables that (re)start.")]
-        public ExecutableShutdownConfiguration ExecutableShutdownConfiguration { get; set; } = new();
+        public ShutdownConfigurationModel ExecutableShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].

@@ -30,8 +30,8 @@ namespace Logic.Extensions
         public static bool StartMonitoring(this ConfigurationModel self)
         {
             return self.MonitoringConfiguration.MonitorRestarts ||
-                self.ServiceShutdownConfiguration.ShutdownRestartedServices ||
-                self.ExecutableShutdownConfiguration.ShutdownRestartedExecutables;
+                self.ServiceShutdownConfiguration.ShutdownAfterRestart ||
+                self.ExecutableShutdownConfiguration.ShutdownAfterRestart;
         }
     }
 }
