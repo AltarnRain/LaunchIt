@@ -23,6 +23,8 @@ namespace Infrastructure.Helpers
 
         private readonly ILoggerService logger;
 
+        private readonly Dictionary<string, string> processFileNameCache = new();
+
         /// <summary>
         /// The ignored processes. These services throw an exception when accessing Process.MainModule.
         /// </summary>
@@ -55,6 +57,13 @@ namespace Infrastructure.Helpers
 
             foreach (var process in processes)
             {
+                // Save us some work if we've already looked up the executable.
+                if (this.processFileNameCache.ContainsKey(process.ProcessName))
+                {
+                    returnValue.Add(this.processFileNameCache[process.ProcessName]);
+                    continue;
+                }
+
                 try
                 {
                     var mainModule = process.MainModule;
@@ -81,6 +90,7 @@ namespace Infrastructure.Helpers
                         continue;
                     }
 
+                    this.processFileNameCache.Add(process.ProcessName, fileNameOnly);
                     returnValue.Add(fileNameOnly);
                 }
                 catch (System.ComponentModel.Win32Exception ex)
