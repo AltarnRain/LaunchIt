@@ -1,15 +1,18 @@
-# About
+# LaunchIt
 
-## WORK IN PROGRESS!
-
-The plan here is to create a program that can shut down services and executables before starting a program in a given priority.
+LaunchIt is a program that shuts down anything you don't need before starting a program.
+This can by anything but I wrote it with games in mind.
 
 ## Uhm, why? There's plenty of programs that do this.
 
-I know! But name one program that doesn't install a service itself or remains in memory?
+I know! But none of them offered what I wanted.
 
-This program creates a (tempoary) batch file to launch the program you want then shuts down (if you want it to).
+I used a batch file with 'net stop' and 'taskkill' commands a long time but what I could do with such a batch file was limited.
 
-What LaunchIt can do is determine what was started while you launched another program. Cause here's the thing. Windows tends to startup servcices and executables when it thinks it needs them.
+For example: stubborn services and executables that restart! Arghh!
 
-So first you're wasting time shutting things down, then you're even unaware 'windows known bestter' when it restarts something.
+Try shutting down 'Windows Search' and see how quickly it is restarted. Very annoying.
+
+But thanks to LaunchIt I found out the reboot of 'Windows search' was triggered by Explorer.exe. And that's just one example, there's plenty more.
+
+Because of this LaunchIt has a configuration option to shutdown explorer.exe. 
