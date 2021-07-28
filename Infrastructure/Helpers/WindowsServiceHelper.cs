@@ -56,7 +56,7 @@ namespace Infrastructure.Helpers
 
             if (service is null)
             {
-                this.logger.Log($"Skipped: could not find service '{serviceName}'.");
+                this.logger.LogSkipped($"could not find service '{serviceName}'.");
                 return;
             }
 
@@ -74,17 +74,17 @@ namespace Infrastructure.Helpers
                         if (trackCount)
                         {
                             this.AddToStopCount(serviceName);
-                            this.logger.Log($"Stopped: service '{serviceName}' ({this.GetStopCount(serviceName)}).");
+                            this.logger.LogStopped($"service '{serviceName}' ({this.GetStopCount(serviceName)}).");
                             return;
                         }
 
-                        this.logger.Log($"Stopped: service '{serviceName}'.");
+                        this.logger.LogStopped($"service '{serviceName}'.");
                     });
 
                 return;
             }
 
-            this.logger.Log($"Skipped: service '{serviceName}' is not running.");
+            this.logger.LogSkipped($"service '{serviceName}' is not running.");
         }
 
         private static bool TryStopService(ServiceController service)

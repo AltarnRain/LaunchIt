@@ -18,6 +18,18 @@ namespace Logic.Services
         public void Log(string message);
 
         /// <summary>
+        /// Logs the skipped.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogSkipped(string message);
+
+        /// <summary>
+        /// Logs the stopped.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogStopped(string message);
+
+        /// <summary>
         /// Subscribes the specified log action.
         /// </summary>
         /// <param name="logAction">The log action.</param>

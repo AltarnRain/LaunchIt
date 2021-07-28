@@ -107,6 +107,8 @@ namespace Logic
 
             process.WaitForExit();
 
+            this.logger.Log($"{executable} has shutdown");
+
             // Clear subscriptions.
             unsubscribeMonitorEventHandler?.Invoke();
             unsubscribeFileLogger();

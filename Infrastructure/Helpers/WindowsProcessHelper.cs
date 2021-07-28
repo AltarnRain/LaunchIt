@@ -166,11 +166,11 @@ namespace Infrastructure.Helpers
             if (trackCount)
             {
                 this.AddToStopCount(executable);
-                this.logger.Log($"Stopped '{executable}' ({this.GetStopCount(executable)})");
+                this.logger.LogStopped($"'{executable}' ({this.GetStopCount(executable)})");
                 return;
             }
 
-            this.logger.Log($"Stopped '{executable}'");
+            this.logger.LogStopped($"'{executable}'");
         }
     }
 }

@@ -31,6 +31,24 @@ namespace Infrastructure.Services
         }
 
         /// <summary>
+        /// Logs the skipped.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogSkipped(string message)
+        {
+            this.Log($"Skipped: {message}");
+        }
+
+        /// <summary>
+        /// Logs the stopped.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void LogStopped(string message)
+        {
+            this.Log($"Stopped: {message}");
+        }
+
+        /// <summary>
         /// Subscribes the specified log action.
         /// </summary>
         /// <param name="logAction">The log action.</param>
