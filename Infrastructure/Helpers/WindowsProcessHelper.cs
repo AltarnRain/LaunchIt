@@ -140,14 +140,7 @@ namespace Infrastructure.Helpers
         /// <param name="executable">The executable.</param>
         public void Start(string executable)
         {
-            var processStartInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = executable,
-                CreateNoWindow = true,
-            };
-
-            Process.Start(processStartInfo);
+            ProcessWrapper.Start(executable);
             this.logger.Log($"Started '{executable}'.");
         }
 
@@ -158,15 +151,17 @@ namespace Infrastructure.Helpers
         /// <param name="trackCount">if set to <c>true</c> [track count].</param>
         public override void Stop(string executable, bool trackCount = true)
         {
-            var processStartInfo = new ProcessStartInfo
+            if (executable.Equals("explorer", System.StringComparison.OrdinalIgnoreCase) || executable.Equals("explorer.exe", System.StringComparison.OrdinalIgnoreCase))
             {
-                UseShellExecute = true,
-                FileName = "taskkill",
-                Arguments = $"/f /im {executable}",
-                CreateNoWindow = true,
-            };
-
-            Process.Start(processStartInfo);
+                ProcessWrapper.Kill(executable);
+            }
+            else
+            {
+                foreach (var process in Process.GetProcessesByName(executable))
+                {
+                    process.Kill();
+                }
+            }
 
             if (trackCount)
             {

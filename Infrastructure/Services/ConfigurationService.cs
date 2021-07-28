@@ -5,12 +5,12 @@
 namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
+    using Infrastructure.Helpers;
     using Logic.Extensions;
     using Logic.Providers;
     using Logic.Serialization;
     using Logic.Services;
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
@@ -152,15 +152,7 @@ namespace Infrastructure.Services
         public void EditInNotepad()
         {
             var configurationFile = this.pathProvider.ConfigurationFile();
-
-            var processStartInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = this.GetEditor(),
-                Arguments = configurationFile,
-            };
-
-            Process.Start(processStartInfo)?.WaitForExit();
+            ProcessWrapper.Start(this.GetEditor(), configurationFile)?.WaitForExit();
         }
 
         private string GetEditor()

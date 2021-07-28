@@ -39,14 +39,8 @@ namespace Infrastructure.Helpers
 
             File.WriteAllText(tempCmdFile, this.batchContent);
 
-            var processStartInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = tempCmdFile,
-            };
-
             this.logger.Log($"Starting {tempCmdFile}");
-            var process = Process.Start(processStartInfo);
+            var process = ProcessWrapper.Start(tempCmdFile);
 
             return process;
         }

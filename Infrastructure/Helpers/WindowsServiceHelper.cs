@@ -67,7 +67,7 @@ namespace Infrastructure.Helpers
                 // Or, they're being shut down.
                 // Either way, this is a fickle but should not throw.
                 Retry.Try(
-                    () => this.TryStopService(serviceName, service),
+                    () => TryStopService(service),
                     (retryCount) => this.logger.Log($"Failed to stop service '{serviceName}' after {retryCount} attempts."),
                     (retryCount) =>
                     {
@@ -87,7 +87,7 @@ namespace Infrastructure.Helpers
             this.logger.Log($"Skipped: service '{serviceName}' is not running.");
         }
 
-        private bool TryStopService(string serviceName, ServiceController service)
+        private static bool TryStopService(ServiceController service)
         {
             try
             {
@@ -96,7 +96,6 @@ namespace Infrastructure.Helpers
             }
             catch
             {
-                this.logger.Log($"Could not stop service {serviceName}");
                 return false;
             }
         }

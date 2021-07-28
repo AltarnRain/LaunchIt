@@ -4,12 +4,11 @@
 
 namespace Infrastructure.Services
 {
+    using Infrastructure.Helpers;
     using Logic.Helpers;
     using Logic.Services;
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// LaunchIt's own start service.
@@ -73,13 +72,7 @@ namespace Infrastructure.Services
                 this.processHelper.Stop(exe, false);
             }
 
-            var processStartInfo = new ProcessStartInfo
-            {
-                UseShellExecute = true,
-                FileName = executable,
-            };
-
-            var process = Process.Start(processStartInfo);
+            var process = ProcessWrapper.Start(executable);
             if (process is null)
             {
                 throw new Exception($"Should not start {executable}");
