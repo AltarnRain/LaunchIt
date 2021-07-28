@@ -14,24 +14,6 @@ namespace Domain.Models.Configuration
     public class ConfigurationModel
     {
         /// <summary>
-        /// Gets or sets the monitoring configuration.
-        /// </summary>
-        [Description("Configure monitoring options")]
-        public MonitoringConfiguration MonitoringConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the service shutdown configuration.
-        /// </summary>
-        [Description("Configure shutting down services that (re)start.")]
-        public ShutdownConfigurationModel ServiceShutdownConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the executable shutdown configuration.
-        /// </summary>
-        [Description("Configure shutting down executables that (re)start.")]
-        public ShutdownConfigurationModel ExecutableShutdownConfiguration { get; set; } = new();
-
-        /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
         [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables. Default is true.")]
@@ -60,6 +42,24 @@ namespace Domain.Models.Configuration
         /// </summary>
         [Description("When true, Launchit will close when the launched program closes. Does not apply to batch file start ups. Default is false")]
         public bool ShutDownWhenProgramCloses { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the monitoring configuration.
+        /// </summary>
+        [Description("Configure monitoring options")]
+        public MonitoringConfiguration MonitoringConfiguration { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the service shutdown configuration.
+        /// </summary>
+        [Description("Configure shutting down services that (re)start.")]
+        public ShutdownConfigurationModel ServiceShutdownConfiguration { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the executable shutdown configuration.
+        /// </summary>
+        [Description("Configure shutting down executables that (re)start.")]
+        public ShutdownConfigurationModel ExecutableShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the services.
