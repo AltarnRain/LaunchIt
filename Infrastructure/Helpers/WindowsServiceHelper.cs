@@ -60,6 +60,12 @@ namespace Infrastructure.Helpers
                 return;
             }
 
+            if (service.StartType == ServiceStartMode.Disabled)
+            {
+                this.logger.LogSkipped($"service '{serviceName}' is Disabled. Consider removing it from your configuration file.");
+                return;
+            }
+
             if (service.Status == ServiceControllerStatus.Running)
             {
                 // Some services throw when attempted to be stopped for various reasons.
