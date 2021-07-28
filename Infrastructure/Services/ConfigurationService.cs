@@ -100,16 +100,6 @@ namespace Infrastructure.Services
 
                 var model = this.serializationService.Deserialize<ConfigurationModel>(configFileContent);
 
-                if (model.Services is null)
-                {
-                    model.Services = Array.Empty<string>();
-                }
-
-                if (model.Executables is null)
-                {
-                    model.Executables = Array.Empty<string>();
-                }
-
                 // check if the user added explorer.exe to executables to shutdown. I've added an option to the configuration
                 // model to specificall do this. Reason being that explorer can reboot servives when it thinks it needs them
                 // so its best to shut it down right away. Also, the program can restart explorer.exe that way.

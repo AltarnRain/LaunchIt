@@ -5,7 +5,6 @@
 namespace Domain.Models.Configuration
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
 
@@ -14,6 +13,9 @@ namespace Domain.Models.Configuration
     /// </summary>
     public class ConfigurationModel : VersionedModel
     {
+        private string[]? executables;
+        private string[]? services;
+
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
@@ -66,12 +68,12 @@ namespace Domain.Models.Configuration
         /// Gets or sets the services.
         /// </summary>
         [Description("List services you wish to shut down by their full name in this section. For example: - My Service")]
-        public string[] Services { get; set; } = Array.Empty<string>();
+        public string[] Services { get => this.services ?? Array.Empty<string>(); set => this.services = value; }
 
         /// <summary>
         /// Gets or sets the executables.
         /// </summary>
         [Description("List executables you wish to shut down. For example: - MyExecutable")]
-        public string[] Executables { get; set; } = Array.Empty<string>();
+        public string[] Executables { get => this.executables ?? Array.Empty<string>(); set => this.executables = value; }
     }
 }
