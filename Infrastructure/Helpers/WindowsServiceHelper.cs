@@ -62,20 +62,43 @@ namespace Infrastructure.Helpers
 
             if (service.Status == ServiceControllerStatus.Running)
             {
-                service.Stop();
+                // Some services throw when attempted to be stopped for various reasons.
+                // For example, they might still be starting up.
+                // Or, they're being shut down.
+                // Either way, this is a fickle but should not throw.
+                Retry.Try(
+                    () => this.TryStopService(serviceName, service),
+                    (retryCount) => this.logger.Log($"Failed to stop service '{serviceName}' after {retryCount} attempts."),
+                    (retryCount) =>
+                    {
+                        if (trackCount)
+                        {
+                            this.AddToStopCount(serviceName);
+                            this.logger.Log($"Stopped: service '{serviceName}' ({this.GetStopCount(serviceName)}).");
+                            return;
+                        }
 
-                if (trackCount)
-                {
-                    this.AddToStopCount(serviceName);
-                    this.logger.Log($"Stopped: service '{serviceName}' ({this.GetStopCount(serviceName)}).");
-                    return;
-                }
+                        this.logger.Log($"Stopped: service '{serviceName}'.");
+                    });
 
-                this.logger.Log($"Stopped: service '{serviceName}'.");
                 return;
             }
 
             this.logger.Log($"Skipped: service '{serviceName}' is not running.");
+        }
+
+        private bool TryStopService(string serviceName, ServiceController service)
+        {
+            try
+            {
+                service.Stop();
+                return true;
+            }
+            catch
+            {
+                this.logger.Log($"Could not stop service {serviceName}");
+                return false;
+            }
         }
 
         /// <summary>

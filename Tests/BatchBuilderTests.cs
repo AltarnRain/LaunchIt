@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common.Tests
+namespace Tests
 {
     using Infrastructure.Helpers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

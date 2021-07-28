@@ -90,6 +90,7 @@ namespace Infrastructure.Services
             // No file exists yet. Return the default configuration.
             if (!File.Exists(configurationFile))
             {
+                this.logger.Log($"Could not find {configurationFile}. Using default configuration. Run LaunchIt with the 'reset' argument to reset your settings to default. Use the 'edit' command line argument to open your settings file.");
                 return new ConfigurationModel();
             }
 
@@ -122,9 +123,13 @@ namespace Infrastructure.Services
 
                 return model;
             }
-            catch
+            catch (System.Exception ex)
             {
                 // Swallow. Always return a configuration model.
+                this.logger.Log("Hmmm, looks like there's a problem with your configuration file.");
+                this.logger.Log("Here's the exception message, we'll use default settings for now.");
+                this.logger.Log(ex.Message);
+
                 return new ConfigurationModel();
             }
         }

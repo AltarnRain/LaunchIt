@@ -56,6 +56,11 @@ namespace Logic
         /// <param name="executable">The executable.</param>
         public void Start(string executable)
         {
+            // Save everything the ILoggerService logs to a file.
+            var logFile = Path.GetTempFileName() + ".txt";
+            var fileLogger = new FileLogger(logFile);
+            var unsubscribeFileLogger = this.logger.Subscribe(fileLogger.Log);
+
             var didWork = this.CheckForConfigurationFile();
 
             if (didWork)
@@ -85,11 +90,6 @@ namespace Logic
             {
                 return;
             }
-
-            // Save everything the ILoggerService logs to a file.
-            var logFile = Path.GetTempFileName() + ".txt";
-            var fileLogger = new FileLogger(logFile);
-            var unsubscribeFileLogger = this.logger.Subscribe(fileLogger.Log);
 
             Action? unsubscribeMonitorEventHandler = null;
             if (configuration.StartMonitoring())
@@ -141,6 +141,7 @@ namespace Logic
         {
             var manualResetEvent = new System.Threading.ManualResetEvent(false);
             this.logger.Log("Click 'X' to close the program.");
+            this.logger.Log("Or, press CTRL-C to return to the command prompt.");
             manualResetEvent.WaitOne();
         }
 

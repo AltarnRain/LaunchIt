@@ -52,15 +52,6 @@ namespace Infrastructure.Services
         {
             var configuration = this.configurationService.Read();
 
-            var stopTasks = new List<Task>();
-
-            foreach (var service in configuration.Services)
-            {
-                // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
-                var stopTask = Task.Run(() => this.serviceHelper.Stop(service, false));
-                stopTasks.Add(stopTask);
-            }
-
             if (configuration.ShutdownExplorer)
             {
                 this.logger.Log("Shutting down explorer. Your desktop will disappear.");
@@ -70,15 +61,17 @@ namespace Infrastructure.Services
                 this.processHelper.Stop("explorer.exe");
             }
 
+            foreach (var service in configuration.Services)
+            {
+                // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
+                this.serviceHelper.Stop(service, false);
+            }
+
             foreach (var exe in configuration.Executables)
             {
                 // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
-                var stopTask = Task.Run(() => this.processHelper.Stop(exe, false));
-                stopTasks.Add(stopTask);
+                this.processHelper.Stop(exe, false);
             }
-
-            // Wait for all stop tasks to finish.
-            Task.WaitAll(stopTasks.ToArray());
 
             var processStartInfo = new ProcessStartInfo
             {

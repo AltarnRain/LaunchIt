@@ -2,19 +2,19 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Common.Tests
+namespace Tests
 {
     using Domain.Models.Configuration;
-    using global::Tests.Base;
     using Infrastructure.Services;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
+    using Tests.Base;
 
     /// <summary>
     /// Tests the <see cref="ConfigurationService"/>.
     /// </summary>
-    /// <seealso cref="Tests.Base.TestBase" />
+    /// <seealso cref="TestBase" />
     [TestClass]
     public class ConfigurationServiceTests : TestBase
     {
