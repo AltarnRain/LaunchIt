@@ -5,7 +5,6 @@
 namespace Presentation
 {
     using Infrastructure.Helpers;
-    using Infrastructure.Loggers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
     using Infrastructure.Services;

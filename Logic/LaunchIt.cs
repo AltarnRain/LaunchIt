@@ -9,7 +9,6 @@ namespace Logic
     using Logic.Helpers;
     using Logic.Services;
     using System;
-    using System.IO;
 
     /// <summary>
     /// Startup class for the program.

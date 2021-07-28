@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Handlers
+namespace Domain.Utility
 {
     using System.Collections.Generic;
 

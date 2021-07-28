@@ -4,7 +4,7 @@
 
 namespace Infrastructure.Helpers
 {
-    using Logic.Handlers;
+    using Domain.Utility;
     using Logic.Helpers;
 
     /// <summary>
