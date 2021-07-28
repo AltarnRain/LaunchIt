@@ -107,10 +107,10 @@ namespace Infrastructure.Services
                 var runningServices = this.serviceHelper.GetRunningServices();
                 var runningProcesses = this.processHelper.GetRunningExecutables();
 
-                var startedServices = GetArrayDifference(runningServices, this.serviceState)
+                var startedServices = runningServices.Except(this.serviceState)
                     .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Service });
 
-                var startedProcesses = GetArrayDifference(runningProcesses, this.executableState)
+                var startedProcesses = runningProcesses.Except(this.executableState)
                     .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Process });
 
                 var allEvents = new List<MonitoringEventModel>(startedServices);
@@ -140,13 +140,6 @@ namespace Infrastructure.Services
             this.subscriptions.Add(subscription);
 
             return () => this.subscriptions.Remove(subscription);
-        }
-
-        private static string[] GetArrayDifference(string[] currentItems, string[] orignalItems)
-        {
-            var newItems = currentItems.Where(rp => !orignalItems.Contains(rp, StringComparer.OrdinalIgnoreCase));
-
-            return newItems.ToArray();
         }
     }
 }
