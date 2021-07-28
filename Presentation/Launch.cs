@@ -4,7 +4,10 @@
 
 namespace Presentation
 {
+    using Infrastructure.Helpers;
+    using Infrastructure.Loggers;
     using Logic;
+    using Logic.Helpers;
     using Logic.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -16,8 +19,9 @@ namespace Presentation
     public class Launch
     {
         private readonly LaunchIt launchIt;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
         private readonly IConfigurationService configurationService;
+        private readonly IProcessHelper processHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Launch" /> class.
@@ -25,14 +29,17 @@ namespace Presentation
         /// <param name="main">The main.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
+        /// <param name="processHelper">The process helper.</param>
         public Launch(
             LaunchIt main,
-            ILoggerService logger,
-            IConfigurationService configurationService)
+            ILogEventService logger,
+            IConfigurationService configurationService,
+            IProcessHelper processHelper)
         {
             this.launchIt = main;
             this.logger = logger;
             this.configurationService = configurationService;
+            this.processHelper = processHelper;
         }
 
         /// <summary>
@@ -57,7 +64,25 @@ namespace Presentation
                         this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
                     }
 
+                    var consoleLogger = new ConsoleLogger();
+                    var fileLogger = new FileLogger();
+
+                    var fileLoggerSub = this.logger.Subscribe(fileLogger.Log);
+                    var consoleLoggerSub = this.logger.Subscribe(consoleLogger.Log);
+
                     this.launchIt.Start(argument);
+
+                    // Close the file logger. This writes cached logs into the log file.
+                    fileLogger.Close();
+
+                    var logFile = fileLogger.FileName;
+                    this.processHelper.Start(logFile);
+
+                    fileLoggerSub();
+                    consoleLoggerSub();
+
+                    this.WaitForUserShutDownCommand();
+
                     break;
             }
         }
@@ -72,6 +97,14 @@ namespace Presentation
             }
 
             return owner.IsWellKnown(WellKnownSidType.BuiltinAdministratorsSid);
+        }
+
+        private void WaitForUserShutDownCommand()
+        {
+            var manualResetEvent = new System.Threading.ManualResetEvent(false);
+            this.logger.Log("Click 'X' to close the program.");
+            this.logger.Log("Or, press CTRL-C to return to the command prompt.");
+            manualResetEvent.WaitOne();
         }
     }
 }

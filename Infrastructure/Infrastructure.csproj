@@ -12,16 +12,18 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="5.0.0" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Logic\Logic.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

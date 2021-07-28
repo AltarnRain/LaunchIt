@@ -1,4 +1,4 @@
-﻿// <copyright file="ConsoleLogService.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="LogEventService.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -10,8 +10,8 @@ namespace Infrastructure.Services
     /// <summary>
     /// Service to log to the console.
     /// </summary>
-    /// <seealso cref="Logic.Services.ILoggerService" />
-    public class ConsoleLogService : Logic.Services.ILoggerService
+    /// <seealso cref="Logic.Services.ILogEventService" />
+    public class LogEventService : Logic.Services.ILogEventService
     {
         private readonly List<Action<string>> subscriptions = new();
 
@@ -23,8 +23,6 @@ namespace Infrastructure.Services
         {
             var timestamp = DateTime.Now.ToString("yyyymmdd-HHmm");
             var messageToLog = $"{timestamp} {message}";
-
-            System.Console.WriteLine(messageToLog);
 
             // Inform subscribers.
             this.subscriptions.ForEach(s => s(messageToLog));

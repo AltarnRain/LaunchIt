@@ -19,7 +19,7 @@ namespace Infrastructure.Services
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
         private readonly IConfigurationService configurationService;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchItStartupService" /> class.
@@ -32,7 +32,7 @@ namespace Infrastructure.Services
             IServiceHelper serviceHelper,
             IProcessHelper processHelper,
             IConfigurationService configurationService,
-            ILoggerService logger)
+            ILogEventService logger)
         {
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;

@@ -5,22 +5,33 @@
 namespace Infrastructure.Helpers
 {
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// Logs to a file.
     /// </summary>
     public class FileLogger
     {
-        private readonly string fileName;
         private readonly List<string> logCache = new();
+        private string? fileName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileLogger"/> class.
+        /// Gets the name of the file.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        public FileLogger(string fileName)
+        /// <value>
+        /// The name of the file.
+        /// </value>
+        public string FileName
         {
-            this.fileName = fileName;
+            get
+            {
+                if (this.fileName is null)
+                {
+                    this.fileName = Path.GetTempFileName() + ".txt";
+                }
+
+                return this.fileName;
+            }
         }
 
         /// <summary>
@@ -47,7 +58,7 @@ namespace Infrastructure.Helpers
 
         private void WriteToFile()
         {
-            using (var fw = System.IO.File.AppendText(this.fileName))
+            using (var fw = System.IO.File.AppendText(this.FileName))
             {
                 foreach (var log in this.logCache)
                 {

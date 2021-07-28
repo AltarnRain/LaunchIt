@@ -27,7 +27,7 @@ namespace Infrastructure.Services
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         /// <summary>
         /// The serialization service.
@@ -45,7 +45,7 @@ namespace Infrastructure.Services
         /// <param name="pathProvider">The path provider.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public ConfigurationService(IPathProvider pathProvider, ILoggerService logger, ISerializationService serializationService)
+        public ConfigurationService(IPathProvider pathProvider, ILogEventService logger, ISerializationService serializationService)
         {
             this.pathProvider = pathProvider;
             this.logger = logger;

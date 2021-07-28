@@ -18,7 +18,7 @@ namespace Infrastructure.Services
     public class BatchFileStartupService : IStartupService
     {
         private readonly IConfigurationService configurationService;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchFileStartupService" /> class.
@@ -27,7 +27,7 @@ namespace Infrastructure.Services
         /// <param name="logger">The logger.</param>
         public BatchFileStartupService(
             IConfigurationService configurationService,
-            ILoggerService logger)
+            ILogEventService logger)
         {
             this.configurationService = configurationService;
             this.logger = logger;

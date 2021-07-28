@@ -21,7 +21,7 @@ namespace Infrastructure.Helpers
         private const int UnableToEnumerateModules = -2147467259;
         private const int ReadOrWriteProcessRequestFail = 299;
 
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         private readonly Dictionary<string, string> processFileNameCache = new();
 
@@ -38,7 +38,7 @@ namespace Infrastructure.Helpers
         /// Initializes a new instance of the <see cref="WindowsProcessHelper" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public WindowsProcessHelper(ILoggerService logger)
+        public WindowsProcessHelper(ILogEventService logger)
         {
             this.logger = logger;
         }

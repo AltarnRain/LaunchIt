@@ -5,6 +5,7 @@
 namespace Presentation
 {
     using Infrastructure.Helpers;
+    using Infrastructure.Loggers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
     using Infrastructure.Services;
@@ -37,8 +38,8 @@ namespace Presentation
         /// </summary>
         public override void Load()
         {
-            this.Bind<ILoggerService>()
-                .To<ConsoleLogService>()
+            this.Bind<ILogEventService>()
+                .To<LogEventService>()
                 .InSingletonScope();
 
             this.Bind<IPathProvider>()

@@ -19,7 +19,7 @@ namespace Infrastructure.Services
     /// <seealso cref="IMonitoringService" />
     public class WindowsMonitoringService : IMonitoringService
     {
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
         private readonly IConfigurationService configurationService;
@@ -38,7 +38,7 @@ namespace Infrastructure.Services
         /// <param name="processHelper">The process helper.</param>
         /// <param name="configurationService">The configuration service.</param>
         public WindowsMonitoringService(
-            ILoggerService logger,
+            ILogEventService logger,
             IServiceHelper serviceHelper,
             IProcessHelper processHelper,
             IConfigurationService configurationService)

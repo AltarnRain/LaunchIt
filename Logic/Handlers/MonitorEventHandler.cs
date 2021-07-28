@@ -18,7 +18,7 @@ namespace Logic.Handlers
     public class MonitorEventHandler
     {
         private readonly IConfigurationService configurationService;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
 
@@ -36,7 +36,7 @@ namespace Logic.Handlers
         /// <param name="processHelper">The process helper.</param>
         public MonitorEventHandler(
             IConfigurationService configurationService,
-            ILoggerService logger,
+            ILogEventService logger,
             IServiceHelper serviceHelper,
             IProcessHelper processHelper)
         {

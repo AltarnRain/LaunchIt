@@ -7,7 +7,6 @@ namespace Logic
     using Logic.Extensions;
     using Logic.Handlers;
     using Logic.Helpers;
-    using Logic.Logging;
     using Logic.Services;
     using System;
     using System.IO;
@@ -18,7 +17,7 @@ namespace Logic
     public class LaunchIt
     {
         private readonly IConfigurationService configurationService;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
         private readonly IStartupService startupService;
         private readonly IMonitoringService monitoringService;
         private readonly IProcessHelper processHelper;
@@ -36,7 +35,7 @@ namespace Logic
         /// <param name="serviceHelper">The service helper.</param>
         public LaunchIt(
             IConfigurationService configurationService,
-            ILoggerService logger,
+            ILogEventService logger,
             IStartupService startupService,
             IMonitoringService monitoringService,
             IProcessHelper processHelper,
@@ -56,11 +55,6 @@ namespace Logic
         /// <param name="executable">The executable.</param>
         public void Start(string executable)
         {
-            // Save everything the ILoggerService logs to a file.
-            var logFile = Path.GetTempFileName() + ".txt";
-            var fileLogger = new FileLogger(logFile);
-            var unsubscribeFileLogger = this.logger.Subscribe(fileLogger.Log);
-
             var didWork = this.CheckForConfigurationFile();
 
             if (didWork)
@@ -72,7 +66,6 @@ namespace Logic
             if (string.IsNullOrWhiteSpace(executable))
             {
                 this.logger.Log("You didn't give me anything to start.");
-                this.ManualShutdown();
                 return;
             }
 
@@ -111,10 +104,6 @@ namespace Logic
 
             // Clear subscriptions.
             unsubscribeMonitorEventHandler?.Invoke();
-            unsubscribeFileLogger();
-
-            // Close the file logger and write whatever is in the log cache to disk.
-            fileLogger.Close();
 
             if (configuration.ShutdownExplorer)
             {
@@ -126,17 +115,6 @@ namespace Logic
             {
                 this.monitoringService.EndMonitoring();
             }
-
-            this.processHelper.Start(logFile);
-            this.ManualShutdown();
-        }
-
-        private void ManualShutdown()
-        {
-            var manualResetEvent = new System.Threading.ManualResetEvent(false);
-            this.logger.Log("Click 'X' to close the program.");
-            this.logger.Log("Or, press CTRL-C to return to the command prompt.");
-            manualResetEvent.WaitOne();
         }
 
         private bool CheckForConfigurationFile()

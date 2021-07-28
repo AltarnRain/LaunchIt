@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Logic": {
+      "commandName": "Project",
+      "commandLineArgs": "reset"
+    }
+  }
+}

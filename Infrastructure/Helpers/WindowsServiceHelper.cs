@@ -18,7 +18,7 @@ namespace Infrastructure.Helpers
     [SupportedOSPlatform("windows")]
     public class WindowsServiceHelper : StopHelperBase, IServiceHelper
     {
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         private ServiceController[]? serviceControllers;
 
@@ -27,7 +27,7 @@ namespace Infrastructure.Helpers
         /// </summary>
         /// <param name="logger">The logger.</param>
         public WindowsServiceHelper(
-            ILoggerService logger)
+            ILogEventService logger)
         {
             this.logger = logger;
         }

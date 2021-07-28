@@ -14,14 +14,14 @@ namespace Infrastructure.Helpers
     public class BatchRunner
     {
         private readonly string batchContent;
-        private readonly ILoggerService logger;
+        private readonly ILogEventService logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchRunner" /> class.
         /// </summary>
         /// <param name="batchContent">Content of the batch.</param>
         /// <param name="logger">The logger.</param>
-        public BatchRunner(string batchContent, ILoggerService logger)
+        public BatchRunner(string batchContent, ILogEventService logger)
         {
             this.batchContent = batchContent;
             this.logger = logger;
