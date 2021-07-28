@@ -4,6 +4,7 @@
 
 namespace Logic.Services
 {
+    using Logic.Loggers;
     using System;
 
     /// <summary>
@@ -32,8 +33,10 @@ namespace Logic.Services
         /// <summary>
         /// Subscribes the specified log action.
         /// </summary>
-        /// <param name="logAction">The log action.</param>
-        /// <returns>Desubscription action.</returns>
-        public Action Subscribe(Action<string> logAction);
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// Desubscription action.
+        /// </returns>
+        public Action Subscribe(ILog logger);
     }
 }

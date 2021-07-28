@@ -4,13 +4,14 @@
 
 namespace Infrastructure.Helpers
 {
+    using Logic.Loggers;
     using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
     /// Logs to a file.
     /// </summary>
-    public class FileLogger
+    public class FileLogger : ILog
     {
         private readonly List<string> logCache = new();
         private string? fileName;

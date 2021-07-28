@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Services
 {
+    using Logic.Loggers;
     using System;
     using System.Collections.Generic;
 
@@ -13,7 +14,7 @@ namespace Infrastructure.Services
     /// <seealso cref="Logic.Services.ILogEventService" />
     public class LogEventService : Logic.Services.ILogEventService
     {
-        private readonly List<Action<string>> subscriptions = new();
+        private readonly List<ILog> subscriptions = new();
 
         /// <summary>
         /// Logs the specified message.
@@ -25,7 +26,7 @@ namespace Infrastructure.Services
             var messageToLog = $"{timestamp} {message}";
 
             // Inform subscribers.
-            this.subscriptions.ForEach(s => s(messageToLog));
+            this.subscriptions.ForEach(s => s.Log(messageToLog));
         }
 
         /// <summary>
@@ -49,13 +50,15 @@ namespace Infrastructure.Services
         /// <summary>
         /// Subscribes the specified log action.
         /// </summary>
-        /// <param name="logAction">The log action.</param>
-        /// <returns>Desubscribe action.</returns>
-        public Action Subscribe(Action<string> logAction)
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// Desubscribe action.
+        /// </returns>
+        public Action Subscribe(ILog logger)
         {
-            this.subscriptions.Add(logAction);
+            this.subscriptions.Add(logger);
 
-            return () => this.subscriptions.Remove(logAction);
+            return () => this.subscriptions.Remove(logger);
         }
     }
 }

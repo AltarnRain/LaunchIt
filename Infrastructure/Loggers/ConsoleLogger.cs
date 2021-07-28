@@ -4,10 +4,12 @@
 
 namespace Infrastructure.Loggers
 {
+    using Logic.Loggers;
+
     /// <summary>
     /// Service to log to the console.
     /// </summary>
-    public class ConsoleLogger
+    public class ConsoleLogger : ILog
     {
         /// <summary>
         /// Logs the specified message.

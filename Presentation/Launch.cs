@@ -64,11 +64,13 @@ namespace Presentation
                         this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
                     }
 
+                    // Create loggers we want to register.
                     var consoleLogger = new ConsoleLogger();
                     var fileLogger = new FileLogger();
 
-                    var fileLoggerSub = this.logger.Subscribe(fileLogger.Log);
-                    var consoleLoggerSub = this.logger.Subscribe(consoleLogger.Log);
+                    // Subscribe loggers. They'll be infored of any log message and deal with it.
+                    var fileLoggerSub = this.logger.Subscribe(fileLogger);
+                    var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
 
                     this.launchIt.Start(argument);
 
