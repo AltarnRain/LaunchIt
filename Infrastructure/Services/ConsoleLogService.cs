@@ -22,12 +22,12 @@ namespace Infrastructure.Services
         public void Log(string message)
         {
             var timestamp = DateTime.Now.ToString("yyyymmdd-HHmm");
+            var messageToLog = $"{timestamp} {message}";
 
-            var timestampedMessage = $"{timestamp} {message}";
-            System.Console.WriteLine(timestampedMessage);
+            System.Console.WriteLine(messageToLog);
 
             // Inform subscribers.
-            this.subscriptions.ForEach(s => s(timestampedMessage));
+            this.subscriptions.ForEach(s => s(messageToLog));
         }
 
         /// <summary>

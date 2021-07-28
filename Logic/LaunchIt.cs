@@ -64,6 +64,13 @@ namespace Logic
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(executable))
+            {
+                this.logger.Log("You didn't give me anything to start.");
+                this.ManualShutdown();
+                return;
+            }
+
             var configuration = this.configurationService.Read();
 
             if (configuration.Services.Length + configuration.Executables.Length == 0)
@@ -122,14 +129,19 @@ namespace Logic
 
             if (!configuration.ShutDownWhenProgramCloses)
             {
-                var manualResetEvent = new System.Threading.ManualResetEvent(false);
-                this.logger.Log("Click 'X' to close the program.");
-                manualResetEvent.WaitOne();
+                this.ManualShutdown();
             }
             else
             {
                 this.logger.Log("Program stopped. Shutting down LaunchIt.");
             }
+        }
+
+        private void ManualShutdown()
+        {
+            var manualResetEvent = new System.Threading.ManualResetEvent(false);
+            this.logger.Log("Click 'X' to close the program.");
+            manualResetEvent.WaitOne();
         }
 
         private bool CheckForConfigurationFile()
