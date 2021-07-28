@@ -19,6 +19,8 @@ namespace Infrastructure.Helpers
     {
         private readonly ILoggerService logger;
 
+        private ServiceController[]? serviceControllers;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsServiceHelper" /> class.
         /// </summary>
@@ -37,8 +39,7 @@ namespace Infrastructure.Helpers
         /// </returns>
         public string[] GetRunningServices()
         {
-            return ServiceController
-                .GetServices()
+            return this.GetServices()
                 .Where(s => s.Status == ServiceControllerStatus.Running)
                 .Select(s => s.DisplayName)
                 .ToArray();
@@ -76,5 +77,20 @@ namespace Infrastructure.Helpers
 
             this.logger.Log($"Skipped: service '{serviceName}' is not running.");
         }
+
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <returns>Service controllers.</returns>
+        private ServiceController[] GetServices()
+        {
+            if (this.serviceControllers is null)
+            {
+                this.serviceControllers = ServiceController.GetServices();
+            }
+
+            return this.serviceControllers;
+        }
+
     }
 }

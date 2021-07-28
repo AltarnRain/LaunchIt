@@ -4,6 +4,7 @@
 
 namespace Tests.Base
 {
+    using Infrastructure.Helpers;
     using Infrastructure.Services;
     using Logic.Providers;
     using Ninject;
@@ -35,6 +36,11 @@ namespace Tests.Base
         /// Gets the yaml configuration service.
         /// </summary>
         public ConfigurationService ConfigurationService => this.kernel.Get<ConfigurationService>();
+
+        /// <summary>
+        /// Gets the windows service helper.
+        /// </summary>
+        public WindowsServiceHelper WindowsServiceHelper => this.kernel.Get<WindowsServiceHelper>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

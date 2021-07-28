@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace Tests
 {
     [TestClass]
-    public class Fiddle
+    public class Fiddle : Base.TestBase
     {
         [TestMethod]
         public void FiddleMethod1()
@@ -25,6 +25,26 @@ namespace Tests
                 {
                     System.Diagnostics.Trace.WriteLine($"\"{p.ProcessName}\",");
                 }
+            }
+        }
+
+        [TestMethod]
+        public void MyTestMethod()
+        {
+            using (var scope = this.StartTestScope())
+            {
+                var target = scope.WindowsServiceHelper;
+
+
+                var sw = new Stopwatch();
+                sw.Start();
+                for (int i = 0; i < 10000; i++)
+                {
+                    target.GetRunningServices();
+                }
+
+                Trace.WriteLine(sw.ElapsedTicks);
+
             }
         }
     }
