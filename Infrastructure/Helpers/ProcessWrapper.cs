@@ -7,7 +7,7 @@ namespace Infrastructure.Helpers
     using System.Diagnostics;
 
     /// <summary>
-    /// Wrapper class for Process calls. This is the only place in the program where ProcessStartInfo objects are created.
+    /// Wrapper class for <see cref="Process"/>calls. This is the only place in the program where ProcessStartInfo objects are created.
     /// </summary>
     public static class ProcessWrapper
     {
