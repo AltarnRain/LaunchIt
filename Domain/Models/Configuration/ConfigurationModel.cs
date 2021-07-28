@@ -38,12 +38,6 @@ namespace Domain.Models.Configuration
         public bool UseBatchFile { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether [shut down when program closes].
-        /// </summary>
-        [Description("When true, Launchit will close when the launched program closes. Does not apply to batch file start ups. Default is false")]
-        public bool ShutDownWhenProgramCloses { get; set; } = false;
-
-        /// <summary>
         /// Gets or sets the monitoring configuration.
         /// </summary>
         [Description("Configure monitoring options")]

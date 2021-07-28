@@ -128,15 +128,7 @@ namespace Logic
             }
 
             this.processHelper.Start(logFile);
-
-            if (!configuration.ShutDownWhenProgramCloses)
-            {
-                this.ManualShutdown();
-            }
-            else
-            {
-                this.logger.Log("Program stopped. Shutting down LaunchIt.");
-            }
+            this.ManualShutdown();
         }
 
         private void ManualShutdown()
