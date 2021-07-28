@@ -43,6 +43,11 @@ namespace Tests.Base
         public WindowsServiceHelper WindowsServiceHelper => this.kernel.Get<WindowsServiceHelper>();
 
         /// <summary>
+        /// Gets the windows process helper.
+        /// </summary>
+        public WindowsProcessHelper WindowsProcessHelper => this.kernel.Get<WindowsProcessHelper>();
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()

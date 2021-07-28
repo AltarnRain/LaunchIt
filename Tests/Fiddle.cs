@@ -11,6 +11,7 @@ namespace Tests
     public class Fiddle : Base.TestBase
     {
         [TestMethod]
+        [Ignore]
         public void FiddleMethod1()
         {
             var processes = Process.GetProcessesByName("linqpad");
@@ -29,7 +30,8 @@ namespace Tests
         }
 
         [TestMethod]
-        public void MyTestMethod()
+        [Ignore]
+        public void WindowsServiceHelperPerformanceTest()
         {
             using (var scope = this.StartTestScope())
             {
