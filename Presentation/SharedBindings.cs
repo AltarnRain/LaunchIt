@@ -65,6 +65,10 @@ namespace Presentation
                 .To<WindowsProcessHelper>()
                 .InSingletonScope();
 
+            this.Bind<ILaunchModelProvider>()
+                .To<LaunchModelProvider>()
+                .InSingletonScope();
+
             this.Bind<LaunchIt>()
                 .ToSelf()
                 .InSingletonScope();

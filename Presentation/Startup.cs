@@ -4,10 +4,12 @@
 
 namespace Presentation
 {
+    using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Infrastructure.Loggers;
     using Logic;
     using Logic.Contracts.Helpers;
+    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -22,6 +24,7 @@ namespace Presentation
         private readonly ILogEventService logger;
         private readonly IConfigurationService configurationService;
         private readonly IProcessHelper processHelper;
+        private readonly ILaunchModelProvider launchModelProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -30,16 +33,19 @@ namespace Presentation
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="processHelper">The process helper.</param>
+        /// <param name="launchModelProvider">The launch model provider.</param>
         public Startup(
             LaunchIt main,
             ILogEventService logger,
             IConfigurationService configurationService,
-            IProcessHelper processHelper)
+            IProcessHelper processHelper,
+            ILaunchModelProvider launchModelProvider)
         {
             this.launchIt = main;
             this.logger = logger;
             this.configurationService = configurationService;
             this.processHelper = processHelper;
+            this.launchModelProvider = launchModelProvider;
         }
 
         /// <summary>
@@ -72,7 +78,9 @@ namespace Presentation
                     var fileLoggerSub = this.logger.Subscribe(fileLogger);
                     var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
 
-                    this.launchIt.Start(argument);
+                    var launchModel = this.launchModelProvider.GetModel(argument);
+
+                    this.launchIt.Start(launchModel);
 
                     // Close the file logger. This writes cached logs into the log file.
                     fileLogger.Close();

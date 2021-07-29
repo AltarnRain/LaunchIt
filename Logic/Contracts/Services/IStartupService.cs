@@ -4,6 +4,7 @@
 
 namespace Logic.Contracts.Services
 {
+    using Domain.Models.Configuration;
     using System.Diagnostics;
 
     /// <summary>
@@ -14,10 +15,10 @@ namespace Logic.Contracts.Services
         /// <summary>
         /// Starts the specified executable.
         /// </summary>
-        /// <param name="executable">The executable.</param>
+        /// <param name="launchModel">The launch model.</param>
         /// <returns>
         /// A Process.
         /// </returns>
-        public Process Start(string executable);
+        public Process Start(LaunchModel launchModel);
     }
 }

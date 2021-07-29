@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Services
 {
+    using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
@@ -18,7 +19,6 @@ namespace Infrastructure.Services
     {
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
-        private readonly IConfigurationService configurationService;
         private readonly ILogEventService logger;
 
         /// <summary>
@@ -31,27 +31,24 @@ namespace Infrastructure.Services
         public LaunchItStartupService(
             IServiceHelper serviceHelper,
             IProcessHelper processHelper,
-            IConfigurationService configurationService,
             ILogEventService logger)
         {
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;
-            this.configurationService = configurationService;
             this.logger = logger;
         }
 
         /// <summary>
         /// Starts the specified executable.
         /// </summary>
-        /// <param name="executable">The executable.</param>
+        /// <param name="launchModel">The launch model.</param>
         /// <returns>
         /// A Process.
         /// </returns>
-        public Process Start(string executable)
+        /// <exception cref="Exception">Should not start {executable}.</exception>
+        public Process Start(LaunchModel launchModel)
         {
-            var configuration = this.configurationService.Read();
-
-            if (configuration.ShutdownExplorer)
+            if (launchModel.ShutdownExplorer)
             {
                 this.logger.Log("Shutting down explorer. Your desktop will disappear.");
                 this.logger.Log("This is completely normal!");
@@ -60,26 +57,25 @@ namespace Infrastructure.Services
                 this.processHelper.Stop("explorer.exe");
             }
 
-            foreach (var service in configuration.Services)
+            foreach (var service in launchModel.Services)
             {
                 // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
                 this.serviceHelper.Stop(service, false);
             }
 
-            foreach (var exe in configuration.Executables)
+            foreach (var exe in launchModel.Executables)
             {
                 // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
                 this.processHelper.Stop(exe, false);
             }
 
-            var process = ProcessWrapper.Start(executable);
+            var process = ProcessWrapper.Start(launchModel.ExecutableToLaunch);
             if (process is null)
             {
-                throw new Exception($"Should not start {executable}");
+                throw new Exception($"Should not start {launchModel.ExecutableToLaunch}");
             }
 
-            var priorityClass = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
-            process.PriorityClass = priorityClass;
+            process.PriorityClass = launchModel.Priority;
 
             return process;
         }

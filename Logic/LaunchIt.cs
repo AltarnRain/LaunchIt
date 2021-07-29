@@ -4,6 +4,7 @@
 
 namespace Logic
 {
+    using Domain.Models.Configuration;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
     using Logic.Extensions;
@@ -51,8 +52,8 @@ namespace Logic
         /// <summary>
         /// Starts the specified arguments.
         /// </summary>
-        /// <param name="executable">The executable.</param>
-        public void Start(string executable)
+        /// <param name="launchModel">The launch model.</param>
+        public void Start(LaunchModel launchModel)
         {
             var didWork = this.CheckForConfigurationFile();
 
@@ -62,29 +63,28 @@ namespace Logic
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(executable))
+            if (string.IsNullOrWhiteSpace(launchModel.ExecutableToLaunch))
             {
                 this.logger.Log("You didn't give me anything to start.");
                 return;
             }
 
-            var configuration = this.configurationService.Read();
-
-            if (configuration.Services.Length + configuration.Executables.Length == 0)
+            if (launchModel.Services.Length + launchModel.Executables.Length == 0)
             {
                 this.logger.Log("You didn't configure and services or executables for me to shut down.");
             }
 
-            var process = this.startupService.Start(executable);
+            var configuration = this.configurationService.Read();
+            var process = this.startupService.Start(launchModel);
 
             // User wants a batchfile so we're done and can exit.
-            if (configuration.UseBatchFile)
+            if (launchModel.UseBatchFile)
             {
                 return;
             }
 
             Action? unsubscribeMonitorEventHandler = null;
-            if (configuration.StartMonitoring())
+            if (launchModel.StartMonitoring())
             {
                 this.monitoringService.StartMonitoring();
 
@@ -99,7 +99,7 @@ namespace Logic
 
             process.WaitForExit();
 
-            this.logger.Log($"{executable} has shutdown");
+            this.logger.Log($"{launchModel.ExecutableToLaunch} has shutdown");
 
             // Clear subscriptions.
             unsubscribeMonitorEventHandler?.Invoke();

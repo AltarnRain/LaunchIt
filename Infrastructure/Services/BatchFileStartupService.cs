@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Services
 {
+    using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Logic.Contracts.Services;
     using System;
@@ -17,7 +18,6 @@ namespace Infrastructure.Services
     /// <seealso cref="IStartupService" />
     public class BatchFileStartupService : IStartupService
     {
-        private readonly IConfigurationService configurationService;
         private readonly ILogEventService logger;
 
         /// <summary>
@@ -25,33 +25,27 @@ namespace Infrastructure.Services
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="logger">The logger.</param>
-        public BatchFileStartupService(
-            IConfigurationService configurationService,
-            ILogEventService logger)
+        public BatchFileStartupService(ILogEventService logger)
         {
-            this.configurationService = configurationService;
             this.logger = logger;
         }
 
         /// <summary>
         /// Starts the specified executable.
         /// </summary>
-        /// <param name="executablePath">The executable.</param>
+        /// <param name="launchModel">The launch model.</param>
         /// <returns>
         /// A Process.
         /// </returns>
         /// <exception cref="Exception">Failed to launch a process.</exception>
-        public Process Start(string? executablePath)
+        public Process Start(LaunchModel launchModel)
         {
             var batchBuilder = new BatchBuilder();
 
             batchBuilder.Rem($"This file generated on {DateTime.Now}");
             batchBuilder.AddEmptyLine();
 
-            var configuration = this.configurationService.Read();
-            var priorityClass = Enum.Parse<ProcessPriorityClass>(configuration.Priority, true);
-
-            if (configuration.ShutdownExplorer)
+            if (launchModel.ShutdownExplorer)
             {
                 // Shut down explorer before any other process is terminated.
                 batchBuilder.Echo("Shutting down explorer. Your desktop will disappear.");
@@ -61,23 +55,23 @@ namespace Infrastructure.Services
             }
 
             batchBuilder.Echo("Shutting down services...");
-            foreach (var service in configuration.Services)
+            foreach (var service in launchModel.Services)
             {
                 this.logger.Log($"Adding shutdown command for service '{service}'");
                 batchBuilder.Add(GetServiceShutDownCommand(service));
             }
 
             batchBuilder.Echo("Shutting down executables...");
-            foreach (var exe in configuration.Executables)
+            foreach (var exe in launchModel.Executables)
             {
                 this.logger.Log($"Adding kill command for executable {exe}");
                 batchBuilder.Add(GetExecutableShutDownCommand(exe));
             }
 
-            if (executablePath is not null)
+            if (launchModel.ExecutableToLaunch is not null)
             {
-                var folder = Path.GetDirectoryName(executablePath);
-                var executableName = Path.GetFileName(executablePath);
+                var folder = Path.GetDirectoryName(launchModel.ExecutableToLaunch);
+                var executableName = Path.GetFileName(launchModel.ExecutableToLaunch);
 
                 if (string.IsNullOrWhiteSpace(folder))
                 {
@@ -88,17 +82,17 @@ namespace Infrastructure.Services
                     batchBuilder.Add(GetFolderCDCommand(folder));
                 }
 
-                batchBuilder.Add(GetExecutableExecutionCommand(executableName, priorityClass));
+                batchBuilder.Add(GetExecutableExecutionCommand(executableName, launchModel.Priority));
             }
 
-            batchBuilder.Echo($"Running {executablePath}.");
+            batchBuilder.Echo($"Running {launchModel.ExecutableToLaunch}.");
 
             // Reboot explorer if it was shut down.
-            if (configuration.ShutdownExplorer)
+            if (launchModel.ShutdownExplorer)
             {
                 batchBuilder.Echo($"Explorer.exe has been shut down.");
                 batchBuilder.Echo($"Press any key to restart it.");
-                batchBuilder.Echo($"Note that you really want to do this once you're done with {executablePath}");
+                batchBuilder.Echo($"Note that you really want to do this once you're done with {launchModel}");
                 batchBuilder.Pause();
                 batchBuilder.Add("explorer.exe");
             }

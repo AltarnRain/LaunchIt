@@ -27,7 +27,7 @@ namespace Logic.Extensions
         /// </summary>
         /// <param name="self">The self.</param>
         /// <returns>True if the current configuration requires monitoring.</returns>
-        public static bool StartMonitoring(this ConfigurationModel self)
+        public static bool StartMonitoring(this LaunchModel self)
         {
             return self.MonitoringConfiguration.MonitorRestarts ||
                 self.ServiceShutdownConfiguration.ShutdownAfterRestart ||
