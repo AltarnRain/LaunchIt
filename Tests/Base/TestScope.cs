@@ -7,6 +7,7 @@ namespace Tests.Base
     using Infrastructure.Helpers;
     using Infrastructure.Services;
     using Logic.Contracts.Providers;
+    using Logic.Contracts.Services;
     using Ninject;
     using Presentation;
     using System;
@@ -46,6 +47,11 @@ namespace Tests.Base
         /// Gets the windows process helper.
         /// </summary>
         public WindowsProcessHelper WindowsProcessHelper => this.kernel.Get<WindowsProcessHelper>();
+
+        /// <summary>
+        /// Gets the log event service.
+        /// </summary>
+        public ILogEventService LogEventService => this.kernel.Get<ILogEventService>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
