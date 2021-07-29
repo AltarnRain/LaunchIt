@@ -13,7 +13,17 @@ namespace Logic.Logging
     public class FileLogger
     {
         private readonly List<string> logCache = new();
+        private readonly int logCacheSize;
         private string? fileName;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileLogger"/> class.
+        /// </summary>
+        /// <param name="logCacheSize">Size of the log cache.</param>
+        public FileLogger(int logCacheSize = 10)
+        {
+            this.logCacheSize = logCacheSize;
+        }
 
         /// <summary>
         /// Gets the name of the file.
@@ -21,7 +31,7 @@ namespace Logic.Logging
         /// <value>
         /// The name of the file.
         /// </value>
-        private string FileName
+        public string FileName
         {
             get
             {
@@ -42,7 +52,7 @@ namespace Logic.Logging
         {
             this.logCache.Add(message);
 
-            if (this.logCache.Count > 10)
+            if (this.logCache.Count >= this.logCacheSize)
             {
                 this.WriteToFile();
             }
