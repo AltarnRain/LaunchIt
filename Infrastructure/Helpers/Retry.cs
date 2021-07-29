@@ -31,7 +31,7 @@ namespace Infrastructure.Helpers
             this.onFail = onFail;
             this.onSucces = onSucces;
             this.attempts = attempts;
-            this.retryCount = 0;
+            this.retryCount = 1;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Infrastructure.Helpers
         /// </summary>
         private void Go()
         {
-            while (this.retryCount <= this.attempts)
+            for (this.retryCount = 1; this.retryCount < this.attempts; this.retryCount++)
             {
                 var result = this.action();
 
@@ -64,7 +64,6 @@ namespace Infrastructure.Helpers
                 // Sleep, increase retry time out and try again.
                 System.Threading.Thread.Sleep(this.retryTimeout);
                 this.retryTimeout *= 2;
-                this.retryCount++;
             }
 
             this.onFail.Invoke(this.retryCount);
