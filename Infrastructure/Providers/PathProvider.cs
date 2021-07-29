@@ -45,14 +45,7 @@ namespace Infrastructure.Providers
 
             var strippedPath = relativePath[2..];
 
-            var location = this.rootPath ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            if (location is null)
-            {
-                throw new System.Exception("Could not find the execution directory of the executable");
-            }
-
-            var returnValue = Path.Combine(location, strippedPath);
+            var returnValue = Path.Combine(this.rootPath, strippedPath);
 
             return returnValue;
         }
