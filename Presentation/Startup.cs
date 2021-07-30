@@ -7,6 +7,8 @@ namespace Presentation
     using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Infrastructure.Loggers;
+    using Infrastructure.Parsers;
+    using Infrastructure.Providers;
     using Logic;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Providers;
@@ -24,7 +26,7 @@ namespace Presentation
         private readonly ILogEventService logger;
         private readonly IConfigurationService configurationService;
         private readonly IProcessHelper processHelper;
-        private readonly ILaunchModelProvider launchModelProvider;
+        private readonly LaunchModelProvider launchModelProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -39,7 +41,7 @@ namespace Presentation
             ILogEventService logger,
             IConfigurationService configurationService,
             IProcessHelper processHelper,
-            ILaunchModelProvider launchModelProvider)
+            LaunchModelProvider launchModelProvider)
         {
             this.launchIt = main;
             this.logger = logger;
@@ -51,50 +53,49 @@ namespace Presentation
         /// <summary>
         /// Runs the specified argument.
         /// </summary>
-        /// <param name="argument">The argument.</param>
-        public void Run(string argument)
+        /// <param name="args">The arguments.</param>
+        public void Run(string[] args)
         {
-            switch (argument.ToLower())
+            var launchModel = this.launchModelProvider.GetModel(args);
+
+            if (launchModel.ResetConfiguration)
             {
-                case "edit":
-                    this.configurationService.EditInNotepad();
-                    break;
-                case "reset":
-                    this.configurationService.WriteExampleConfigurationFile();
-                    this.configurationService.EditInNotepad();
-                    break;
-                default:
-                    if (!IsElevated())
-                    {
-                        this.logger.Log("Hey, I noticed you're not running me as administrator.");
-                        this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
-                    }
-
-                    // Create loggers we want to register.
-                    var consoleLogger = new ConsoleLogger();
-                    var fileLogger = new FileLogger();
-
-                    // Subscribe loggers. They'll be infored of any log message and deal with it.
-                    var fileLoggerSub = this.logger.Subscribe(fileLogger);
-                    var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
-
-                    var launchModel = this.launchModelProvider.GetModel(argument);
-
-                    this.launchIt.Start(launchModel);
-
-                    // Close the file logger. This writes cached logs into the log file.
-                    fileLogger.Close();
-
-                    var logFile = fileLogger.FileName;
-                    this.processHelper.Start(logFile);
-
-                    fileLoggerSub();
-                    consoleLoggerSub();
-
-                    this.WaitForUserShutDownCommand();
-
-                    break;
+                this.configurationService.WriteExampleConfigurationFile();
+                return;
             }
+
+            if (launchModel.EditConfiguration)
+            {
+                this.configurationService.EditInNotepad();
+                return;
+            }
+
+            if (!IsElevated())
+            {
+                this.logger.Log("Hey, I noticed you're not running me as administrator.");
+                this.logger.Log("I'll still do my best to shutdown processes for you but without administrative priveledges there's only so much I can do.");
+            }
+
+            // Create loggers we want to register.
+            var consoleLogger = new ConsoleLogger();
+            var fileLogger = new FileLogger();
+
+            // Subscribe loggers. They'll be infored of any log message and deal with it.
+            var fileLoggerSub = this.logger.Subscribe(fileLogger);
+            var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
+
+            this.launchIt.Start(launchModel);
+
+            // Close the file logger. This writes cached logs into the log file.
+            fileLogger.Close();
+
+            var logFile = fileLogger.FileName;
+            this.processHelper.Start(logFile);
+
+            fileLoggerSub();
+            consoleLoggerSub();
+
+            this.WaitForUserShutDownCommand();
         }
 
         private static bool IsElevated()

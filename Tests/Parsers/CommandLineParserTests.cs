@@ -4,10 +4,11 @@
 
 namespace Infrastructure.Parsers.Tests
 {
+    using Domain.Models.Configuration;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Tests <see cref="CommandLineParser.Parse(string[])"/>.
+    /// Tests <see cref="LaunchModelUpdater.Parse(string[])"/>.
     /// </summary>
     [TestClass]
     public class CommandLineParserTests
@@ -18,11 +19,14 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseResetTest()
         {
+            // Arrange
+            var model = new LaunchModel();
+
             // Act
-            var result = CommandLineParser.Parse(new[] { "-reset" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-reset" }, model);
 
             // Assert
-            Assert.IsTrue(result.ResetConfiguration);
+            Assert.IsTrue(model.ResetConfiguration);
         }
 
         /// <summary>
@@ -31,11 +35,14 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseEditTest()
         {
+            // Arrange
+            var model = new LaunchModel();
+
             // Act
-            var result = CommandLineParser.Parse(new[] { "-edit" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-edit" }, model);
 
             // Assert
-            Assert.IsTrue(result.EditConfiguration);
+            Assert.IsTrue(model.EditConfiguration);
         }
 
         /// <summary>
@@ -44,11 +51,14 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseExecutableTest()
         {
+            // Arrange
+            var model = new LaunchModel() { ExecutableToLaunch = "Something else" };
+
             // Act
-            var result = CommandLineParser.Parse(new[] { "cmd" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "cmd" }, model);
 
             // Assert
-            Assert.IsNotNull(result.LaunchModel.ExecutableToLaunch);
+            Assert.AreEqual("cmd", model.ExecutableToLaunch);
         }
 
         /// <summary>
@@ -57,11 +67,17 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void UseBatchTest()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                UseBatchFile = false,
+            };
+
             // Act
-            var result = CommandLineParser.Parse(new[] { "-usebatch" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-usebatch" }, model);
 
             // Assert
-            Assert.IsTrue(result.LaunchModel.UseBatchFile);
+            Assert.IsTrue(model.UseBatchFile);
         }
 
         /// <summary>
@@ -70,11 +86,17 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ShutdownExplorerTest()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                ShutdownExplorer = false,
+            };
+
             // Act
-            var result = CommandLineParser.Parse(new[] { "-shutdownexplorer" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-shutdownexplorer" }, model);
 
             // Assert
-            Assert.IsTrue(result.LaunchModel.ShutdownExplorer);
+            Assert.IsTrue(model.ShutdownExplorer);
         }
 
         /// <summary>
@@ -83,13 +105,27 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void PriorityTest()
         {
+            // Arrange
+            var model = new LaunchModel();
+
             // Assert
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Idle, CommandLineParser.Parse(new[] { "-priority", "idle" }).LaunchModel.Priority);
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.BelowNormal, CommandLineParser.Parse(new[] { "-priority", "belownormal" }).LaunchModel.Priority);
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Normal, CommandLineParser.Parse(new[] { "-priority", "normal" }).LaunchModel.Priority);
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.AboveNormal, CommandLineParser.Parse(new[] { "-priority", "abovenormal" }).LaunchModel.Priority);
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.High, CommandLineParser.Parse(new[] { "-priority", "high" }).LaunchModel.Priority);
-            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.RealTime, CommandLineParser.Parse(new[] { "-priority", "realtime" }).LaunchModel.Priority);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "idle" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Idle, model.Priority);
+
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "belownormal" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.BelowNormal, model.Priority);
+
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "normal" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Normal, model.Priority);
+
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "abovenormal" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.AboveNormal, model.Priority);
+
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "high" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.High, model.Priority);
+
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "realtime" }, model);
+            Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.RealTime, model.Priority);
         }
 
         /// <summary>
@@ -98,13 +134,20 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseMonitorRestarts()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                MonitoringConfiguration = new MonitoringConfiguration
+                {
+                    MonitorRestarts = false,
+                },
+            };
+
             // Act
-            var result1 = CommandLineParser.Parse(new[] { "-monitorrestarts", "true" });
-            var result2 = CommandLineParser.Parse(new[] { "-monitorrestarts", "false" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-monitorrestarts", "true" }, model);
 
             // Assert
-            Assert.IsTrue(result1.LaunchModel.MonitoringConfiguration.MonitorRestarts);
-            Assert.IsFalse(result2.LaunchModel.MonitoringConfiguration.MonitorRestarts);
+            Assert.IsTrue(model.MonitoringConfiguration.MonitorRestarts);
         }
 
         /// <summary>
@@ -113,11 +156,20 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseMonitorInterval()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                MonitoringConfiguration = new MonitoringConfiguration
+                {
+                    MonitoringInterval = 300,
+                },
+            };
+
             // Act
-            var result1 = CommandLineParser.Parse(new[] { "-monitorinterval", "180" });
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-monitorinterval", "180" }, model);
 
             // Assert
-            Assert.AreEqual(180, result1.LaunchModel.MonitoringConfiguration.MonitoringInterval);
+            Assert.AreEqual(180, model.MonitoringConfiguration.MonitoringInterval);
         }
 
         /// <summary>
@@ -126,8 +178,19 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseServiceShutdownCommands()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                ServiceShutdownConfiguration = new ShutdownConfigurationModel
+                {
+                    ShutdownAfterRestart = true,
+                    MaximumShutdownAttempts = 3,
+                    OnlyConfigured = true,
+                },
+            };
+
             // Act
-            var result = CommandLineParser.Parse(
+            LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
                     "-ServiceShutdownAfterRestart",
@@ -136,12 +199,12 @@ namespace Infrastructure.Parsers.Tests
                     "false",
                     "-ServiceShutdownMaximumAttempts",
                     "5",
-                });
+                }, model);
 
             // Assert
-            Assert.IsFalse(result.LaunchModel.ServiceShutdownConfiguration.ShutdownAfterRestart);
-            Assert.IsFalse(result.LaunchModel.ServiceShutdownConfiguration.OnlyConfigured);
-            Assert.AreEqual(5, result.LaunchModel.ServiceShutdownConfiguration.MaximumShutdownAttempts);
+            Assert.IsFalse(model.ServiceShutdownConfiguration.ShutdownAfterRestart);
+            Assert.IsFalse(model.ServiceShutdownConfiguration.OnlyConfigured);
+            Assert.AreEqual(5, model.ServiceShutdownConfiguration.MaximumShutdownAttempts);
         }
 
         /// <summary>
@@ -150,8 +213,19 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseExecutableShutdownCommands()
         {
+            // Arrange
+            var model = new LaunchModel
+            {
+                ExecutableShutdownConfiguration = new ShutdownConfigurationModel
+                {
+                    ShutdownAfterRestart = true,
+                    MaximumShutdownAttempts = 3,
+                    OnlyConfigured = true,
+                },
+            };
+
             // Act
-            var result = CommandLineParser.Parse(
+            LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
                     "-ExecutableShutdownAfterRestart",
@@ -160,12 +234,12 @@ namespace Infrastructure.Parsers.Tests
                     "false",
                     "-ExecutableShutdownMaximumAttempts",
                     "5",
-                });
+                }, model);
 
             // Assert
-            Assert.IsFalse(result.LaunchModel.ExecutableShutdownConfiguration.ShutdownAfterRestart);
-            Assert.IsFalse(result.LaunchModel.ExecutableShutdownConfiguration.OnlyConfigured);
-            Assert.AreEqual(5, result.LaunchModel.ExecutableShutdownConfiguration.MaximumShutdownAttempts);
+            Assert.IsFalse(model.ExecutableShutdownConfiguration.ShutdownAfterRestart);
+            Assert.IsFalse(model.ExecutableShutdownConfiguration.OnlyConfigured);
+            Assert.AreEqual(5, model.ExecutableShutdownConfiguration.MaximumShutdownAttempts);
         }
 
         /// <summary>
@@ -174,20 +248,31 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseShutdownService()
         {
+            var model = new LaunchModel
+            {
+                Services = new[]
+                {
+                    "Service A",
+                    "Service B",
+                },
+            };
+
             // Act
-            var result = CommandLineParser.Parse(
+            LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
                     "-ShutdownService",
                     "Service 1",
                     "-ShutdownService",
                     "Service 2",
-                });
+                }, model);
 
             // Assert
-            Assert.AreEqual(2, result.LaunchModel.Services.Length);
-            Assert.AreEqual("Service 1", result.LaunchModel.Services[0]);
-            Assert.AreEqual("Service 2", result.LaunchModel.Services[1]);
+            Assert.AreEqual(4, model.Services.Length);
+            Assert.AreEqual("Service A", model.Services[0]);
+            Assert.AreEqual("Service B", model.Services[1]);
+            Assert.AreEqual("Service 1", model.Services[2]);
+            Assert.AreEqual("Service 2", model.Services[3]);
         }
 
         /// <summary>
@@ -196,20 +281,31 @@ namespace Infrastructure.Parsers.Tests
         [TestMethod]
         public void ParseShutdownExecutable()
         {
+            var model = new LaunchModel
+            {
+                Services = new[]
+                {
+                    "Executable A",
+                    "Executable B",
+                },
+            };
+
             // Act
-            var result = CommandLineParser.Parse(
+            LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
                     "-ShutdownExecutable",
                     "Executable 1",
                     "-ShutdownExecutable",
                     "Executable 2",
-                });
+                }, model);
 
             // Assert
-            Assert.AreEqual(2, result.LaunchModel.Executables.Length);
-            Assert.AreEqual("Executable 1", result.LaunchModel.Executables[0]);
-            Assert.AreEqual("Executable 2", result.LaunchModel.Executables[1]);
+            Assert.AreEqual(4, model.Executables.Length);
+            Assert.AreEqual("Executable A", model.Executables[0]);
+            Assert.AreEqual("Executable B", model.Executables[1]);
+            Assert.AreEqual("Executable 1", model.Executables[2]);
+            Assert.AreEqual("Executable 2", model.Services[3]);
         }
     }
 }

@@ -44,10 +44,7 @@ namespace Presentation
 
             // All done. Lets launch it!
             var launch = kernel.Get<Startup>();
-
-            var argument = args.Length >= 1 ? args[0] : string.Empty;
-
-            launch.Run(argument);
+            launch.Run(args);
         }
 
         /// <summary>

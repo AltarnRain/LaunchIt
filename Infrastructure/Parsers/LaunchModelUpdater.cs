@@ -1,70 +1,66 @@
-﻿// <copyright file="CommandLineParser.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="LaunchModelUpdater.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Infrastructure.Parsers
 {
+    using Domain.Models.Configuration;
     using Logic.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
 
     /// <summary>
-    /// Parses command line arguments.
+    /// Updates a LaunchModel with command line switches.
     /// </summary>
-    public class CommandLineParser
+    public class LaunchModelUpdater
     {
         private readonly string[] args;
+        private readonly LaunchModel launchModel;
         private List<string> services = new();
         private List<string> executables = new();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandLineParser"/> class.
+        /// Initializes a new instance of the <see cref="LaunchModelUpdater"/> class.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        private CommandLineParser(string[] args)
+        private LaunchModelUpdater(string[] args, LaunchModel launchModel)
         {
             this.args = args;
+            this.launchModel = launchModel;
         }
 
         /// <summary>
         /// Parses the specified arguments.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        /// <returns>A LaunchModel.</returns>
-        public static CommandLineParserResult Parse(string[] args)
+        /// <param name="launchModel">The launch model.</param>
+        public static void UpdateWithCommandLineArguments(string[] args, LaunchModel launchModel)
         {
-            var returnValue = new CommandLineParserResult();
-
             // Nothing to do.
             if (args.Length == 0)
             {
-                return returnValue;
+                return;
             }
 
-            var parser = new CommandLineParser(args);
-            returnValue = parser.Parse();
-
-            return returnValue;
+            var parser = new LaunchModelUpdater(args, launchModel);
+            parser.Parse();
         }
 
-        private CommandLineParserResult Parse()
+        private void Parse()
         {
-            var returnValue = new CommandLineParserResult();
             for (int i = 0; i < this.args.Length; i++)
             {
                 var currentArgument = this.args[i];
                 var nextArgument = (i + 1) < this.args.Length ? this.args[i + 1] : null;
-                this.UpdateCommandLineParserResult(returnValue, currentArgument, nextArgument);
+                this.UpdateCommandLineParserResult(this.launchModel, currentArgument, nextArgument);
             }
 
-            returnValue.LaunchModel.Services = this.services.ToArray();
-            returnValue.LaunchModel.Executables = this.executables.ToArray();
-
-            return returnValue;
+            this.launchModel.Services = this.services.ToArray();
+            this.launchModel.Executables = this.executables.ToArray();
         }
 
-        private void UpdateCommandLineParserResult(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
+        private void UpdateCommandLineParserResult(LaunchModel returnValue, string currentArgument, string? nextArgument)
         {
             if (currentArgument.IsSwitchCommand())
             {
@@ -72,10 +68,10 @@ namespace Infrastructure.Parsers
                 return;
             }
 
-            returnValue.LaunchModel.ExecutableToLaunch = currentArgument;
+            returnValue.ExecutableToLaunch = currentArgument;
         }
 
-        private void ParseSwitchCommand(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
+        private void ParseSwitchCommand(LaunchModel returnValue, string currentArgument, string? nextArgument)
         {
             var switchCommand = currentArgument.GetSwitchCommand();
 
@@ -90,12 +86,12 @@ namespace Infrastructure.Parsers
                     returnValue.EditConfiguration = true;
                     break;
                 case Logic.SwitchCommands.UseBatch:
-                    returnValue.LaunchModel.UseBatchFile = true;
+                    returnValue.UseBatchFile = true;
                     break;
                 case Logic.SwitchCommands.Priority:
                     if (Enum.TryParse(nextArgument, true, out ProcessPriorityClass processPriorityClass))
                     {
-                        returnValue.LaunchModel.Priority = processPriorityClass;
+                        returnValue.Priority = processPriorityClass;
                     }
 
                     break;
@@ -104,7 +100,7 @@ namespace Infrastructure.Parsers
 
                     if (bool.TryParse(nextArgument, out bool monitorRestarts))
                     {
-                        returnValue.LaunchModel.MonitoringConfiguration.MonitorRestarts = monitorRestarts;
+                        returnValue.MonitoringConfiguration.MonitorRestarts = monitorRestarts;
                     }
 
                     break;
@@ -112,7 +108,7 @@ namespace Infrastructure.Parsers
 
                     if (int.TryParse(nextArgument, out int monitorInterval))
                     {
-                        returnValue.LaunchModel.MonitoringConfiguration.MonitoringInterval = monitorInterval;
+                        returnValue.MonitoringConfiguration.MonitoringInterval = monitorInterval;
                     }
 
                     break;
@@ -121,7 +117,7 @@ namespace Infrastructure.Parsers
 
                     if (bool.TryParse(nextArgument, out bool serviceShutdownAfterRestart))
                     {
-                        returnValue.LaunchModel.ServiceShutdownConfiguration.ShutdownAfterRestart = serviceShutdownAfterRestart;
+                        returnValue.ServiceShutdownConfiguration.ShutdownAfterRestart = serviceShutdownAfterRestart;
                     }
 
                     break;
@@ -130,7 +126,7 @@ namespace Infrastructure.Parsers
 
                     if (bool.TryParse(nextArgument, out bool serviceShutdownOnlyConfigured))
                     {
-                        returnValue.LaunchModel.ServiceShutdownConfiguration.OnlyConfigured = serviceShutdownOnlyConfigured;
+                        returnValue.ServiceShutdownConfiguration.OnlyConfigured = serviceShutdownOnlyConfigured;
                     }
 
                     break;
@@ -139,7 +135,7 @@ namespace Infrastructure.Parsers
 
                     if (int.TryParse(nextArgument, out int serviceShutdownMaximumAttempts))
                     {
-                        returnValue.LaunchModel.ServiceShutdownConfiguration.MaximumShutdownAttempts = serviceShutdownMaximumAttempts;
+                        returnValue.ServiceShutdownConfiguration.MaximumShutdownAttempts = serviceShutdownMaximumAttempts;
                     }
 
                     break;
@@ -148,7 +144,7 @@ namespace Infrastructure.Parsers
 
                     if (bool.TryParse(nextArgument, out bool executableShutdownAfterRestart))
                     {
-                        returnValue.LaunchModel.ExecutableShutdownConfiguration.ShutdownAfterRestart = executableShutdownAfterRestart;
+                        returnValue.ExecutableShutdownConfiguration.ShutdownAfterRestart = executableShutdownAfterRestart;
                     }
 
                     break;
@@ -157,7 +153,7 @@ namespace Infrastructure.Parsers
 
                     if (bool.TryParse(nextArgument, out bool executableShutdownOnlyConfigured))
                     {
-                        returnValue.LaunchModel.ExecutableShutdownConfiguration.OnlyConfigured = executableShutdownOnlyConfigured;
+                        returnValue.ExecutableShutdownConfiguration.OnlyConfigured = executableShutdownOnlyConfigured;
                     }
 
                     break;
@@ -166,7 +162,7 @@ namespace Infrastructure.Parsers
 
                     if (int.TryParse(nextArgument, out int executableShutdownMaximumAttempts))
                     {
-                        returnValue.LaunchModel.ExecutableShutdownConfiguration.MaximumShutdownAttempts = executableShutdownMaximumAttempts;
+                        returnValue.ExecutableShutdownConfiguration.MaximumShutdownAttempts = executableShutdownMaximumAttempts;
                     }
 
                     break;

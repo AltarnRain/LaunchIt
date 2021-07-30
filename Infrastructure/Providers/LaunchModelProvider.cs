@@ -5,6 +5,7 @@
 namespace Infrastructure.Providers
 {
     using Domain.Models.Configuration;
+    using Infrastructure.Parsers;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using System;
@@ -14,7 +15,7 @@ namespace Infrastructure.Providers
     /// Provides a LaunchModel.
     /// </summary>
     /// <seealso cref="Logic.Contracts.Providers.ILaunchModelProvider" />
-    public class LaunchModelProvider : ILaunchModelProvider
+    public class LaunchModelProvider
     {
         private readonly IConfigurationService configurationService;
 
@@ -30,17 +31,17 @@ namespace Infrastructure.Providers
         /// <summary>
         /// Gets the model.
         /// </summary>
-        /// <param name="executableToLaunch">The executable to launch.</param>
+        /// <param name="args">The arguments.</param>
         /// <returns>
         /// A LaunchModel.
         /// </returns>
-        public LaunchModel GetModel(string executableToLaunch)
+        public LaunchModel GetModel(string[] args)
         {
             var configuration = this.configurationService.Read();
 
-            return new LaunchModel
+            // First, setup a launch model using the configuration file.
+            var returnValue = new LaunchModel
             {
-                ExecutableToLaunch = executableToLaunch,
                 Executables = configuration.Executables,
                 ExecutableShutdownConfiguration = configuration.ExecutableShutdownConfiguration,
                 Priority = Enum.Parse<ProcessPriorityClass>(configuration.Priority),
@@ -50,6 +51,11 @@ namespace Infrastructure.Providers
                 MonitoringConfiguration = configuration.MonitoringConfiguration,
                 UseBatchFile = configuration.UseBatchFile,
             };
+
+            // Now, update the configuration based launch model with command line arguments.
+            LaunchModelUpdater.UpdateWithCommandLineArguments(args, returnValue);
+
+            return returnValue;
         }
     }
 }
