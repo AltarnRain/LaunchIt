@@ -22,9 +22,9 @@ namespace Logic.Extensions.Tests
         public void IsSwitchTest()
         {
             // Act
-            var result1 = "-reset".IsSwitch();
-            var result2 = "/reset".IsSwitch();
-            var result3 = "reset".IsSwitch();
+            var result1 = "-reset".IsSwitchCommand();
+            var result2 = "/reset".IsSwitchCommand();
+            var result3 = "reset".IsSwitchCommand();
 
             // Assert
             Assert.IsTrue(result1);

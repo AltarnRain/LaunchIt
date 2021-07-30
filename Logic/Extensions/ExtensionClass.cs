@@ -6,6 +6,7 @@ namespace Logic.Extensions
 {
     using Domain.Models.Configuration;
     using Logic.Contracts.Providers;
+    using System;
 
     /// <summary>
     /// Class that provides various extension methods.
@@ -41,9 +42,24 @@ namespace Logic.Extensions
         /// <returns>
         ///   <c>true</c> if the specified self is switch; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsSwitch(this string self)
+        public static bool IsSwitchCommand(this string self)
         {
             return self.StartsWith("/") || self.StartsWith("-");
+        }
+
+        /// <summary>
+        /// Gets the switch command.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <returns>The switch command.</returns>
+        public static SwitchCommands GetSwitchCommand(this string self)
+        {
+            if (self.IsSwitchCommand())
+            {
+                return Enum.Parse<SwitchCommands>(self[1..], true);
+            }
+
+            return SwitchCommands.Unknown;
         }
     }
 }
