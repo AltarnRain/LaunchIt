@@ -4,17 +4,29 @@
 
 namespace Infrastructure.Parsers
 {
-    using Domain.Models.Configuration;
     using Logic.Extensions;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Linq;
 
     /// <summary>
     /// Parses command line arguments.
     /// </summary>
-    public static class CommandLineParser
+    public class CommandLineParser
     {
+        private readonly string[] args;
+        private List<string> services = new();
+        private List<string> executables = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLineParser"/> class.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        private CommandLineParser(string[] args)
+        {
+            this.args = args;
+        }
+
         /// <summary>
         /// Parses the specified arguments.
         /// </summary>
@@ -30,30 +42,43 @@ namespace Infrastructure.Parsers
                 return returnValue;
             }
 
-            for (int i = 0; i < args.Length; i++)
-            {
-                var currentArgument = args[i];
-                var nextArgument = (i + 1) < args.Length ? args[i + 1] : null;
-                UpdateCommandLineParserResult(returnValue, currentArgument, nextArgument);
-            }
+            var parser = new CommandLineParser(args);
+            returnValue = parser.Parse();
 
             return returnValue;
         }
 
-        private static void UpdateCommandLineParserResult(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
+        private CommandLineParserResult Parse()
+        {
+            var returnValue = new CommandLineParserResult();
+            for (int i = 0; i < this.args.Length; i++)
+            {
+                var currentArgument = this.args[i];
+                var nextArgument = (i + 1) < this.args.Length ? this.args[i + 1] : null;
+                this.UpdateCommandLineParserResult(returnValue, currentArgument, nextArgument);
+            }
+
+            returnValue.LaunchModel.Services = this.services.ToArray();
+            returnValue.LaunchModel.Executables = this.executables.ToArray();
+
+            return returnValue;
+        }
+
+        private void UpdateCommandLineParserResult(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
         {
             if (currentArgument.IsSwitchCommand())
             {
-                ParseSwitchCommand(returnValue, currentArgument, nextArgument);
+                this.ParseSwitchCommand(returnValue, currentArgument, nextArgument);
                 return;
             }
 
             returnValue.LaunchModel.ExecutableToLaunch = currentArgument;
         }
 
-        private static void ParseSwitchCommand(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
+        private void ParseSwitchCommand(CommandLineParserResult returnValue, string currentArgument, string? nextArgument)
         {
             var switchCommand = currentArgument.GetSwitchCommand();
+
             switch (switchCommand)
             {
                 case Logic.SwitchCommands.Unknown:
@@ -89,6 +114,80 @@ namespace Infrastructure.Parsers
                     {
                         returnValue.LaunchModel.MonitoringConfiguration.MonitoringInterval = monitorInterval;
                     }
+
+                    break;
+
+                case Logic.SwitchCommands.ServiceShutdownAfterRestart:
+
+                    if (bool.TryParse(nextArgument, out bool serviceShutdownAfterRestart))
+                    {
+                        returnValue.LaunchModel.ServiceShutdownConfiguration.ShutdownAfterRestart = serviceShutdownAfterRestart;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ServiceShutdownOnlyConfigured:
+
+                    if (bool.TryParse(nextArgument, out bool serviceShutdownOnlyConfigured))
+                    {
+                        returnValue.LaunchModel.ServiceShutdownConfiguration.OnlyConfigured = serviceShutdownOnlyConfigured;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ServiceShutdownMaximumAttempts:
+
+                    if (int.TryParse(nextArgument, out int serviceShutdownMaximumAttempts))
+                    {
+                        returnValue.LaunchModel.ServiceShutdownConfiguration.MaximumShutdownAttempts = serviceShutdownMaximumAttempts;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ExecutableShutdownAfterRestart:
+
+                    if (bool.TryParse(nextArgument, out bool executableShutdownAfterRestart))
+                    {
+                        returnValue.LaunchModel.ExecutableShutdownConfiguration.ShutdownAfterRestart = executableShutdownAfterRestart;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ExecutableShutdownOnlyConfigured:
+
+                    if (bool.TryParse(nextArgument, out bool executableShutdownOnlyConfigured))
+                    {
+                        returnValue.LaunchModel.ExecutableShutdownConfiguration.OnlyConfigured = executableShutdownOnlyConfigured;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ExecutableShutdownMaximumAttempts:
+
+                    if (int.TryParse(nextArgument, out int executableShutdownMaximumAttempts))
+                    {
+                        returnValue.LaunchModel.ExecutableShutdownConfiguration.MaximumShutdownAttempts = executableShutdownMaximumAttempts;
+                    }
+
+                    break;
+
+                case Logic.SwitchCommands.ShutdownService:
+                    if (nextArgument is null)
+                    {
+                        return;
+                    }
+
+                    this.services.Add(nextArgument);
+
+                    break;
+
+                case Logic.SwitchCommands.ShutdownExecutable:
+                    if (nextArgument is null)
+                    {
+                        return;
+                    }
+
+                    this.executables.Add(nextArgument);
 
                     break;
             }

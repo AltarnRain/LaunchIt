@@ -119,5 +119,97 @@ namespace Infrastructure.Parsers.Tests
             // Assert
             Assert.AreEqual(180, result1.LaunchModel.MonitoringConfiguration.MonitoringInterval);
         }
+
+        /// <summary>
+        /// Parses ServiceShutdown commands.
+        /// </summary>
+        [TestMethod]
+        public void ParseServiceShutdownCommands()
+        {
+            // Act
+            var result = CommandLineParser.Parse(
+                new[]
+                {
+                    "-ServiceShutdownAfterRestart",
+                    "false",
+                    "-ServiceShutdownOnlyConfigured",
+                    "false",
+                    "-ServiceShutdownMaximumAttempts",
+                    "5",
+                });
+
+            // Assert
+            Assert.IsFalse(result.LaunchModel.ServiceShutdownConfiguration.ShutdownAfterRestart);
+            Assert.IsFalse(result.LaunchModel.ServiceShutdownConfiguration.OnlyConfigured);
+            Assert.AreEqual(5, result.LaunchModel.ServiceShutdownConfiguration.MaximumShutdownAttempts);
+        }
+
+        /// <summary>
+        /// Parses ServiceShutdown commands.
+        /// </summary>
+        [TestMethod]
+        public void ParseExecutableShutdownCommands()
+        {
+            // Act
+            var result = CommandLineParser.Parse(
+                new[]
+                {
+                    "-ExecutableShutdownAfterRestart",
+                    "false",
+                    "-ExecutableShutdownOnlyConfigured",
+                    "false",
+                    "-ExecutableShutdownMaximumAttempts",
+                    "5",
+                });
+
+            // Assert
+            Assert.IsFalse(result.LaunchModel.ExecutableShutdownConfiguration.ShutdownAfterRestart);
+            Assert.IsFalse(result.LaunchModel.ExecutableShutdownConfiguration.OnlyConfigured);
+            Assert.AreEqual(5, result.LaunchModel.ExecutableShutdownConfiguration.MaximumShutdownAttempts);
+        }
+
+        /// <summary>
+        /// Parses the shutdown service.
+        /// </summary>
+        [TestMethod]
+        public void ParseShutdownService()
+        {
+            // Act
+            var result = CommandLineParser.Parse(
+                new[]
+                {
+                    "-ShutdownService",
+                    "Service 1",
+                    "-ShutdownService",
+                    "Service 2",
+                });
+
+            // Assert
+            Assert.AreEqual(2, result.LaunchModel.Services.Length);
+            Assert.AreEqual("Service 1", result.LaunchModel.Services[0]);
+            Assert.AreEqual("Service 2", result.LaunchModel.Services[1]);
+        }
+
+        /// <summary>
+        /// Parses the shutdown service.
+        /// </summary>
+        [TestMethod]
+        public void ParseShutdownExecutable()
+        {
+            // Act
+            var result = CommandLineParser.Parse(
+                new[]
+                {
+                    "-ShutdownExecutable",
+                    "Executable 1",
+                    "-ShutdownExecutable",
+                    "Executable 2",
+                });
+
+            // Assert
+            Assert.AreEqual(2, result.LaunchModel.Executables.Length);
+            Assert.AreEqual("Executable 1", result.LaunchModel.Executables[0]);
+            Assert.AreEqual("Executable 2", result.LaunchModel.Executables[1]);
+        }
     }
 }
