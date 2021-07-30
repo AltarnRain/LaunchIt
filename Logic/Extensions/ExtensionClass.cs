@@ -33,5 +33,17 @@ namespace Logic.Extensions
                 self.ServiceShutdownConfiguration.ShutdownAfterRestart ||
                 self.ExecutableShutdownConfiguration.ShutdownAfterRestart;
         }
+
+        /// <summary>
+        /// Determines whether this instance is switch.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified self is switch; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSwitch(this string self)
+        {
+            return self.StartsWith("/") || self.StartsWith("-");
+        }
     }
 }
