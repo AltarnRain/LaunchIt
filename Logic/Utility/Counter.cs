@@ -14,6 +14,22 @@ namespace Logic.Utility
         private readonly Dictionary<string, int> registry = new();
 
         /// <summary>
+        /// Gets the <see cref="int"/> with the specified value.
+        /// </summary>
+        /// <value>
+        /// The <see cref="int"/>.
+        /// </value>
+        /// <param name="value">The value.</param>
+        /// <returns>Counter value.</returns>
+        public int this[string value]
+        {
+            get
+            {
+                return this.GetCount(value);
+            }
+        }
+
+        /// <summary>
         /// Stoppeds the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -36,7 +52,7 @@ namespace Logic.Utility
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>Count value.</returns>
-        public int GetCount(string item)
+        private int GetCount(string item)
         {
             if (this.registry.ContainsKey(item))
             {

@@ -6,7 +6,6 @@ namespace Infrastructure.Providers
 {
     using Logic.Contracts.Providers;
     using System.IO;
-    using System.Reflection;
 
     /// <summary>
     /// Provides paths relative to the application's folders.

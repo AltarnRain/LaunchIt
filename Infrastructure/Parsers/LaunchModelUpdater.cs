@@ -17,8 +17,8 @@ namespace Infrastructure.Parsers
     {
         private readonly string[] args;
         private readonly LaunchModel launchModel;
-        private List<string> services = new();
-        private List<string> executables = new();
+        private readonly List<string> services = new();
+        private readonly List<string> executables = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchModelUpdater"/> class.

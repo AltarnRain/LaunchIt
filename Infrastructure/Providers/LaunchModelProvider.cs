@@ -6,7 +6,6 @@ namespace Infrastructure.Providers
 {
     using Domain.Models.Configuration;
     using Infrastructure.Parsers;
-    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using System;
     using System.Diagnostics;

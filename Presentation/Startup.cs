@@ -4,14 +4,11 @@
 
 namespace Presentation
 {
-    using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Infrastructure.Loggers;
-    using Infrastructure.Parsers;
     using Infrastructure.Providers;
     using Logic;
     using Logic.Contracts.Helpers;
-    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;

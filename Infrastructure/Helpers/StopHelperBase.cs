@@ -32,7 +32,7 @@ namespace Infrastructure.Helpers
         /// <returns>Returns the number of times 'name' has been stopped.</returns>
         public int GetStopCount(string name)
         {
-            return this.counter.GetCount(name);
+            return this.counter[name];
         }
 
         /// <summary>
