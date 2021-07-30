@@ -14,7 +14,7 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown restarted services].
         /// </summary>
-        [Description("Performs a shutdown when LaunchIt detects a (re)start. Default is true")]
+        [Description("Performs a shutdown when I detect a (re)start. Default is true")]
         public bool ShutdownAfterRestart { get; set; } = true;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets the maximum shutdown attempts.
         /// </summary>
-        [Description("Configures the maximum amount that LaunchIt will attempt to do a shutdown. Default is 3. Set to -1 for infinite attempts.")]
+        [Description("Configures the maximum amount that I will attempt to do a shutdown. Default is 3. Set to -1 for infinite attempts.")]
         public int MaximumShutdownAttempts { get; set; } = 3;
     }
 }

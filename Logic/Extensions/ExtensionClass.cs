@@ -61,5 +61,15 @@ namespace Logic.Extensions
 
             return SwitchCommands.Unknown;
         }
+
+        /// <summary>
+        /// Gets the command line argument.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <returns>Command line argument for a switch command.</returns>
+        public static string GetCommandLineArgument(this SwitchCommands self)
+        {
+            return $"-{self.ToString().ToLower()}";
+        }
     }
 }

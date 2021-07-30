@@ -1,4 +1,6 @@
-﻿// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Logic.Extensions;
+// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -95,6 +97,19 @@ namespace Logic.Extensions.Tests
 
             // Assert
             Assert.IsTrue(result);
+        }
+
+        /// <summary>
+        /// Gets the command line argument test.
+        /// </summary>
+        [TestMethod]
+        public void GetCommandLineArgumentTest()
+        {
+            // Act
+            var result = SwitchCommands.Reset.GetCommandLineArgument();
+
+            // Assert
+            Assert.AreEqual("-reset", result);
         }
 
         private static LaunchModel GetLaunchModelWithoutMonitoring()

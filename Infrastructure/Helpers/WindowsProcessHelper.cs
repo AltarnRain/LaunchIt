@@ -30,8 +30,8 @@ namespace Infrastructure.Helpers
         /// </summary>
         private readonly List<string> ignoredProcesses = new()
         {
-            "taskkill", // used to shut down processes.
-            "LaunchIt", // This is us.
+            Domain.Constants.KnownProcesses.TaskKill, // used to shut down processes.
+            Domain.Constants.KnownProcesses.Self, // This is us.
         };
 
         /// <summary>

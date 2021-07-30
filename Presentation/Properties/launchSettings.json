@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Presentation": {
-      "commandName": "Project",
-      "commandLineArgs": "-service \"I am a servce\""
+      "commandName": "Project"
     }
   }
 }

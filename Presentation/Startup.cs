@@ -80,7 +80,7 @@ namespace Presentation
             var consoleLogger = new ConsoleLogger();
             var fileLogger = new FileLogger();
 
-            // Subscribe loggers. They'll be infored of any log message and deal with it.
+            // Subscribe loggers. They'll be informed of any log message and deal with it.
             var fileLoggerSub = this.logger.Subscribe(fileLogger);
             var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
 

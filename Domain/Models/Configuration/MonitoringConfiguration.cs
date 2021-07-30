@@ -14,13 +14,13 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [monitor restarts].
         /// </summary>
-        [Description("Set this to true if you want LaunchIt to monitor executables and services that were (re)started.")]
+        [Description("Set this to true if you want me to monitor executables and services that were (re)started.")]
         public bool MonitorRestarts { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the monitoring interval.
         /// </summary>
-        [Description("Specifies the time in milliseconds LaunchIt will wait before checking for services or processes that were started.")]
+        [Description("Specifies the time in milliseconds I will wait before checking for services or processes that were started.")]
         public int MonitoringInterval { get; set; } = 5000;
     }
 }

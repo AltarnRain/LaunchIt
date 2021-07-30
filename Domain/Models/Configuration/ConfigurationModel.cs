@@ -25,13 +25,13 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
         /// </summary>
-        [Description("When true the first thing LaunchIt will do is shut down explorer. This prevents explorer triggering restarts of services and executables. Default is true.")]
+        [Description("When true the first thing I will do is shut down explorer. This prevents explorer triggering restarts of services and executables. Default is true.")]
         public bool ShutdownExplorer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the process priority class.
         /// </summary>
-        [Description("The process priority LaunchIt will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal. Default is 'AboveNormal'.")]
+        [Description("The process priority I will use to run your program. Valid values are: Normal (default), Idle, High, RealTime, BelowNormal, AboveNormal. Default is 'AboveNormal'.")]
         public string Priority { get; set; } = ProcessPriorityClass.AboveNormal.ToString();
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Domain.Models.Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [use batch file].
         /// </summary>
-        [Description("LaunchIt will make a batch file to launch the program you specified and then shut down itself. Default is false.")]
+        [Description("I will make a batch file to launch the program you specified and then shut down itself. Default is false.")]
         public bool UseBatchFile { get; set; } = false;
 
         /// <summary>

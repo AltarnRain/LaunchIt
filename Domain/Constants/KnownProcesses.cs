@@ -18,5 +18,15 @@ namespace Domain.Constants
         /// The explorer executable.
         /// </summary>
         public const string ExplorerExe = "explorer.exe";
+
+        /// <summary>
+        /// The task kill.
+        /// </summary>
+        public const string TaskKill = "taskkill";
+
+        /// <summary>
+        /// The self.
+        /// </summary>
+        public const string Self = "LaunchIt";
     }
 }

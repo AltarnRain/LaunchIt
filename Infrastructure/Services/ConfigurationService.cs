@@ -88,7 +88,7 @@ namespace Infrastructure.Services
             // No file exists yet. Return the default configuration.
             if (!File.Exists(configurationFile))
             {
-                this.logger.Log($"Could not find {configurationFile}. Using default configuration. Run LaunchIt with the 'reset' argument to reset your settings to default. Use the 'edit' command line argument to open your settings file.");
+                this.logger.Log($"Could not find {configurationFile}. Using default configuration. Run me with the '-reset' argument to reset your settings to default. Use the '-edit' command line argument to open your settings file.");
                 return new ConfigurationModel();
             }
 
@@ -103,7 +103,7 @@ namespace Infrastructure.Services
                 // so its best to shut it down right away. Also, the program can restart explorer.exe that way.
                 if (!this.warnedAboutExplorerConfiguration && model.Executables.Any(x => x.ToLower().StartsWith("explorer")))
                 {
-                    this.logger.Log("Hey! You've added explorer(.exe) as an executable to shut down. I'll do it but you might want to set to configuration option 'ShutdownExplorer' to true instead.");
+                    this.logger.Log($"Hey! You've added explorer(.exe) as an executable to shut down. I'll do it but you might want to set to configuration option '{nameof(ConfigurationModel.ShutdownExplorer)}' to true instead.");
                     this.logger.Log("I've found shutting down explorer as soon as possible works best. Just saying, it's up to you. I'll remind you next time");
 
                     this.warnedAboutExplorerConfiguration = true;
