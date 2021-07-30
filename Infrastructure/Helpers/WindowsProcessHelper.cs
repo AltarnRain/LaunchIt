@@ -151,7 +151,7 @@ namespace Infrastructure.Helpers
         /// <param name="trackCount">if set to <c>true</c> [track count].</param>
         public override void Stop(string executable, bool trackCount = true)
         {
-            if (executable.Equals("explorer", System.StringComparison.OrdinalIgnoreCase) || executable.Equals("explorer.exe", System.StringComparison.OrdinalIgnoreCase))
+            if (executable.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) || executable.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
             {
                 ProcessWrapper.Kill(executable);
             }

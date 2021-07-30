@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Helpers
 {
+    using System.Collections.Generic;
     using System.Diagnostics;
 
     /// <summary>
@@ -16,9 +17,22 @@ namespace Infrastructure.Helpers
         /// </summary>
         /// <param name="process">The process.</param>
         /// <returns>Taskkill process.</returns>
-        public static Process? Kill(string process)
+        public static IEnumerable<Process?> Kill(string process)
         {
-            return Start("taskkill", $"/f /im {process}");
+            if (process.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) ||
+                process.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
+            {
+                yield return Start("taskkill", $"/f /im {process}");
+                yield break;
+            }
+            else
+            {
+                foreach (var p in Process.GetProcessesByName(process))
+                {
+                    p.Kill();
+                    yield return p;
+                }
+            }
         }
 
         /// <summary>
