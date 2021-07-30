@@ -283,7 +283,7 @@ namespace Infrastructure.Parsers.Tests
         {
             var model = new LaunchModel
             {
-                Services = new[]
+                Executables = new[]
                 {
                     "Executable A",
                     "Executable B",
@@ -305,7 +305,7 @@ namespace Infrastructure.Parsers.Tests
             Assert.AreEqual("Executable A", model.Executables[0]);
             Assert.AreEqual("Executable B", model.Executables[1]);
             Assert.AreEqual("Executable 1", model.Executables[2]);
-            Assert.AreEqual("Executable 2", model.Services[3]);
+            Assert.AreEqual("Executable 2", model.Executables[3]);
         }
     }
 }

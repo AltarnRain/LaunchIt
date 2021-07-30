@@ -9,6 +9,7 @@ namespace Infrastructure.Parsers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     /// <summary>
     /// Updates a LaunchModel with command line switches.
@@ -56,8 +57,14 @@ namespace Infrastructure.Parsers
                 this.UpdateCommandLineParserResult(this.launchModel, currentArgument, nextArgument);
             }
 
-            this.launchModel.Services = this.services.ToArray();
-            this.launchModel.Executables = this.executables.ToArray();
+            var allServices = this.launchModel.Services.ToList();
+            var allExecutables = this.launchModel.Executables.ToList();
+
+            allServices.AddRange(this.services);
+            allExecutables.AddRange(this.executables);
+
+            this.launchModel.Services = allServices.ToArray();
+            this.launchModel.Executables = allExecutables.ToArray();
         }
 
         private void UpdateCommandLineParserResult(LaunchModel returnValue, string currentArgument, string? nextArgument)
@@ -87,6 +94,9 @@ namespace Infrastructure.Parsers
                     break;
                 case Logic.SwitchCommands.UseBatch:
                     returnValue.UseBatchFile = true;
+                    break;
+                case Logic.SwitchCommands.ShutdownExplorer:
+                    returnValue.ShutdownExplorer = true;
                     break;
                 case Logic.SwitchCommands.Priority:
                     if (Enum.TryParse(nextArgument, true, out ProcessPriorityClass processPriorityClass))
