@@ -4,6 +4,7 @@
 
 namespace Tests.TestImplementations
 {
+    using Infrastructure.Helpers;
     using Logic.Contracts.Helpers;
     using System;
     using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Tests.TestImplementations
     /// Test implementation of <see cref="IProcessHelper"/>.
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IProcessHelper" />
-    public class TestProcessHelper : IProcessHelper
+    public class TestProcessHelper : StopHelperBase, IProcessHelper
     {
         /// <summary>
         /// Gets or sets the executables.
@@ -41,18 +42,6 @@ namespace Tests.TestImplementations
         }
 
         /// <summary>
-        /// Stops the count.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>
-        /// Number of times 'name' has been stopped.
-        /// </returns>
-        public int GetStopCount(string name)
-        {
-            return 0;
-        }
-
-        /// <summary>
         /// Starts something.
         /// </summary>
         /// <param name="name">Name of what you want to start.</param>
@@ -66,9 +55,10 @@ namespace Tests.TestImplementations
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="tackCount">if set to <c>true</c> [tack count].</param>
-        public void Stop(string name, bool tackCount = false)
+        public override void Stop(string name, bool tackCount = false)
         {
             this.StopCalls.Add(name);
+            this.AddToStopCount(name);
         }
     }
 }

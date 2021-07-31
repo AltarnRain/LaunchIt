@@ -14,7 +14,6 @@ namespace Tests.Base
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using System;
-    using System.Collections.Generic;
     using Tests.TestImplementations;
 
     /// <summary>
@@ -25,7 +24,8 @@ namespace Tests.Base
     public class TestScope : IDisposable
     {
         private readonly IHostBuilder hostBuilder;
-        private IHost? host;
+        private readonly TestLogger testLogger;
+        private readonly IHost host;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestScope" /> class.
@@ -35,6 +35,8 @@ namespace Tests.Base
         /// <exception cref="Exception">Cannot bind null</exception>
         public TestScope(string rootPath, BindModel[]? bindings = null)
         {
+            this.testLogger = new TestLogger();
+
             // Setup the most basic services.
             this.hostBuilder = Host.CreateDefaultBuilder()
                 .ConfigureServices((services) =>
@@ -70,6 +72,11 @@ namespace Tests.Base
                     }
                 });
             }
+
+            this.host = this.hostBuilder.Build();
+
+            var loggerService = this.host.Services.GetRequiredService<ILogEventService>();
+            loggerService.Subscribe(this.testLogger);
         }
 
         /// <summary>
@@ -81,12 +88,16 @@ namespace Tests.Base
         public T Get<T>()
             where T : class
         {
-            if (this.host is null)
-            {
-                this.host = this.hostBuilder.Build();
-            }
-
             return this.host.Services.GetRequiredService<T>();
+        }
+
+        /// <summary>
+        /// Gets the logs.
+        /// </summary>
+        /// <returns>Everything that was logged while a test ran.</returns>
+        public string[] GetLogs()
+        {
+            return this.testLogger.Messages.ToArray();
         }
 
         /// <summary>
@@ -122,6 +133,7 @@ namespace Tests.Base
         /// </summary>
         public void Dispose()
         {
+            this.host?.Dispose();
             GC.SuppressFinalize(this);
         }
     }

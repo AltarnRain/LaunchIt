@@ -64,7 +64,8 @@ namespace Logic.Handlers
                         configuration.ServiceShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Services,
                         this.serviceHelper,
-                        this.reportedIgnoredServices);
+                        this.reportedIgnoredServices,
+                        configuration.ServiceShutdownConfiguration.ShutdownAfterRestart);
 
                     break;
                 case Domain.Types.ProcessType.Process:
@@ -75,7 +76,8 @@ namespace Logic.Handlers
                         configuration.ExecutableShutdownConfiguration.MaximumShutdownAttempts,
                         configuration.Executables,
                         this.processHelper,
-                        this.reportedIgnoredProcesses);
+                        this.reportedIgnoredProcesses,
+                        configuration.ExecutableShutdownConfiguration.ShutdownAfterRestart);
 
                     break;
 
@@ -98,7 +100,8 @@ namespace Logic.Handlers
             int maximumShutdownAttempts,
             string[] configuredItems,
             IStopHelper stopHelper,
-            List<string> reportOnceList)
+            List<string> reportOnceList,
+            bool shutdownAfterRestart)
         {
             if (onlyConfigured && !configuredItems.Contains(name, StringComparer.OrdinalIgnoreCase))
             {
@@ -117,7 +120,10 @@ namespace Logic.Handlers
                 return;
             }
 
-            stopHelper.Stop(name);
+            if (shutdownAfterRestart)
+            {
+                stopHelper.Stop(name);
+            }
         }
 
         private ConfigurationModel GetCachedConfiguration()
