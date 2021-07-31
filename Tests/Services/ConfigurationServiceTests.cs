@@ -19,16 +19,6 @@ namespace Tests.Services
     public class ConfigurationServiceTests : TestBase
     {
         /// <summary>
-        /// Reads the test.
-        /// </summary>
-        [TestMethod]
-        public void ReadTest()
-        {
-            using var scope = this.StartTestScope();
-            var target = scope.ConfigurationService;
-        }
-
-        /// <summary>
         /// Writes the test.
         /// </summary>
         [TestMethod]

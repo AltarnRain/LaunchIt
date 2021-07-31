@@ -8,8 +8,8 @@ namespace Tests.Base
     using Infrastructure.Services;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
-    using Ninject;
-    using Presentation;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using System;
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace Tests.Base
     /// </summary>
     public class TestScope : IDisposable
     {
-        private readonly IKernel kernel;
+        private readonly IHost host;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestScope" /> class.
@@ -25,40 +25,37 @@ namespace Tests.Base
         /// <param name="rootPath">The root path.</param>
         public TestScope(string rootPath)
         {
-            this.kernel = new StandardKernel(new SharedBindings(rootPath));
+            var builder = Presentation.HostBuilder.CreateHostBuilder(rootPath);
+
+            builder.ConfigureServices((service) =>
+            {
+                service.AddSingleton<ConfigurationService>();
+            });
+
+            this.host = builder.Build();
         }
 
         /// <summary>
         /// Gets the path provider.
         /// </summary>
-        public IPathProvider PathProvider => this.kernel.Get<IPathProvider>();
+        public IPathProvider PathProvider => this.host.Services.GetRequiredService<IPathProvider>();
 
         /// <summary>
         /// Gets the yaml configuration service.
         /// </summary>
-        public ConfigurationService ConfigurationService => this.kernel.Get<ConfigurationService>();
-
-        /// <summary>
-        /// Gets the windows service helper.
-        /// </summary>
-        public WindowsServiceHelper WindowsServiceHelper => this.kernel.Get<WindowsServiceHelper>();
-
-        /// <summary>
-        /// Gets the windows process helper.
-        /// </summary>
-        public WindowsProcessHelper WindowsProcessHelper => this.kernel.Get<WindowsProcessHelper>();
+        public ConfigurationService ConfigurationService => this.host.Services.GetRequiredService<ConfigurationService>();
 
         /// <summary>
         /// Gets the log event service.
         /// </summary>
-        public ILogEventService LogEventService => this.kernel.Get<ILogEventService>();
+        public ILogEventService LogEventService => this.host.Services.GetRequiredService<ILogEventService>();
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.kernel.Dispose();
+            this.host.Dispose();
         }
     }
 }

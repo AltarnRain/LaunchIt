@@ -3,52 +3,12 @@
 #pragma warning disable CS0168 
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 
 namespace Tests
 {
     [TestClass]
     public class Fiddle : Base.TestBase
     {
-        [TestMethod]
-        [Ignore]
-        public void FiddleMethod1()
-        {
-            var processes = Process.GetProcessesByName("linqpad");
-
-            foreach (var p in processes)
-            {
-                try
-                {
-                    var m = p.MainModule;
-                }
-                catch (System.Exception ex)
-                {
-                    System.Diagnostics.Trace.WriteLine($"\"{p.ProcessName}\",");
-                }
-            }
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void WindowsServiceHelperPerformanceTest()
-        {
-            using (var scope = this.StartTestScope())
-            {
-                var target = scope.WindowsServiceHelper;
-
-
-                var sw = new Stopwatch();
-                sw.Start();
-                for (int i = 0; i < 10000; i++)
-                {
-                    target.GetRunningServices();
-                }
-
-                Trace.WriteLine(sw.ElapsedTicks);
-
-            }
-        }
     }
 }
 #pragma warning restore CS0168

@@ -4,8 +4,7 @@
 
 namespace Presentation
 {
-    using Logic.Contracts.Services;
-    using Ninject;
+    using Microsoft.Extensions.DependencyInjection;
     using System.IO;
     using System.Reflection;
     using System.Runtime.Versioning;
@@ -25,26 +24,10 @@ namespace Presentation
             // Get the root path for the application. The DIContainer needs this to construct classes that use the
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
+            var builder = HostBuilder.CreateHostBuilder(rootPath).Build();
+            var startup = builder.Services.GetRequiredService<Startup>();
 
-            // Initialize an empty kernel.
-            using var kernel = new StandardKernel();
-
-            // Load the initial bindings.
-            kernel.Load(new SharedBindings(rootPath));
-
-            // We now have a configuration service we can use. Lets grab it straight from the kernel to keep things simple
-            // and retrieve a ConfigurationModel.
-            var configuration = kernel.Get<IConfigurationService>().Read();
-
-            // Configure bindings that are set to different classes depending on configuration.
-            var configurationDependentBindings = new ConfigurationDependentBindings(configuration);
-
-            // Load it.
-            kernel.Load(configurationDependentBindings);
-
-            // All done. Lets launch it!
-            var launch = kernel.Get<Startup>();
-            launch.Run(args);
+            startup.Run(args);
         }
 
         /// <summary>
