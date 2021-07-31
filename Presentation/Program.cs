@@ -36,7 +36,7 @@ namespace Presentation
         /// <returns>The root path for the application.</returns>
         private static string GetRootPath()
         {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            return Path.GetDirectoryName(System.AppContext.BaseDirectory) ?? string.Empty;
         }
     }
 }
