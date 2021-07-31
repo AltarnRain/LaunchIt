@@ -4,7 +4,6 @@
 
 namespace Tests.Base
 {
-    using Infrastructure.Helpers;
     using Infrastructure.Services;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
