@@ -6,6 +6,8 @@ namespace Tests.Services
 {
     using Domain.Models.Configuration;
     using Infrastructure.Services;
+    using Logic.Contracts.Providers;
+    using Logic.Contracts.Services;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
@@ -26,9 +28,8 @@ namespace Tests.Services
         {
             // Arrange
             using var scope = this.StartTestScope();
-            var target = scope.ConfigurationService;
-
-            var file = scope.PathProvider.ConfigurationFile();
+            var target = scope.Get<IConfigurationService>();
+            var file = scope.Get<IPathProvider>().ConfigurationFile();
 
             var configurationModel = new ConfigurationModel
             {

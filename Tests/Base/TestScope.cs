@@ -4,58 +4,88 @@
 
 namespace Tests.Base
 {
+    using Infrastructure.Providers;
+    using Infrastructure.Serialization;
     using Infrastructure.Services;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Test Scope.
     /// </summary>
+    /// <typeparam name="T">Any class.</typeparam>
+    /// <seealso cref="System.IDisposable" />
     public class TestScope : IDisposable
     {
-        private readonly IHost host;
+        private readonly IHostBuilder hostBuilder;
+        private IHost? host;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestScope" /> class.
+        /// Initializes a new instance of the <see cref="TestScope"/> class.
         /// </summary>
         /// <param name="rootPath">The root path.</param>
         public TestScope(string rootPath)
         {
-            var builder = Presentation.LaunchItHostBuilder.Create(rootPath);
-
-            builder.ConfigureServices((service) =>
-            {
-                service.AddSingleton<ConfigurationService>();
-            });
-
-            this.host = builder.Build();
+            // Setup the most basic services.
+            this.hostBuilder = Host.CreateDefaultBuilder()
+                .ConfigureServices((services) =>
+                {
+                    services
+                        .AddSingleton<IPathProvider, PathProvider>(sp => ActivatorUtilities.CreateInstance<PathProvider>(sp, rootPath))
+                        .AddSingleton<ILogEventService, LogEventService>()
+                        .AddSingleton<IConfigurationService, ConfigurationService>()
+                        .AddSingleton<ISerializationService, YamlSerializationService>();
+                });
         }
 
         /// <summary>
-        /// Gets the path provider.
+        /// Starts the specified bindings.
         /// </summary>
-        public IPathProvider PathProvider => this.host.Services.GetRequiredService<IPathProvider>();
+        /// <typeparam name="T">Any class.</typeparam>
+        /// <param name="bindings">The bindings.</param>
+        /// <returns>Instance of T.</returns>
+        public T Get<T>(List<BindModel>? bindings = null)
+            where T : class
+        {
+            if (bindings is not null)
+            {
+                this.hostBuilder.ConfigureServices(services =>
+                {
+                    foreach (var binding in bindings)
+                    {
+                        if (binding.ServiceType is null)
+                        {
+                            throw new Exception("Cannot bind null");
+                        }
 
-        /// <summary>
-        /// Gets the yaml configuration service.
-        /// </summary>
-        public ConfigurationService ConfigurationService => this.host.Services.GetRequiredService<ConfigurationService>();
+                        if (binding.ImplementationType is null)
+                        {
+                            services.AddSingleton(binding.ServiceType);
+                            return;
+                        }
 
-        /// <summary>
-        /// Gets the log event service.
-        /// </summary>
-        public ILogEventService LogEventService => this.host.Services.GetRequiredService<ILogEventService>();
+                        services.AddSingleton(binding.ServiceType, binding.ImplementationType);
+                    }
+                });
+            }
+
+            if (this.host is null)
+            {
+                this.host = this.hostBuilder.Build();
+            }
+
+            return this.host.Services.GetRequiredService<T>();
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.host.Dispose();
-
             GC.SuppressFinalize(this);
         }
     }

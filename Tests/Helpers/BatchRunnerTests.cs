@@ -5,6 +5,7 @@
 namespace Infrastructure.Helpers.Tests
 {
     using global::Tests.Base;
+    using Logic.Contracts.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
 
@@ -22,12 +23,13 @@ namespace Infrastructure.Helpers.Tests
         {
             // Arrange
             using var scope = this.StartTestScope();
+            var logEventService = scope.Get<ILogEventService>();
 
             var fileToRemove = Path.GetTempFileName();
             System.IO.File.WriteAllText(fileToRemove, "Some content");
 
             var batchCommand = $"del /s /q {fileToRemove}";
-            var batchRunner = new BatchRunner(batchCommand, scope.LogEventService);
+            var batchRunner = new BatchRunner(batchCommand, logEventService);
 
             var fileToRemoveExistsBeforeBatchRunnerRunCommand = System.IO.File.Exists(fileToRemove);
 
