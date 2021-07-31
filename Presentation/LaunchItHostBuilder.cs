@@ -1,10 +1,9 @@
-﻿// <copyright file="HostBuilder.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="LaunchItHostBuilder.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
 namespace Presentation
 {
-    using Domain.Models.Configuration;
     using Infrastructure.Helpers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
@@ -19,7 +18,7 @@ namespace Presentation
     /// <summary>
     /// Handles dependency injection setup.
     /// </summary>
-    public static class HostBuilder
+    public static class LaunchItHostBuilder
     {
         /// <summary>
         /// Creates the host builder.
@@ -28,13 +27,13 @@ namespace Presentation
         /// <returns>
         /// An IHostBuilder.
         /// </returns>
-        public static IHostBuilder CreateHostBuilder(string rootPath)
+        public static IHostBuilder Create(string rootPath)
         {
             return Host.CreateDefaultBuilder()
                 .ConfigureServices((services) =>
                 {
                     services
-                        .AddSingleton<IPathProvider, PathProvider>(sp => new PathProvider(rootPath))
+                        .AddSingleton<IPathProvider, PathProvider>(sp => ActivatorUtilities.CreateInstance<PathProvider>(sp, rootPath))
                         .AddSingleton<ILogEventService, LogEventService>()
                         .AddSingleton<IConfigurationService, ConfigurationService>()
                         .AddSingleton<IMonitoringService, WindowsMonitoringService>()
@@ -46,18 +45,17 @@ namespace Presentation
                         .AddSingleton<LaunchIt>()
                         .AddSingleton<LaunchItStartupService>()
                         .AddSingleton<BatchFileStartupService>()
-                        .AddSingleton<IStartupService>(serviceProvider =>
+                        .AddSingleton<IStartupService>(sp =>
                         {
-                            var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
+                            var configurationService = sp.GetRequiredService<IConfigurationService>();
                             var configuration = configurationService.Read();
 
-                            var logger = serviceProvider.GetRequiredService<ILogEventService>();
                             if (configuration.UseBatchFile)
                             {
-                                return serviceProvider.GetRequiredService<BatchFileStartupService>();
+                                return sp.GetRequiredService<BatchFileStartupService>();
                             }
 
-                            return serviceProvider.GetRequiredService<LaunchItStartupService>();
+                            return sp.GetRequiredService<LaunchItStartupService>();
                         });
                 });
         }

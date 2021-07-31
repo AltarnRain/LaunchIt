@@ -25,7 +25,7 @@ namespace Tests.Base
         /// <param name="rootPath">The root path.</param>
         public TestScope(string rootPath)
         {
-            var builder = Presentation.HostBuilder.CreateHostBuilder(rootPath);
+            var builder = Presentation.LaunchItHostBuilder.Create(rootPath);
 
             builder.ConfigureServices((service) =>
             {
