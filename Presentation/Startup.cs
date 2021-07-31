@@ -81,18 +81,29 @@ namespace Presentation
             var fileLoggerSub = this.logger.Subscribe(fileLogger);
             var consoleLoggerSub = this.logger.Subscribe(consoleLogger);
 
-            this.launchIt.Start(launchModel);
+            try
+            {
+                this.launchIt.Start(launchModel);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                // Close the file logger. This writes cached logs into the log file.
+                fileLogger.Close();
 
-            // Close the file logger. This writes cached logs into the log file.
-            fileLogger.Close();
+                var logFile = fileLogger.FileName;
 
-            var logFile = fileLogger.FileName;
-            this.processHelper.Start(logFile);
+                this.logger.Log($"Log file written to: \"{logFile}\".");
 
-            fileLoggerSub();
-            consoleLoggerSub();
+                fileLoggerSub();
 
-            this.WaitForUserShutDownCommand();
+                this.WaitForUserShutDownCommand();
+
+                consoleLoggerSub();
+            }
         }
 
         private static bool IsElevated()
