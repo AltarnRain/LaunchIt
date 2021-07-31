@@ -8,7 +8,6 @@ namespace Presentation
     using Infrastructure.Loggers;
     using Infrastructure.Providers;
     using Logic;
-    using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -22,7 +21,6 @@ namespace Presentation
         private readonly LaunchIt launchIt;
         private readonly ILogEventService logger;
         private readonly IConfigurationService configurationService;
-        private readonly IProcessHelper processHelper;
         private readonly LaunchModelProvider launchModelProvider;
 
         /// <summary>
@@ -31,19 +29,16 @@ namespace Presentation
         /// <param name="main">The main.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
-        /// <param name="processHelper">The process helper.</param>
         /// <param name="launchModelProvider">The launch model provider.</param>
         public Startup(
             LaunchIt main,
             ILogEventService logger,
             IConfigurationService configurationService,
-            IProcessHelper processHelper,
             LaunchModelProvider launchModelProvider)
         {
             this.launchIt = main;
             this.logger = logger;
             this.configurationService = configurationService;
-            this.processHelper = processHelper;
             this.launchModelProvider = launchModelProvider;
         }
 

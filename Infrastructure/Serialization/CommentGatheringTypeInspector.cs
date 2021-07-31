@@ -25,7 +25,7 @@ namespace Infrastructure.Serialization
         /// <exception cref="ArgumentNullException">innerTypeDescriptor.</exception>
         public CommentGatheringTypeInspector(ITypeInspector innerTypeDescriptor)
         {
-            this.innerTypeDescriptor = innerTypeDescriptor ?? throw new ArgumentNullException("innerTypeDescriptor");
+            this.innerTypeDescriptor = innerTypeDescriptor ?? throw new ArgumentNullException(nameof(innerTypeDescriptor));
         }
 
         /// <summary>

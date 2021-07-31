@@ -56,6 +56,8 @@ namespace Tests.Base
         public void Dispose()
         {
             this.host.Dispose();
+
+            GC.SuppressFinalize(this);
         }
     }
 }
