@@ -50,12 +50,6 @@ namespace Presentation
         {
             var launchModel = this.launchModelProvider.GetModel(args);
 
-            if (launchModel.ResetConfiguration)
-            {
-                this.configurationService.WriteExampleConfigurationFile();
-                return;
-            }
-
             if (launchModel.EditConfiguration)
             {
                 this.configurationService.EditInNotepad();

@@ -15,11 +15,6 @@ namespace Logic
         Unknown,
 
         /// <summary>
-        /// The reset configuration
-        /// </summary>
-        Reset,
-
-        /// <summary>
         /// The edit configuration
         /// </summary>
         Edit,

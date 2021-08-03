@@ -58,11 +58,6 @@ namespace Domain.Models.Configuration
         public bool UseBatchFile { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [reset configuration].
-        /// </summary>
-        public bool ResetConfiguration { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether [edit configuration].
         /// </summary>
         public bool EditConfiguration { get; set; }

@@ -24,6 +24,7 @@ namespace Presentation
             // Get the root path for the application. The DIContainer needs this to construct classes that use the
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
+
             var builder = LaunchItHostBuilder.Create(rootPath).Build();
             var startup = builder.Services.GetRequiredService<Startup>();
 

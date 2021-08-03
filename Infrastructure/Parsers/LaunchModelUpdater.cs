@@ -86,9 +86,6 @@ namespace Infrastructure.Parsers
             {
                 case Logic.SwitchCommands.Unknown:
                     break;
-                case Logic.SwitchCommands.Reset:
-                    returnValue.ResetConfiguration = true;
-                    break;
                 case Logic.SwitchCommands.Edit:
                     returnValue.EditConfiguration = true;
                     break;

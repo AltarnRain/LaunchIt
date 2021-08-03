@@ -97,19 +97,6 @@ namespace Logic.Extensions.Tests
             Assert.IsTrue(result);
         }
 
-        /// <summary>
-        /// Gets the command line argument test.
-        /// </summary>
-        [TestMethod]
-        public void GetCommandLineArgumentTest()
-        {
-            // Act
-            var result = SwitchCommands.Reset.GetCommandLineArgument();
-
-            // Assert
-            Assert.AreEqual("-reset", result);
-        }
-
         private static LaunchModel GetLaunchModelWithoutMonitoring()
         {
             return new LaunchModel

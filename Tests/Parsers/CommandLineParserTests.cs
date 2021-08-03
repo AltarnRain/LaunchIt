@@ -14,22 +14,6 @@ namespace Infrastructure.Parsers.Tests
     public class CommandLineParserTests
     {
         /// <summary>
-        /// Parses the reset argument.
-        /// </summary>
-        [TestMethod]
-        public void ParseResetTest()
-        {
-            // Arrange
-            var model = new LaunchModel();
-
-            // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-reset" }, model);
-
-            // Assert
-            Assert.IsTrue(model.ResetConfiguration);
-        }
-
-        /// <summary>
         /// Parses the edit argument.
         /// </summary>
         [TestMethod]
