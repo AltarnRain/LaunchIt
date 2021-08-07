@@ -5,10 +5,10 @@
 namespace Tests.Base
 {
     using Domain.Models.Configuration;
-    using Infrastructure.Factories;
-    using Infrastructure.Providers;
-    using Infrastructure.Serialization;
-    using Infrastructure.Services;
+    using global::Infrastructure.Factories;
+    using global::Infrastructure.Providers;
+    using global::Infrastructure.Serialization;
+    using global::Infrastructure.Services;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
@@ -21,7 +21,7 @@ namespace Tests.Base
     /// Test Scope.
     /// </summary>
     /// <typeparam name="T">Any class.</typeparam>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public class TestScope : IDisposable
     {
         private readonly IHostBuilder hostBuilder;
@@ -51,7 +51,7 @@ namespace Tests.Base
                         .AddSingleton<IProcessHelper, TestProcessHelper>()
                         .AddSingleton<IBatchRunnerFactory, TestBatchRunnerFactory>()
                         ;
-               });
+                });
 
             if (bindings is not null)
             {

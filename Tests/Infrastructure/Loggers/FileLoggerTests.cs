@@ -2,8 +2,9 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Logging.Tests
+namespace Infrastructure.Loggers.Tests
 {
+    using Infrastructure.Loggers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Linq;
 

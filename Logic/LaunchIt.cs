@@ -61,7 +61,7 @@ namespace Logic
 
             if (didWork)
             {
-                this.configurationService.EditInNotepad();
+                this.configurationService.Edit();
                 return;
             }
 

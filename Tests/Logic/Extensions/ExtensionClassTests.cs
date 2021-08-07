@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Logic.Extensions;
-// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 

@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Helpers.Tests
 {
+    using global::Infrastructure.Helpers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

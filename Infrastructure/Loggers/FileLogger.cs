@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Logging
+namespace Infrastructure.Loggers
 {
     using Logic.Contracts.Loggers;
     using System.Collections.Generic;
@@ -69,7 +69,7 @@ namespace Logic.Logging
 
         private void WriteToFile()
         {
-            using (var fw = System.IO.File.AppendText(this.FileName))
+            using (var fw = File.AppendText(this.FileName))
             {
                 foreach (var log in this.logCache)
                 {

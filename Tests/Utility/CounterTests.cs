@@ -2,8 +2,9 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Utility.Tests
+namespace Infrastructure.Utility.Tests
 {
+    using Infrastructure.Utility;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

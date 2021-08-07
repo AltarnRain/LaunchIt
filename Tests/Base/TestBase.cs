@@ -25,12 +25,12 @@ namespace Tests.Base
         /// <returns>
         /// A TestScope object.
         /// </returns>
-        /// <exception cref="System.Exception">TestContext is not set.</exception>
+        /// <exception cref="Exception">TestContext is not set.</exception>
         public TestScope StartTestScope(BindModel[]? bindModels = null)
         {
             if (this.TestContext is null)
             {
-                throw new System.Exception("TestContext is not set.");
+                throw new Exception("TestContext is not set.");
             }
 
             return new TestScope(this.TestContext.TestRunDirectory, bindModels);

@@ -35,19 +35,8 @@ namespace Presentation
             return Host.CreateDefaultBuilder()
                 .ConfigureServices((services) =>
                 {
+                    // Bind abstracted classes.
                     services
-                        .AddSingleton<IPathProvider, PathProvider>(sp => ActivatorUtilities.CreateInstance<PathProvider>(sp, rootPath))
-                        .AddSingleton<ILogEventService, LogEventService>()
-                        .AddSingleton<IConfigurationService, ConfigurationService>()
-                        .AddSingleton<IMonitoringService, WindowsMonitoringService>()
-                        .AddSingleton<ISerializationService, YamlSerializationService>()
-                        .AddSingleton<IServiceHelper, WindowsServiceHelper>()
-                        .AddSingleton<IProcessHelper, WindowsProcessHelper>()
-                        .AddSingleton<LaunchModelProvider>()
-                        .AddSingleton<Startup>()
-                        .AddSingleton<LaunchIt>()
-                        .AddSingleton<LaunchItStartupService>()
-                        .AddSingleton<BatchFileStartupService>()
                         .AddSingleton<IStartupService>(sp =>
                         {
                             var configurationService = sp.GetRequiredService<IConfigurationService>();
@@ -60,7 +49,24 @@ namespace Presentation
 
                             return sp.GetRequiredService<LaunchItStartupService>();
                         })
+                        .AddSingleton<IPathProvider, PathProvider>(sp => ActivatorUtilities.CreateInstance<PathProvider>(sp, rootPath))
+                        .AddSingleton<ILogEventService, LogEventService>()
+                        .AddSingleton<IConfigurationService, ConfigurationService>()
+                        .AddSingleton<IMonitoringService, WindowsMonitoringService>()
+                        .AddSingleton<ISerializationService, YamlSerializationService>()
+                        .AddSingleton<IServiceHelper, WindowsServiceHelper>()
+                        .AddSingleton<IProcessHelper, WindowsProcessHelper>()
                         .AddSingleton<IBatchRunnerFactory, BatchRunnerFactory>()
+                        .AddSingleton<IEditorService, EditorService>()
+                        ;
+
+                    // Bind classes.
+                    services
+                        .AddSingleton<LaunchModelProvider>()
+                        .AddSingleton<Startup>()
+                        .AddSingleton<LaunchIt>()
+                        .AddSingleton<LaunchItStartupService>()
+                        .AddSingleton<BatchFileStartupService>()
                         ;
                 });
         }

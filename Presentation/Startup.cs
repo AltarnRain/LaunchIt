@@ -8,7 +8,6 @@ namespace Presentation
     using Infrastructure.Providers;
     using Logic;
     using Logic.Contracts.Services;
-    using Logic.Logging;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -54,7 +53,7 @@ namespace Presentation
 
             if (launchModel.EditConfiguration)
             {
-                this.configurationService.EditInNotepad();
+                this.configurationService.Edit();
                 return;
             }
 

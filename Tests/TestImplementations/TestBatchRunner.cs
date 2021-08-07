@@ -4,7 +4,7 @@
 
 namespace Tests.TestImplementations
 {
-    using Infrastructure.Helpers;
+    using global::Infrastructure.Helpers;
     using System.Diagnostics;
 
     /// <summary>

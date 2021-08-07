@@ -33,7 +33,7 @@ namespace Tests.TestImplementations
         /// <summary>
         /// Edits the in notepad.
         /// </summary>
-        public void EditInNotepad()
+        public void Edit()
         {
             // Does nothing.
         }

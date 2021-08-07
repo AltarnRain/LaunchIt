@@ -2,15 +2,15 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Tests.Services
+namespace Infrastructure.Services.Tests
 {
     using Domain.Models.Configuration;
+    using global::Tests.Base;
     using Infrastructure.Services;
     using Logic.Contracts.Providers;
     using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
-    using Tests.Base;
 
     /// <summary>
     /// Tests the <see cref="ConfigurationService"/>.

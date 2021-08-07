@@ -5,6 +5,7 @@
 namespace Infrastructure.Helpers.Tests
 {
     using global::Tests.Base;
+    using Infrastructure.Helpers;
     using Logic.Contracts.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
@@ -26,12 +27,12 @@ namespace Infrastructure.Helpers.Tests
             var logEventService = scope.Get<ILogEventService>();
 
             var fileToRemove = Path.GetTempFileName();
-            System.IO.File.WriteAllText(fileToRemove, "Some content");
+            File.WriteAllText(fileToRemove, "Some content");
 
             var batchCommand = $"del /s /q {fileToRemove}";
             var batchRunner = new BatchRunner(batchCommand, logEventService);
 
-            var fileToRemoveExistsBeforeBatchRunnerRunCommand = System.IO.File.Exists(fileToRemove);
+            var fileToRemoveExistsBeforeBatchRunnerRunCommand = File.Exists(fileToRemove);
 
             // Act
             var process = batchRunner.Run();
@@ -40,7 +41,7 @@ namespace Infrastructure.Helpers.Tests
             // Assert
             Assert.IsTrue(fileToRemoveExistsBeforeBatchRunnerRunCommand);
 
-            var fileToRemoveExistsAfterBatchRunnerRunCommand = System.IO.File.Exists(fileToRemove);
+            var fileToRemoveExistsAfterBatchRunnerRunCommand = File.Exists(fileToRemove);
 
             Assert.IsFalse(fileToRemoveExistsAfterBatchRunnerRunCommand);
         }

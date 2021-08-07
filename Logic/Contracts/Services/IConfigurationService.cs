@@ -39,6 +39,6 @@ namespace Logic.Contracts.Services
         /// <summary>
         /// Edits the in notepad.
         /// </summary>
-        void EditInNotepad();
+        void Edit();
     }
 }

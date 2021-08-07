@@ -4,8 +4,8 @@
 
 namespace Infrastructure.Helpers
 {
+    using Infrastructure.Utility;
     using Logic.Contracts.Helpers;
-    using Logic.Utility;
 
     /// <summary>
     /// Base class for classes that stop stuff.

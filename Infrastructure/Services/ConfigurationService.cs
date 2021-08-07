@@ -18,24 +18,10 @@ namespace Infrastructure.Services
     /// <seealso cref="IConfigurationService" />
     public class ConfigurationService : IConfigurationService
     {
-        /// <summary>
-        /// The path provider.
-        /// </summary>
         private readonly IPathProvider pathProvider;
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
         private readonly ILogEventService logger;
-
-        /// <summary>
-        /// The serialization service.
-        /// </summary>
         private readonly ISerializationService serializationService;
-
-        /// <summary>
-        /// The warned about explorer configuration.
-        /// </summary>
+        private readonly IEditorService editorService;
         private bool warnedAboutExplorerConfiguration;
 
         /// <summary>
@@ -44,11 +30,17 @@ namespace Infrastructure.Services
         /// <param name="pathProvider">The path provider.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public ConfigurationService(IPathProvider pathProvider, ILogEventService logger, ISerializationService serializationService)
+        /// <param name="editorService">The editor service.</param>
+        public ConfigurationService(
+            IPathProvider pathProvider,
+            ILogEventService logger,
+            ISerializationService serializationService,
+            IEditorService editorService)
         {
             this.pathProvider = pathProvider;
             this.logger = logger;
             this.serializationService = serializationService;
+            this.editorService = editorService;
         }
 
         /// <summary>
@@ -137,27 +129,10 @@ namespace Infrastructure.Services
         /// <summary>
         /// Edits the in notepad.
         /// </summary>
-        public void EditInNotepad()
+        public void Edit()
         {
             var configurationFile = this.pathProvider.ConfigurationFile();
-            ProcessWrapper.Start(this.GetEditor(), configurationFile)?.WaitForExit();
-        }
-
-        private string GetEditor()
-        {
-            var returnValue = "notepad.exe";
-
-            try
-            {
-                var configuration = this.Read();
-                return configuration.PreferredEditor;
-            }
-            catch
-            {
-                // Swallow.
-            }
-
-            return returnValue;
+            this.editorService.Edit(configurationFile);
         }
     }
 }
