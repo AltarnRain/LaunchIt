@@ -4,6 +4,7 @@
 
 namespace Presentation
 {
+    using Infrastructure.Factories;
     using Infrastructure.Helpers;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
@@ -56,7 +57,9 @@ namespace Presentation
                             }
 
                             return sp.GetRequiredService<LaunchItStartupService>();
-                        });
+                        })
+                        .AddSingleton<IBatchRunnerFactory, BatchRunnerFactory>()
+                        ;
                 });
         }
     }

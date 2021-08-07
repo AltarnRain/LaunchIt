@@ -19,6 +19,6 @@ namespace Logic.Contracts.Services
         /// <returns>
         /// A Process.
         /// </returns>
-        public Process Start(LaunchModel launchModel);
+        public Process? Start(LaunchModel launchModel);
     }
 }

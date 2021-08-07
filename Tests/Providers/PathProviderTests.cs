@@ -31,5 +31,17 @@ namespace Infrastructure.Providers.Tests
             Assert.AreEqual("X:\\NotARealFolder\\SubFolder/AFile.txt", result2);
             Assert.AreEqual("X:\\NotARealFolder", result3);
         }
+
+        /// <summary>
+        /// Throws when not prefixed with "~/".
+        /// </summary>
+        [TestMethod]
+        public void MapNonRelativePath()
+        {
+            var pathProvider = new PathProvider("X:\\NotARealFolder");
+
+            // Act
+            Assert.ThrowsException<Domain.Exceptions.InvalidMapPathException>(() => pathProvider.MapPath("SubFolder"));
+        }
     }
 }

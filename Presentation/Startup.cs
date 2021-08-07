@@ -9,6 +9,7 @@ namespace Presentation
     using Infrastructure.Providers;
     using Logic;
     using Logic.Contracts.Services;
+    using Logic.Logging;
     using System.Runtime.Versioning;
     using System.Security.Principal;
 

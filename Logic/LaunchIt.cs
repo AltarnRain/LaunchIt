@@ -97,6 +97,12 @@ namespace Logic
                 unsubscribeMonitorEventHandler = this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent);
             }
 
+            if (process is null)
+            {
+                this.logger.Log($"{launchModel.ExecutableToLaunch} did not start.");
+                return;
+            }
+
             process.WaitForExit();
 
             this.logger.Log($"{launchModel.ExecutableToLaunch} has shutdown");

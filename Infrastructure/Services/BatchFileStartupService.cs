@@ -5,6 +5,7 @@
 namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
+    using Infrastructure.Factories;
     using Infrastructure.Helpers;
     using Logic.Contracts.Services;
     using System;
@@ -19,15 +20,17 @@ namespace Infrastructure.Services
     public class BatchFileStartupService : IStartupService
     {
         private readonly ILogEventService logger;
+        private readonly IBatchRunnerFactory batchRunnerFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchFileStartupService" /> class.
         /// </summary>
-        /// <param name="configurationService">The configuration service.</param>
         /// <param name="logger">The logger.</param>
-        public BatchFileStartupService(ILogEventService logger)
+        /// <param name="batchRunnerFactory">The batch runner factory.</param>
+        public BatchFileStartupService(ILogEventService logger, IBatchRunnerFactory batchRunnerFactory)
         {
             this.logger = logger;
+            this.batchRunnerFactory = batchRunnerFactory;
         }
 
         /// <summary>
@@ -37,9 +40,14 @@ namespace Infrastructure.Services
         /// <returns>
         /// A Process.
         /// </returns>
-        /// <exception cref="Exception">Failed to launch a process.</exception>
-        public Process Start(LaunchModel launchModel)
+        public Process? Start(LaunchModel launchModel)
         {
+            if (launchModel.ExecutableToLaunch == string.Empty)
+            {
+                this.logger.Log($"Nothing to run");
+                return null;
+            }
+
             var batchBuilder = new BatchBuilder();
 
             batchBuilder.Rem($"This file generated on {DateTime.Now}");
@@ -68,22 +76,19 @@ namespace Infrastructure.Services
                 batchBuilder.Add(GetExecutableShutDownCommand(exe));
             }
 
-            if (launchModel.ExecutableToLaunch is not null)
+            var folder = Path.GetDirectoryName(launchModel.ExecutableToLaunch);
+            var executableName = Path.GetFileName(launchModel.ExecutableToLaunch);
+
+            if (string.IsNullOrWhiteSpace(folder))
             {
-                var folder = Path.GetDirectoryName(launchModel.ExecutableToLaunch);
-                var executableName = Path.GetFileName(launchModel.ExecutableToLaunch);
-
-                if (string.IsNullOrWhiteSpace(folder))
-                {
-                    this.logger.Log($"Looks like you didn't specify a folder. No worries, I'll try to start {executableName}.");
-                }
-                else
-                {
-                    batchBuilder.Add(GetFolderCDCommand(folder));
-                }
-
-                batchBuilder.Add(GetExecutableExecutionCommand(executableName, launchModel.Priority));
+                this.logger.Log($"Looks like you didn't specify a folder. No worries, I'll try to start {executableName}.");
             }
+            else
+            {
+                batchBuilder.Add(GetFolderCDCommand(folder));
+            }
+
+            batchBuilder.Add(GetExecutableExecutionCommand(executableName, launchModel.Priority));
 
             batchBuilder.Echo($"Running {launchModel.ExecutableToLaunch}.");
 
@@ -98,14 +103,9 @@ namespace Infrastructure.Services
             }
 
             var batchFileContent = batchBuilder.ToString();
-            var batchRunner = new BatchRunner(batchFileContent, this.logger);
+            var batchRunner = this.batchRunnerFactory.Create(batchFileContent);
 
             var process = batchRunner.Run();
-
-            if (process is null)
-            {
-                throw new Exception($"Failed to launch a process");
-            }
 
             return process;
         }
@@ -118,7 +118,7 @@ namespace Infrastructure.Services
         /// <returns>A startup command for the executable.</returns>
         private static string GetExecutableExecutionCommand(string executableName, ProcessPriorityClass priorityClass)
         {
-            return $"start \"{executableName}\" /{priorityClass.ToString().ToUpper()} {executableName}";
+            return $"start \"{executableName}\" /{priorityClass.ToString().ToUpper()} \"{executableName}\"";
         }
 
         /// <summary>

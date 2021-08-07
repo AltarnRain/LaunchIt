@@ -39,7 +39,7 @@ namespace Infrastructure.Providers
         {
             if (!relativePath.StartsWith("~"))
             {
-                throw new System.Exception("Please pass a relative path prefixed with '~'. Use '~/' to get the root directoty.");
+                throw new Domain.Exceptions.InvalidMapPathException("Please pass a relative path prefixed with '~'. Use '~/' to get the root directoty.");
             }
 
             var strippedPath = relativePath[2..];

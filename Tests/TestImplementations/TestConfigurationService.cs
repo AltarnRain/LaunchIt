@@ -6,7 +6,7 @@ namespace Tests.TestImplementations
 {
     using Domain.Models.Configuration;
     using Logic.Contracts.Services;
-    using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Test implementation of <see cref="IConfigurationService"/>.

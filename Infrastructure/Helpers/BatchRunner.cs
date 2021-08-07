@@ -11,7 +11,7 @@ namespace Infrastructure.Helpers
     /// <summary>
     /// Executes a batch file.
     /// </summary>
-    public class BatchRunner
+    public class BatchRunner : IBatchRunner
     {
         private readonly string batchContent;
         private readonly ILogEventService logger;

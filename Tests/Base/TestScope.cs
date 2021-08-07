@@ -5,6 +5,7 @@
 namespace Tests.Base
 {
     using Domain.Models.Configuration;
+    using Infrastructure.Factories;
     using Infrastructure.Providers;
     using Infrastructure.Serialization;
     using Infrastructure.Services;
@@ -32,7 +33,7 @@ namespace Tests.Base
         /// </summary>
         /// <param name="rootPath">The root path.</param>
         /// <param name="bindings">The bindings.</param>
-        /// <exception cref="Exception">Cannot bind null</exception>
+        /// <exception cref="Exception">Cannot bind null.</exception>
         public TestScope(string rootPath, BindModel[]? bindings = null)
         {
             this.testLogger = new TestLogger();
@@ -48,6 +49,7 @@ namespace Tests.Base
                         .AddSingleton<ISerializationService, YamlSerializationService>()
                         .AddSingleton<IServiceHelper, TestServiceHelper>()
                         .AddSingleton<IProcessHelper, TestProcessHelper>()
+                        .AddSingleton<IBatchRunnerFactory, TestBatchRunnerFactory>()
                         ;
                });
 

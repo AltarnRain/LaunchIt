@@ -4,13 +4,14 @@
 
 namespace Logic.Logging
 {
+    using Logic.Contracts.Loggers;
     using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
     /// Logs to a file.
     /// </summary>
-    public class FileLogger
+    public class FileLogger : ILog
     {
         private readonly List<string> logCache = new();
         private readonly int logCacheSize;
