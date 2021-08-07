@@ -8,6 +8,7 @@ namespace Infrastructure.Helpers
     using Logic.Contracts.Services;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -15,6 +16,7 @@ namespace Infrastructure.Helpers
     /// Process helper for windows.
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IProcessHelper" />
+    [ExcludeFromCodeCoverage(Justification = "To close to the Process API to really test.")]
     public class WindowsProcessHelper : StopHelperBase, IProcessHelper
     {
         private const int AccessDenied = 5;

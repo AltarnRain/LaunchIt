@@ -6,6 +6,7 @@ namespace Infrastructure.Serialization
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
 
@@ -14,6 +15,7 @@ namespace Infrastructure.Serialization
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
     /// <seealso cref="YamlDotNet.Serialization.IPropertyDescriptor" />
+    [ExcludeFromCodeCoverage(Justification = "Code copied from the internet. only for adding comments to a Yaml file. Works just fine.")]
     public sealed class CommentsPropertyDescriptor : IPropertyDescriptor
     {
         private readonly IPropertyDescriptor baseDescriptor;

@@ -5,6 +5,7 @@
 namespace Infrastructure.Serialization
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
 
@@ -13,6 +14,7 @@ namespace Infrastructure.Serialization
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
     /// <seealso cref="YamlDotNet.Serialization.IObjectDescriptor" />
+    [ExcludeFromCodeCoverage(Justification = "Code copied from the internet. only for adding comments to a Yaml file. Works just fine.")]
     public sealed class CommentsObjectDescriptor : IObjectDescriptor
     {
         private readonly IObjectDescriptor innerDescriptor;

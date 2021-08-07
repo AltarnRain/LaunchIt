@@ -42,13 +42,13 @@ namespace Infrastructure.Providers
             var returnValue = new LaunchModel
             {
                 Executables = configuration.Executables,
-                ExecutableShutdownConfiguration = configuration.ExecutableShutdownConfiguration,
-                Priority = Enum.Parse<ProcessPriorityClass>(configuration.Priority),
                 Services = configuration.Services,
+                Priority = Enum.Parse<ProcessPriorityClass>(configuration.Priority),
+                ExecutableShutdownConfiguration = configuration.ExecutableShutdownConfiguration,
                 ServiceShutdownConfiguration = configuration.ServiceShutdownConfiguration,
-                ShutdownExplorer = configuration.ShutdownExplorer,
                 MonitoringConfiguration = configuration.MonitoringConfiguration,
                 UseBatchFile = configuration.UseBatchFile,
+                ShutdownExplorer = configuration.ShutdownExplorer,
             };
 
             // Now, update the configuration based launch model with command line arguments.

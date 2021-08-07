@@ -7,6 +7,7 @@ namespace Infrastructure.Helpers
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Runtime.Versioning;
     using System.ServiceProcess;
@@ -16,6 +17,7 @@ namespace Infrastructure.Helpers
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IServiceHelper" />
     [SupportedOSPlatform("windows")]
+    [ExcludeFromCodeCoverage(Justification = "Wrapper class around ServiceController.")]
     public class WindowsServiceHelper : StopHelperBase, IServiceHelper
     {
         private readonly ILogEventService logger;

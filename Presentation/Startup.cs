@@ -4,12 +4,12 @@
 
 namespace Presentation
 {
-    using Infrastructure.Helpers;
     using Infrastructure.Loggers;
     using Infrastructure.Providers;
     using Logic;
     using Logic.Contracts.Services;
     using Logic.Logging;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Versioning;
     using System.Security.Principal;
 
@@ -17,6 +17,7 @@ namespace Presentation
     /// Starts up the application.
     /// </summary>
     [SupportedOSPlatform("windows")]
+    [ExcludeFromCodeCoverage(Justification = "Starting point for DI. To big of integration test to cover this.")]
     public class Startup
     {
         private readonly LaunchIt launchIt;

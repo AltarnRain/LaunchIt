@@ -6,6 +6,7 @@ namespace Infrastructure.Serialization
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.TypeInspectors;
@@ -14,6 +15,7 @@ namespace Infrastructure.Serialization
     /// Gathers comments
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
+    [ExcludeFromCodeCoverage(Justification = "Code copied from the internet. only for adding comments to a Yaml file. Works just fine.")]
     public partial class CommentGatheringTypeInspector : TypeInspectorSkeleton
     {
         private readonly ITypeInspector innerTypeDescriptor;

@@ -54,9 +54,14 @@ namespace Logic.Extensions
         /// <returns>The switch command.</returns>
         public static SwitchCommands GetSwitchCommand(this string self)
         {
-            if (self.IsSwitchCommand())
+            if (!self.IsSwitchCommand())
             {
-                return Enum.Parse<SwitchCommands>(self[1..], true);
+                return SwitchCommands.Unknown;
+            }
+
+            if (Enum.TryParse(self[1..], true, out SwitchCommands result))
+            {
+                return result;
             }
 
             return SwitchCommands.Unknown;

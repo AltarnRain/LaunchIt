@@ -6,10 +6,12 @@ namespace Infrastructure.Helpers
 {
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Wrapper class for <see cref="Process"/>calls. This is the only place in the program where ProcessStartInfo objects are created.
     /// </summary>
+    [ExcludeFromCodeCoverage(Justification = "To close to the Process API to really test.")]
     public static class ProcessWrapper
     {
         /// <summary>

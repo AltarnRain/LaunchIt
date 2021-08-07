@@ -5,14 +5,15 @@
 namespace Presentation
 {
     using Microsoft.Extensions.DependencyInjection;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Reflection;
     using System.Runtime.Versioning;
 
     /// <summary>
     /// Program entry point.
     /// </summary>
     [SupportedOSPlatform("windows")]
+    [ExcludeFromCodeCoverage(Justification = "Program entry point.")]
     public class Program
     {
         /// <summary>

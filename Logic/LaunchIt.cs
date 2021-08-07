@@ -10,10 +10,12 @@ namespace Logic
     using Logic.Extensions;
     using Logic.Handlers;
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Startup class for the program.
     /// </summary>
+    [ExcludeFromCodeCoverage(Justification = "Top level class for 'Logic'. I'd have to abstract everything to the point this code does nothing.")]
     public class LaunchIt
     {
         private readonly IConfigurationService configurationService;

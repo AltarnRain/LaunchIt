@@ -15,10 +15,12 @@ namespace Presentation
     using Logic.Contracts.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Handles dependency injection setup.
     /// </summary>
+    [ExcludeFromCodeCoverage(Justification = "DIP Container construction. Used EVERYWHERE, no need to cover seperately.")]
     public static class LaunchItHostBuilder
     {
         /// <summary>
