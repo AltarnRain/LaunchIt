@@ -5,6 +5,7 @@
 namespace Tests.Base
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
 
     /// <summary>
     /// Base class tests that require Dependency Injection.
@@ -33,6 +34,25 @@ namespace Tests.Base
             }
 
             return new TestScope(this.TestContext.TestRunDirectory, bindModels);
+        }
+
+        /// <summary>
+        /// Starts the test scope for a specific type. Use this when testing a service that is normally implemented as a test implementation.
+        /// </summary>
+        /// <param name="serviceType">The type.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <returns>
+        /// A test scope.
+        /// </returns>
+        public TestScope StartTestScope(Type serviceType, Type? implementationType = null)
+        {
+            var bindModel = new BindModel
+            {
+                ServiceType = serviceType,
+                ImplementationType = implementationType,
+            };
+
+            return this.StartTestScope(new[] { bindModel });
         }
     }
 }

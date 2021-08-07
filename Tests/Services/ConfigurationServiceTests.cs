@@ -27,8 +27,10 @@ namespace Tests.Services
         public void WriteTest()
         {
             // Arrange
-            using var scope = this.StartTestScope();
-            var target = scope.Get<IConfigurationService>();
+            using var scope = this.StartTestScope(typeof(ConfigurationService));
+
+            // Resolve by class to obtain the real configuration service.
+            var target = scope.Get<ConfigurationService>();
             var file = scope.Get<IPathProvider>().ConfigurationFile();
 
             var configurationModel = new ConfigurationModel
