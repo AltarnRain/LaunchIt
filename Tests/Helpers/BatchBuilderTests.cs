@@ -6,6 +6,7 @@ namespace Tests.Helpers
 {
     using Infrastructure.Helpers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
 
     /// <summary>
     /// Tests <see cref="BatchBuilder"/>.
@@ -107,6 +108,24 @@ namespace Tests.Helpers
 
             // Assert
             Assert.AreEqual(string.Empty, target.LineAt(2));
+        }
+
+        /// <summary>
+        /// Converts to stringtest.
+        /// </summary>
+        [TestMethod]
+        public void ToStringTest()
+        {
+            // Arrange
+            var target = new BatchBuilder();
+            target.Echo("Hello");
+            target.Echo("World");
+
+            // Act
+            var stringValue = target.ToString();
+
+            // Assert
+            Assert.AreEqual($"@echo off{Environment.NewLine}@cls{Environment.NewLine}@echo Hello{Environment.NewLine}@echo World", stringValue);
         }
     }
 }

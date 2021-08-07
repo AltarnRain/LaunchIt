@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
+  </ItemGroup>
+
 </Project>
