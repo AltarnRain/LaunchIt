@@ -20,7 +20,6 @@ namespace Infrastructure.Services
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
         private readonly ILogEventService logger;
-        private readonly IProcessWrapper processWrapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchItStartupService" /> class.
@@ -32,13 +31,11 @@ namespace Infrastructure.Services
         public LaunchItStartupService(
             IServiceHelper serviceHelper,
             IProcessHelper processHelper,
-            ILogEventService logger,
-            IProcessWrapper processWrapper)
+            ILogEventService logger)
         {
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;
             this.logger = logger;
-            this.processWrapper = processWrapper;
         }
 
         /// <summary>
@@ -49,7 +46,7 @@ namespace Infrastructure.Services
         /// A Process.
         /// </returns>
         /// <exception cref="Exception">Should not start {executable}.</exception>
-        public Process Start(LaunchModel launchModel)
+        public Process? Start(LaunchModel launchModel)
         {
             if (launchModel.ShutdownExplorer)
             {
@@ -72,10 +69,11 @@ namespace Infrastructure.Services
                 this.processHelper.Stop(exe, false);
             }
 
-            var process = this.processWrapper.Start(launchModel.ExecutableToLaunch);
+            var process = this.processHelper.Start(launchModel.ExecutableToLaunch);
+
             if (process is null)
             {
-                throw new Exception($"Should not start {launchModel.ExecutableToLaunch}");
+                return null;
             }
 
             process.PriorityClass = launchModel.Priority;

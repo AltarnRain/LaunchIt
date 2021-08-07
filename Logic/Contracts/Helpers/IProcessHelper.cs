@@ -4,6 +4,8 @@
 
 namespace Logic.Contracts.Helpers
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// Contract for a process helper.
     /// </summary>
@@ -19,6 +21,7 @@ namespace Logic.Contracts.Helpers
         /// Starts something.
         /// </summary>
         /// <param name="name">Name of what you want to start.</param>
-        void Start(string name);
+        /// <returns>A started process.</returns>
+        Process? Start(string name);
     }
 }

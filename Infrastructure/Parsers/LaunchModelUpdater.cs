@@ -104,7 +104,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.MonitorRestarts:
-
                     if (bool.TryParse(nextArgument, out bool monitorRestarts))
                     {
                         returnValue.MonitoringConfiguration.MonitorRestarts = monitorRestarts;
@@ -112,7 +111,6 @@ namespace Infrastructure.Parsers
 
                     break;
                 case Logic.SwitchCommands.MonitorInterval:
-
                     if (int.TryParse(nextArgument, out int monitorInterval))
                     {
                         returnValue.MonitoringConfiguration.MonitoringInterval = monitorInterval;
@@ -121,7 +119,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ServiceShutdownAfterRestart:
-
                     if (bool.TryParse(nextArgument, out bool serviceShutdownAfterRestart))
                     {
                         returnValue.ServiceShutdownConfiguration.ShutdownAfterRestart = serviceShutdownAfterRestart;
@@ -130,7 +127,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ServiceShutdownOnlyConfigured:
-
                     if (bool.TryParse(nextArgument, out bool serviceShutdownOnlyConfigured))
                     {
                         returnValue.ServiceShutdownConfiguration.OnlyConfigured = serviceShutdownOnlyConfigured;
@@ -139,7 +135,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ServiceShutdownMaximumAttempts:
-
                     if (int.TryParse(nextArgument, out int serviceShutdownMaximumAttempts))
                     {
                         returnValue.ServiceShutdownConfiguration.MaximumShutdownAttempts = serviceShutdownMaximumAttempts;
@@ -148,7 +143,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ExecutableShutdownAfterRestart:
-
                     if (bool.TryParse(nextArgument, out bool executableShutdownAfterRestart))
                     {
                         returnValue.ExecutableShutdownConfiguration.ShutdownAfterRestart = executableShutdownAfterRestart;
@@ -157,7 +151,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ExecutableShutdownOnlyConfigured:
-
                     if (bool.TryParse(nextArgument, out bool executableShutdownOnlyConfigured))
                     {
                         returnValue.ExecutableShutdownConfiguration.OnlyConfigured = executableShutdownOnlyConfigured;
@@ -166,7 +159,6 @@ namespace Infrastructure.Parsers
                     break;
 
                 case Logic.SwitchCommands.ExecutableShutdownMaximumAttempts:
-
                     if (int.TryParse(nextArgument, out int executableShutdownMaximumAttempts))
                     {
                         returnValue.ExecutableShutdownConfiguration.MaximumShutdownAttempts = executableShutdownMaximumAttempts;

@@ -1,4 +1,6 @@
-﻿// <copyright file="CommandLineParserTests.cs" company="Antonio Invernizzi V">
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Infrastructure.Parsers;
+// <copyright file="LaunchModelUpdaterTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -11,7 +13,7 @@ namespace Infrastructure.Parsers.Tests
     /// Tests <see cref="LaunchModelUpdater.Parse(string[])"/>.
     /// </summary>
     [TestClass]
-    public class CommandLineParserTests
+    public class LaunchModelUpdaterTests
     {
         /// <summary>
         /// Parses the edit argument.
@@ -290,6 +292,64 @@ namespace Infrastructure.Parsers.Tests
             Assert.AreEqual("Executable B", model.Executables[1]);
             Assert.AreEqual("Executable 1", model.Executables[2]);
             Assert.AreEqual("Executable 2", model.Executables[3]);
+        }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseNothingTest()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(System.Array.Empty<string>(), model);
+        }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseNonsense()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-nope" }, model);
+        }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseNoServiceSpecified()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-shutdownservice" }, model);
+
+            // Assert
+            Assert.AreEqual(0, model.Services.Length);
+        }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseNoExecutableSpecified()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-shutdownexecutable" }, model);
+
+            // Assert
+            Assert.AreEqual(0, model.Executables.Length);
         }
     }
 }

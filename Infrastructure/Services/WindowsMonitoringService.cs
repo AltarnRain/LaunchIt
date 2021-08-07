@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Services
 {
+    using Domain.Exceptions;
     using Domain.Models.Events;
     using Domain.Types;
     using Logic.Contracts.Helpers;
@@ -61,12 +62,12 @@ namespace Infrastructure.Services
         {
             if (this.Monitoring == false)
             {
-                throw new Exception("Did not begin monitoring.");
+                throw new MonitoringException("Did not begin monitoring.");
             }
 
             if (this.timer is null)
             {
-                throw new Exception("No timer running... now that's weird.");
+                throw new MonitoringException("No timer running... now that's weird.");
             }
 
             this.timer.Stop();
@@ -86,7 +87,7 @@ namespace Infrastructure.Services
         {
             if (this.Monitoring)
             {
-                throw new Exception("Already monitoring.");
+                throw new MonitoringException("Already monitoring.");
             }
 
             this.logger.Log($"Building monitoring snapshot...");

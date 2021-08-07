@@ -8,6 +8,7 @@ namespace Tests.TestImplementations
     using Logic.Contracts.Helpers;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     /// <summary>
     /// Test implementation of <see cref="IProcessHelper"/>.
@@ -45,9 +46,11 @@ namespace Tests.TestImplementations
         /// Starts something.
         /// </summary>
         /// <param name="name">Name of what you want to start.</param>
-        public void Start(string name)
+        /// <returns>A process.</returns>
+        public Process? Start(string name)
         {
             this.StartCalls.Add(name);
+            return null;
         }
 
         /// <summary>

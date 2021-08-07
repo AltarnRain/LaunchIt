@@ -142,10 +142,11 @@ namespace Infrastructure.Helpers
         /// Stops the specified executable.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        public void Start(string executable)
+        /// <returns>A started process.</returns>
+        public Process? Start(string executable)
         {
-            this.processWrapper.Start(executable);
             this.logger.Log($"Started '{executable}'.");
+            return this.processWrapper.Start(executable);
         }
 
         /// <summary>
