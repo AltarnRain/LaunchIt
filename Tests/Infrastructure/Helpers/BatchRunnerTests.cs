@@ -25,25 +25,20 @@ namespace Infrastructure.Helpers.Tests
             // Arrange
             using var scope = this.StartTestScope();
             var logEventService = scope.Get<ILogEventService>();
+            var processWrapper = scope.Get<IProcessWrapper>();
 
             var fileToRemove = Path.GetTempFileName();
             File.WriteAllText(fileToRemove, "Some content");
 
-            var batchCommand = $"del /s /q {fileToRemove}";
-            var batchRunner = new BatchRunner(batchCommand, logEventService);
-
-            var fileToRemoveExistsBeforeBatchRunnerRunCommand = File.Exists(fileToRemove);
+            var batchRunner = new BatchRunner("Something cool", logEventService, processWrapper);
 
             // Act
-            var process = batchRunner.Run();
-            process?.WaitForExit();
+            batchRunner.Run();
 
             // Assert
-            Assert.IsTrue(fileToRemoveExistsBeforeBatchRunnerRunCommand);
+            var testProcessWrapper = scope.GetTestProcessWrapper();
 
-            var fileToRemoveExistsAfterBatchRunnerRunCommand = File.Exists(fileToRemove);
-
-            Assert.IsFalse(fileToRemoveExistsAfterBatchRunnerRunCommand);
+            Assert.AreEqual(1, testProcessWrapper.StartCalls);
         }
     }
 }

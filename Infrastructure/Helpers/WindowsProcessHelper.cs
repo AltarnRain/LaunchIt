@@ -24,7 +24,7 @@ namespace Infrastructure.Helpers
         private const int ReadOrWriteProcessRequestFail = 299;
 
         private readonly ILogEventService logger;
-
+        private readonly IProcessWrapper processWrapper;
         private readonly Dictionary<string, string> processFileNameCache = new();
 
         /// <summary>
@@ -40,9 +40,11 @@ namespace Infrastructure.Helpers
         /// Initializes a new instance of the <see cref="WindowsProcessHelper" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public WindowsProcessHelper(ILogEventService logger)
+        /// <param name="processWrapper">The process wrapper.</param>
+        public WindowsProcessHelper(ILogEventService logger, IProcessWrapper processWrapper)
         {
             this.logger = logger;
+            this.processWrapper = processWrapper;
         }
 
         /// <summary>
@@ -142,7 +144,7 @@ namespace Infrastructure.Helpers
         /// <param name="executable">The executable.</param>
         public void Start(string executable)
         {
-            ProcessWrapper.Start(executable);
+            this.processWrapper.Start(executable);
             this.logger.Log($"Started '{executable}'.");
         }
 
@@ -155,7 +157,7 @@ namespace Infrastructure.Helpers
         {
             if (executable.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) || executable.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
             {
-                ProcessWrapper.Kill(executable);
+                this.processWrapper.Kill(executable);
             }
             else
             {

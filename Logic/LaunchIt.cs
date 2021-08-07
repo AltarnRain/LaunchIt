@@ -24,6 +24,7 @@ namespace Logic
         private readonly IMonitoringService monitoringService;
         private readonly IProcessHelper processHelper;
         private readonly IServiceHelper serviceHelper;
+        private readonly IConfigurationValidationService configurationValidationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -32,16 +33,17 @@ namespace Logic
         /// <param name="logger">The logger.</param>
         /// <param name="startupService">The startup service.</param>
         /// <param name="monitoringService">The monitoring service.</param>
-        /// <param name="memoryCleaningService">The memory cleaning service.</param>
         /// <param name="processHelper">The process helper.</param>
         /// <param name="serviceHelper">The service helper.</param>
+        /// <param name="configurationValidationService">The configuration validation service.</param>
         public LaunchIt(
             IConfigurationService configurationService,
             ILogEventService logger,
             IStartupService startupService,
             IMonitoringService monitoringService,
             IProcessHelper processHelper,
-            IServiceHelper serviceHelper)
+            IServiceHelper serviceHelper,
+            IConfigurationValidationService configurationValidationService)
         {
             this.configurationService = configurationService;
             this.logger = logger;
@@ -49,6 +51,7 @@ namespace Logic
             this.monitoringService = monitoringService;
             this.processHelper = processHelper;
             this.serviceHelper = serviceHelper;
+            this.configurationValidationService = configurationValidationService;
         }
 
         /// <summary>
@@ -77,6 +80,12 @@ namespace Logic
             }
 
             var configuration = this.configurationService.Read();
+
+            foreach (var message in this.configurationValidationService.Validate(configuration))
+            {
+                this.logger.Log(message);
+            }
+
             var process = this.startupService.Start(launchModel);
 
             // User wants a batchfile so we're done and can exit.

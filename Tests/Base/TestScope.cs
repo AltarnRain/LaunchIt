@@ -9,9 +9,11 @@ namespace Tests.Base
     using global::Infrastructure.Providers;
     using global::Infrastructure.Serialization;
     using global::Infrastructure.Services;
+    using Infrastructure.Helpers;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
+    using Logic.Extensions;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using System;
@@ -50,6 +52,8 @@ namespace Tests.Base
                         .AddSingleton<IServiceHelper, TestServiceHelper>()
                         .AddSingleton<IProcessHelper, TestProcessHelper>()
                         .AddSingleton<IBatchRunnerFactory, TestBatchRunnerFactory>()
+                        .AddSingleton<IEditorService, TestEditorService>()
+                        .AddSingleton<IProcessWrapper, TestProcessWrapper>()
                         ;
                 });
 
@@ -79,6 +83,15 @@ namespace Tests.Base
 
             var loggerService = this.host.Services.GetRequiredService<ILogEventService>();
             loggerService.Subscribe(this.testLogger);
+        }
+
+        /// <summary>
+        /// Gets the test batch runner factory.
+        /// </summary>
+        /// <returns>The TestBatchRunnerFactory.</returns>
+        public TestBatchRunnerFactory GetTestBatchRunnerFactory()
+        {
+            return (TestBatchRunnerFactory)this.Get<IBatchRunnerFactory>();
         }
 
         /// <summary>
@@ -128,6 +141,33 @@ namespace Tests.Base
         public TestProcessHelper GetTestProcessHelper()
         {
             return (TestProcessHelper)this.Get<IProcessHelper>();
+        }
+
+        /// <summary>
+        /// Gets the test process helper.
+        /// </summary>
+        /// <returns>The test process helper.</returns>
+        public TestEditorService GetTestEditorService()
+        {
+            return (TestEditorService)this.Get<IEditorService>();
+        }
+
+        /// <summary>
+        /// Gets the test configuration file.
+        /// </summary>
+        /// <returns>Returns the configuration file name.</returns>
+        public string GetTestConfigurationFileName()
+        {
+            return this.Get<IPathProvider>().ConfigurationFile();
+        }
+
+        /// <summary>
+        /// Gets the test process wrapper.
+        /// </summary>
+        /// <returns>The TestProcessWrapper.</returns>
+        public TestProcessWrapper GetTestProcessWrapper()
+        {
+            return (TestProcessWrapper)this.Get<IProcessWrapper>();
         }
 
         /// <summary>

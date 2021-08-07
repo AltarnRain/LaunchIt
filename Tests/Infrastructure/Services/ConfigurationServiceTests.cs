@@ -7,8 +7,6 @@ namespace Infrastructure.Services.Tests
     using Domain.Models.Configuration;
     using global::Tests.Base;
     using Infrastructure.Services;
-    using Logic.Contracts.Providers;
-    using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.IO;
 
@@ -26,7 +24,7 @@ namespace Infrastructure.Services.Tests
         public void CleanConfigFile()
         {
             using var scope = this.StartTestScope();
-            var configurationFile = scope.Get<IPathProvider>().ConfigurationFile();
+            var configurationFile = scope.GetTestConfigurationFileName();
 
             if (File.Exists(configurationFile))
             {
@@ -43,7 +41,7 @@ namespace Infrastructure.Services.Tests
             // Arrange
             using var scope = this.StartTestScope(typeof(ConfigurationService));
             var target = scope.Get<ConfigurationService>();
-            var file = scope.Get<IPathProvider>().ConfigurationFile();
+            var file = scope.GetTestConfigurationFileName();
 
             var configurationModel = new ConfigurationModel
             {
@@ -76,7 +74,7 @@ namespace Infrastructure.Services.Tests
             using var scope = this.StartTestScope(typeof(ConfigurationService));
             var target = scope.Get<ConfigurationService>();
 
-            var configurationFile = scope.Get<IPathProvider>().ConfigurationFile();
+            var configurationFile = scope.GetTestConfigurationFileName();
 
             // Act
             var result1 = target.ConfigurationFileExists(); // No file
@@ -100,7 +98,7 @@ namespace Infrastructure.Services.Tests
             // Arrange
             using var scope = this.StartTestScope(typeof(ConfigurationService));
             var target = scope.Get<ConfigurationService>();
-            var configurationFile = scope.Get<IPathProvider>().ConfigurationFile();
+            var configurationFile = scope.GetTestConfigurationFileName();
 
             // Act
             target.WriteExampleConfigurationFile();
@@ -163,6 +161,46 @@ namespace Infrastructure.Services.Tests
             Assert.AreEqual(2, result.Services.Length);
             Assert.AreEqual("A", result.Services[0]);
             Assert.AreEqual("B", result.Services[1]);
+        }
+
+        /// <summary>
+        /// Test editing the configuration file.
+        /// </summary>
+        [TestMethod]
+        public void EditTest()
+        {
+            // Arrange
+            using var scope = this.StartTestScope(typeof(ConfigurationService));
+            var target = scope.Get<ConfigurationService>();
+
+            var configurationFile = scope.GetTestConfigurationFileName();
+            var testEditorService = scope.GetTestEditorService();
+
+            // Act
+            target.Edit();
+
+            // Assert
+            Assert.AreEqual(1, testEditorService.EditCalls);
+        }
+
+        /// <summary>
+        /// Tests reading an invalid configuration file.
+        /// </summary>
+        [TestMethod]
+        public void InvalidConfigurationFileTest()
+        {
+            // Arrange
+            using var scope = this.StartTestScope(typeof(ConfigurationService));
+            var target = scope.Get<ConfigurationService>();
+
+            var configurationFile = scope.GetTestConfigurationFileName();
+            File.WriteAllText(configurationFile, "This is not valid");
+
+            // Act
+            var result = target.Read();
+
+            // Assert
+            Assert.IsNotNull(result);
         }
     }
 }

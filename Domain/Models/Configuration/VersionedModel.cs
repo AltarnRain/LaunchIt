@@ -4,9 +4,12 @@
 
 namespace Domain.Models.Configuration
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// A model that has versions.
     /// </summary>
+    [ExcludeFromCodeCoverage(Justification = "Abstract class.")]
     public abstract class VersionedModel
     {
         /// <summary>

@@ -58,6 +58,8 @@ namespace Presentation
                         .AddSingleton<IProcessHelper, WindowsProcessHelper>()
                         .AddSingleton<IBatchRunnerFactory, BatchRunnerFactory>()
                         .AddSingleton<IEditorService, EditorService>()
+                        .AddSingleton<IConfigurationValidationService, ConfigurationValidationService>()
+                        .AddSingleton<IProcessWrapper, ProcessWrapper>()
                         ;
 
                     // Bind classes.

@@ -12,19 +12,19 @@ namespace Infrastructure.Helpers
     /// Wrapper class for <see cref="Process"/>calls. This is the only place in the program where ProcessStartInfo objects are created.
     /// </summary>
     [ExcludeFromCodeCoverage(Justification = "To close to the Process API to really test.")]
-    public static class ProcessWrapper
+    public class ProcessWrapper : IProcessWrapper
     {
         /// <summary>
         /// Kills the task.
         /// </summary>
         /// <param name="process">The process.</param>
         /// <returns>Taskkill process.</returns>
-        public static IEnumerable<Process?> Kill(string process)
+        public IEnumerable<Process?> Kill(string process)
         {
             if (process.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) ||
                 process.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
             {
-                yield return Start("taskkill", $"/f /im {process}");
+                yield return this.Start("taskkill", $"/f /im {process}");
                 yield break;
             }
             else
@@ -45,7 +45,7 @@ namespace Infrastructure.Helpers
         /// <returns>
         /// Started process.
         /// </returns>
-        public static Process? Start(string executable, string? arguments = null)
+        public Process? Start(string executable, string? arguments = null)
         {
             var processStartInfo = GetBaseProcessInfo(executable, arguments);
 

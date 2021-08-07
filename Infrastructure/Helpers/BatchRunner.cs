@@ -15,16 +15,19 @@ namespace Infrastructure.Helpers
     {
         private readonly string batchContent;
         private readonly ILogEventService logger;
+        private readonly IProcessWrapper processWrapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchRunner" /> class.
         /// </summary>
         /// <param name="batchContent">Content of the batch.</param>
         /// <param name="logger">The logger.</param>
-        public BatchRunner(string batchContent, ILogEventService logger)
+        /// <param name="processWrapper">The process wrapper.</param>
+        public BatchRunner(string batchContent, ILogEventService logger, IProcessWrapper processWrapper)
         {
             this.batchContent = batchContent;
             this.logger = logger;
+            this.processWrapper = processWrapper;
         }
 
         /// <summary>
@@ -40,7 +43,7 @@ namespace Infrastructure.Helpers
             File.WriteAllText(tempCmdFile, this.batchContent);
 
             this.logger.Log($"Starting {tempCmdFile}");
-            var process = ProcessWrapper.Start(tempCmdFile);
+            var process = this.processWrapper.Start(tempCmdFile);
 
             return process;
         }

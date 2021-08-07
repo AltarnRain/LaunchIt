@@ -6,9 +6,8 @@ namespace Infrastructure.Services.Tests
 {
     using Domain.Models.Configuration;
     using global::Tests.Base;
-    using global::Tests.TestImplementations;
-    using Infrastructure.Factories;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Linq;
 
     /// <summary>
     /// Tests <see cref="BatchFileStartupService"/>.
@@ -58,7 +57,7 @@ namespace Infrastructure.Services.Tests
             var scope = this.StartTestScope(typeof(BatchFileStartupService));
             var target = scope.Get<BatchFileStartupService>();
 
-            var testBatchFileRunnerFactory = (TestBatchRunnerFactory)scope.Get<IBatchRunnerFactory>();
+            var testBatchFileRunnerFactory = scope.GetTestBatchRunnerFactory();
 
             var launchModel = new LaunchModel
             {
@@ -105,6 +104,39 @@ namespace Infrastructure.Services.Tests
 
             // return $"start \"{executableName}\" /{priorityClass.ToString().ToUpper()} {executableName}";
             Assert.IsTrue(ranContent.Contains("start \"dummy.exe\" /REALTIME \"dummy.exe\""));
+        }
+
+        /// <summary>
+        /// Starts the test.
+        /// </summary>
+        [TestMethod]
+        public void StartNoFolderWarningTest()
+        {
+            // Arrange
+            var scope = this.StartTestScope(typeof(BatchFileStartupService));
+            var target = scope.Get<BatchFileStartupService>();
+
+            var testBatchFileRunnerFactory = scope.GetTestBatchRunnerFactory();
+
+            var launchModel = new LaunchModel
+            {
+                ExecutableToLaunch = "dummy.exe",
+            };
+
+            // Act
+            target.Start(launchModel);
+
+            // Assert
+            var testBatchRunner = testBatchFileRunnerFactory.TestBatchRunner;
+
+            Assert.IsNotNull(testBatchRunner);
+
+            var runCalls = testBatchRunner.RunCalls;
+            Assert.AreEqual(1, runCalls);
+
+            var logs = scope.GetLogs();
+
+            Assert.IsTrue(logs.Any(l => l.Contains("Looks like you didn't specify a folder. No worries, I'll try to start dummy.exe")));
         }
     }
 }

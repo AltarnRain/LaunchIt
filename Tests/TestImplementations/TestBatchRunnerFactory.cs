@@ -4,8 +4,8 @@
 
 namespace Tests.TestImplementations
 {
-    using global::Infrastructure.Factories;
-    using global::Infrastructure.Helpers;
+    using Infrastructure.Factories;
+    using Infrastructure.Helpers;
 
     /// <summary>
     /// Test implementation for <see cref="IBatchRunnerFactory"/>.
