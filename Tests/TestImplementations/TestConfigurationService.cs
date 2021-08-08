@@ -8,9 +8,9 @@ namespace Tests.TestImplementations
     using Logic.Contracts.Services;
 
     /// <summary>
-    /// Test implementation of <see cref="IConfigurationService"/>.
+    /// Test implementation of <see cref="IConfigurationService" />.
     /// </summary>
-    /// <seealso cref="Logic.Contracts.Services.IConfigurationService" />
+    /// <seealso cref="IConfigurationService" />
     public class TestConfigurationService : IConfigurationService
     {
         /// <summary>
@@ -27,14 +27,6 @@ namespace Tests.TestImplementations
         public bool ConfigurationFileExists()
         {
             return true;
-        }
-
-        /// <summary>
-        /// Edits the in notepad.
-        /// </summary>
-        public void Edit()
-        {
-            // Does nothing.
         }
 
         /// <summary>

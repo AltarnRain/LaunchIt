@@ -4,7 +4,6 @@
 
 namespace Infrastructure.Helpers
 {
-    using System.Collections.Generic;
     using System.Diagnostics;
 
     /// <summary>

@@ -21,7 +21,6 @@ namespace Presentation
     {
         private readonly LaunchIt launchIt;
         private readonly ILogEventService logger;
-        private readonly IConfigurationService configurationService;
         private readonly LaunchModelProvider launchModelProvider;
         private readonly IEditorService editorService;
 
@@ -36,13 +35,11 @@ namespace Presentation
         public Startup(
             LaunchIt main,
             ILogEventService logger,
-            IConfigurationService configurationService,
             LaunchModelProvider launchModelProvider,
             IEditorService editorService)
         {
             this.launchIt = main;
             this.logger = logger;
-            this.configurationService = configurationService;
             this.launchModelProvider = launchModelProvider;
             this.editorService = editorService;
         }

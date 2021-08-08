@@ -92,12 +92,22 @@ namespace Infrastructure.Services
 
             this.logger.Log($"Building monitoring snapshot...");
 
-            // First thing. Map which processes and services are running. These collections are our Tabula Rasa. Anything new that
-            // that is started will be detected and shut down.
-            this.executableState = this.processHelper.GetRunningExecutables();
-            this.serviceState = this.serviceHelper.GetRunningServices();
-
             var configuration = this.configurationService.Read();
+
+            // First thing. Map which processes and services are running. These collections are our Tabula Rasa. Anything new that
+            // that is started will be detected and shut down. For the executable state I'm purposely ommitting
+            // executables configured for shut down. Getting 'running' executables can be a bit flaky and
+            // on occasion I noticed an executable in the process of being killed was added to this.executableState.
+            // By ensuring the executableState does not contain executables the user wishes to shut down we hand
+            // over the responsibility of killing them to the monitoring process. This, in addition, also
+            // makes it clear which executables are troublesome when it comes to being shut down.
+            this.executableState = this.processHelper
+                .GetRunningExecutables()
+                .Where(e => !configuration.Executables.Contains(e, StringComparer.OrdinalIgnoreCase))
+                .ToArray();
+
+            this.serviceState = this.serviceHelper
+                .GetRunningServices();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
             this.timer = new Timer(configuration.MonitoringConfiguration.MonitoringInterval);

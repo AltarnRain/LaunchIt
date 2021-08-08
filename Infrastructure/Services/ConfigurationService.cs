@@ -75,7 +75,7 @@ namespace Infrastructure.Services
             if (!File.Exists(configurationFile))
             {
                 this.logger.Log($"Could not find {configurationFile}. Using default configuration. Run me with the '-reset' argument to reset your settings to default. Use the '-edit' command line argument to open your settings file.");
-                return new ConfigurationModel();
+                return new ConfigurationModel { ShutdownExplorer = false };
             }
 
             try
@@ -90,10 +90,10 @@ namespace Infrastructure.Services
             {
                 // Swallow. Always return a configuration model.
                 this.logger.Log("Hmmm, looks like there's a problem with your configuration file.");
-                this.logger.Log("Here's the exception message, we'll use default settings for now.");
+                this.logger.Log("Here's the exception message, I'll use default settings for now but I won't shut down explorer.");
                 this.logger.Log(ex.Message);
 
-                return new ConfigurationModel();
+                return new ConfigurationModel { ShutdownExplorer = false };
             }
         }
 

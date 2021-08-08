@@ -15,6 +15,11 @@ namespace Logic
         Unknown,
 
         /// <summary>
+        /// The run
+        /// </summary>
+        Run,
+
+        /// <summary>
         /// The edit configuration
         /// </summary>
         Edit,

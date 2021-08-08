@@ -4,7 +4,6 @@
 
 namespace Tests.TestImplementations
 {
-    using Infrastructure.Services;
     using Logic.Contracts.Services;
 
     /// <summary>

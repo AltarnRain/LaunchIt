@@ -6,7 +6,6 @@ namespace Logic
 {
     using Domain.Models.Configuration;
     using Logic.Contracts.Helpers;
-    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using Logic.Extensions;
     using Logic.Handlers;
@@ -27,7 +26,6 @@ namespace Logic
         private readonly IServiceHelper serviceHelper;
         private readonly IConfigurationValidationService configurationValidationService;
         private readonly IEditorService editorService;
-        private readonly IPathProvider pathProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -49,8 +47,7 @@ namespace Logic
             IProcessHelper processHelper,
             IServiceHelper serviceHelper,
             IConfigurationValidationService configurationValidationService,
-            IEditorService editorService,
-            IPathProvider pathProvider)
+            IEditorService editorService)
         {
             this.configurationService = configurationService;
             this.logger = logger;
@@ -60,7 +57,6 @@ namespace Logic
             this.serviceHelper = serviceHelper;
             this.configurationValidationService = configurationValidationService;
             this.editorService = editorService;
-            this.pathProvider = pathProvider;
         }
 
         /// <summary>

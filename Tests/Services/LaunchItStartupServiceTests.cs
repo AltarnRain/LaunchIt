@@ -7,7 +7,6 @@ namespace Infrastructure.Services.Tests
     using Domain.Models.Configuration;
     using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.Linq;
 
     /// <summary>
     /// Tests the LaunchItStartupService.

@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Infrastructure.Parsers;
-// <copyright file="LaunchModelUpdaterTests.cs" company="Antonio Invernizzi V">
+﻿// <copyright file="LaunchModelUpdaterTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 

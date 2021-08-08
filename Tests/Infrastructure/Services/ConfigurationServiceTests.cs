@@ -130,6 +130,7 @@ namespace Infrastructure.Services.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Services.Length);
             Assert.AreEqual(0, result.Executables.Length);
+            Assert.IsFalse(result.ShutdownExplorer);
         }
 
         /// <summary>
@@ -181,6 +182,7 @@ namespace Infrastructure.Services.Tests
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.IsFalse(result.ShutdownExplorer);
         }
     }
 }
