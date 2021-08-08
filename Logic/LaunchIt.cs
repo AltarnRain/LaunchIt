@@ -123,7 +123,7 @@ namespace Logic
 
             if (configuration.ShutdownExplorer)
             {
-                this.processHelper.Start("explorer.exe");
+                this.processHelper.Start(Domain.Constants.KnownProcesses.ExplorerExe);
             }
 
             // End monitoring if its running.

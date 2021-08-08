@@ -54,7 +54,7 @@ namespace Infrastructure.Services
                 this.logger.Log("This is completely normal!");
                 this.logger.Log("If your keyboard has volume keys and the like they will no longer work. Explorer handles that.");
 
-                this.processHelper.Stop("explorer.exe");
+                this.processHelper.Stop(Domain.Constants.KnownProcesses.ExplorerExe);
             }
 
             foreach (var service in launchModel.Services)

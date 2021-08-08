@@ -59,7 +59,7 @@ namespace Infrastructure.Services
                 batchBuilder.Echo("Shutting down explorer. Your desktop will disappear.");
                 batchBuilder.Echo("This is completely normal!");
                 batchBuilder.Echo("If your keyboard has volume keys and the like they will no longer work. Explorer handles that.");
-                batchBuilder.Add("taskkill /f /im explorer.exe");
+                batchBuilder.Add($"taskkill /f /im {Domain.Constants.KnownProcesses.ExplorerExe}");
             }
 
             batchBuilder.Echo("Shutting down services...");
@@ -99,7 +99,7 @@ namespace Infrastructure.Services
                 batchBuilder.Echo($"Press any key to restart it.");
                 batchBuilder.Echo($"Note that you really want to do this once you're done with {launchModel}");
                 batchBuilder.Pause();
-                batchBuilder.Add("explorer.exe");
+                batchBuilder.Add(Domain.Constants.KnownProcesses.ExplorerExe);
             }
 
             var batchFileContent = batchBuilder.ToString();
