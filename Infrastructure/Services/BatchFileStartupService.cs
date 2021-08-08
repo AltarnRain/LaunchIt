@@ -97,7 +97,7 @@ namespace Infrastructure.Services
             {
                 batchBuilder.Echo($"Explorer.exe has been shut down.");
                 batchBuilder.Echo($"Press any key to restart it.");
-                batchBuilder.Echo($"Note that you really want to do this once you're done with {launchModel}");
+                batchBuilder.Echo($"Note that you really want to do this once you're done with {launchModel.ExecutableToLaunch}");
                 batchBuilder.Pause();
                 batchBuilder.Add(Domain.Constants.KnownProcesses.ExplorerExe);
             }

@@ -22,8 +22,6 @@ namespace Infrastructure.Helpers
     {
         private readonly ILogEventService logger;
 
-        private ServiceController[]? serviceControllers;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsServiceHelper" /> class.
         /// </summary>
@@ -42,7 +40,7 @@ namespace Infrastructure.Helpers
         /// </returns>
         public string[] GetRunningServices()
         {
-            return this.GetServices()
+            return GetServices()
                 .Where(s => s.Status == ServiceControllerStatus.Running)
                 .Select(s => s.DisplayName)
                 .ToArray();
@@ -118,8 +116,10 @@ namespace Infrastructure.Helpers
         /// Gets the service.
         /// </summary>
         /// <returns>Service controllers.</returns>
-        private ServiceController[] GetServices()
+        private static ServiceController[] GetServices()
         {
+            // Abstracted just in case. Originally this method created a cache of service controllers
+            // but that broke detection of restarts.
             return ServiceController.GetServices();
         }
     }
