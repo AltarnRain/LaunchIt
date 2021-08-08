@@ -120,12 +120,7 @@ namespace Infrastructure.Helpers
         /// <returns>Service controllers.</returns>
         private ServiceController[] GetServices()
         {
-            if (this.serviceControllers is null)
-            {
-                this.serviceControllers = ServiceController.GetServices();
-            }
-
-            return this.serviceControllers;
+            return ServiceController.GetServices();
         }
     }
 }
