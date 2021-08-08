@@ -37,18 +37,6 @@ namespace Presentation
                 {
                     // Bind abstracted classes.
                     services
-                        .AddSingleton<IStartupService>(sp =>
-                        {
-                            var configurationService = sp.GetRequiredService<IConfigurationService>();
-                            var configuration = configurationService.Read();
-
-                            if (configuration.UseBatchFile)
-                            {
-                                return sp.GetRequiredService<BatchFileStartupService>();
-                            }
-
-                            return sp.GetRequiredService<LaunchItStartupService>();
-                        })
                         .AddSingleton<IPathProvider, PathProvider>(sp => ActivatorUtilities.CreateInstance<PathProvider>(sp, rootPath))
                         .AddSingleton<ILogEventService, LogEventService>()
                         .AddSingleton<IConfigurationService, ConfigurationService>()
@@ -60,6 +48,7 @@ namespace Presentation
                         .AddSingleton<IEditorService, EditorService>()
                         .AddSingleton<IConfigurationValidationService, ConfigurationValidationService>()
                         .AddSingleton<IProcessWrapper, ProcessWrapper>()
+                        .AddSingleton<IStartupServiceFactory, StartupServiceFactory>()
                         ;
 
                     // Bind classes.

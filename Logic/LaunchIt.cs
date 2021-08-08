@@ -20,43 +20,42 @@ namespace Logic
     {
         private readonly IConfigurationService configurationService;
         private readonly ILogEventService logger;
-        private readonly IStartupService startupService;
         private readonly IMonitoringService monitoringService;
         private readonly IProcessHelper processHelper;
         private readonly IServiceHelper serviceHelper;
         private readonly IConfigurationValidationService configurationValidationService;
         private readonly IEditorService editorService;
+        private readonly IStartupServiceFactory startupServiceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="startupService">The startup service.</param>
         /// <param name="monitoringService">The monitoring service.</param>
         /// <param name="processHelper">The process helper.</param>
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="configurationValidationService">The configuration validation service.</param>
         /// <param name="editorService">The editor service.</param>
-        /// <param name="pathProvider">The path provider.</param>
+        /// <param name="startupServiceFactory">The startup service factory.</param>
         public LaunchIt(
             IConfigurationService configurationService,
             ILogEventService logger,
-            IStartupService startupService,
             IMonitoringService monitoringService,
             IProcessHelper processHelper,
             IServiceHelper serviceHelper,
             IConfigurationValidationService configurationValidationService,
-            IEditorService editorService)
+            IEditorService editorService,
+            IStartupServiceFactory startupServiceFactory)
         {
             this.configurationService = configurationService;
             this.logger = logger;
-            this.startupService = startupService;
             this.monitoringService = monitoringService;
             this.processHelper = processHelper;
             this.serviceHelper = serviceHelper;
             this.configurationValidationService = configurationValidationService;
             this.editorService = editorService;
+            this.startupServiceFactory = startupServiceFactory;
         }
 
         /// <summary>
@@ -91,7 +90,8 @@ namespace Logic
                 this.logger.Log(message);
             }
 
-            var process = this.startupService.Start(launchModel);
+            var startupService = this.startupServiceFactory.Create(launchModel);
+            var process = startupService.Start(launchModel);
 
             // User wants a batchfile so we're done and can exit.
             if (launchModel.UseBatchFile)
