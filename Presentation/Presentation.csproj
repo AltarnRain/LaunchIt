@@ -19,7 +19,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="bin\Debug\net5.0\LaunchIt.yml" />
+    <None Include="bin\Debug\net5.0\win-x64\LaunchIt.yml" />
     <None Include="bin\Release\net5.0\LaunchIt.yml" />
   </ItemGroup>
   

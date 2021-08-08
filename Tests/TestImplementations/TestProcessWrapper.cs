@@ -28,13 +28,9 @@ namespace Tests.TestImplementations
         /// Kills the specified process.
         /// </summary>
         /// <param name="process">The process.</param>
-        /// <returns>
-        /// Killed processes.
-        /// </returns>
-        public IEnumerable<Process?> Kill(string process)
+        public void Kill(string process)
         {
             this.KillCalls++;
-            yield return null;
         }
 
         /// <summary>

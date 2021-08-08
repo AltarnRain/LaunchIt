@@ -18,26 +18,22 @@ namespace Infrastructure.Helpers
         /// Kills the task.
         /// </summary>
         /// <param name="process">The process.</param>
-        /// <returns>Taskkill process.</returns>
-        public IEnumerable<Process> Kill(string process)
+        public void Kill(string process)
         {
             if (process.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) ||
                 process.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
             {
                 var p = this.Start("taskkill", $"/f /im {process}");
-                if (p is not null)
-                {
-                    yield return p;
-                }
-
-                yield break;
+                p?.WaitForExit();
             }
             else
             {
-                foreach (var p in Process.GetProcessesByName(process))
+                foreach (var p in Process.GetProcessesByName(GetProcessName(process)))
                 {
                     p.Kill();
-                    yield return p;
+
+                    // Make it sync. https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.kill?view=net-5.0
+                    p.WaitForExit(30000);
                 }
             }
         }
@@ -77,6 +73,17 @@ namespace Infrastructure.Helpers
                 FileName = executable,
                 Arguments = arguments ?? string.Empty,
             };
+        }
+
+        private static string GetProcessName(string process)
+        {
+            // If the 'process' ends wit .exe, strip .exe off. Process names do not end with .exe
+            if (process.EndsWith(".exe", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return process[0..^4];
+            }
+
+            return process;
         }
     }
 }

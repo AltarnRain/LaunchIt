@@ -16,10 +16,7 @@ namespace Infrastructure.Helpers
         /// Kills the specified process, yield processes because a single name can hide multiple processes.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        /// <returns>
-        /// Killed processes.
-        /// </returns>
-        IEnumerable<Process> Kill(string executable);
+        void Kill(string executable);
 
         /// <summary>
         /// Starts the specified executable.
