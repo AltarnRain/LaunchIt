@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Services
+namespace Logic.Contracts.Services
 {
     /// <summary>
     /// Contract for a service the allows editing of a file.
@@ -14,5 +14,10 @@ namespace Infrastructure.Services
         /// </summary>
         /// <param name="file">The file.</param>
         void Edit(string file);
+
+        /// <summary>
+        /// Edits the configuration.
+        /// </summary>
+        void EditConfiguration();
     }
 }

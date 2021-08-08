@@ -164,26 +164,6 @@ namespace Infrastructure.Services.Tests
         }
 
         /// <summary>
-        /// Test editing the configuration file.
-        /// </summary>
-        [TestMethod]
-        public void EditTest()
-        {
-            // Arrange
-            using var scope = this.StartTestScope(typeof(ConfigurationService));
-            var target = scope.Get<ConfigurationService>();
-
-            var configurationFile = scope.GetTestConfigurationFileName();
-            var testEditorService = scope.GetTestEditorService();
-
-            // Act
-            target.Edit();
-
-            // Assert
-            Assert.AreEqual(1, testEditorService.EditCalls);
-        }
-
-        /// <summary>
         /// Tests reading an invalid configuration file.
         /// </summary>
         [TestMethod]

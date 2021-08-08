@@ -6,6 +6,7 @@ namespace Logic
 {
     using Domain.Models.Configuration;
     using Logic.Contracts.Helpers;
+    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using Logic.Extensions;
     using Logic.Handlers;
@@ -25,6 +26,8 @@ namespace Logic
         private readonly IProcessHelper processHelper;
         private readonly IServiceHelper serviceHelper;
         private readonly IConfigurationValidationService configurationValidationService;
+        private readonly IEditorService editorService;
+        private readonly IPathProvider pathProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LaunchIt" /> class.
@@ -36,6 +39,8 @@ namespace Logic
         /// <param name="processHelper">The process helper.</param>
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="configurationValidationService">The configuration validation service.</param>
+        /// <param name="editorService">The editor service.</param>
+        /// <param name="pathProvider">The path provider.</param>
         public LaunchIt(
             IConfigurationService configurationService,
             ILogEventService logger,
@@ -43,7 +48,9 @@ namespace Logic
             IMonitoringService monitoringService,
             IProcessHelper processHelper,
             IServiceHelper serviceHelper,
-            IConfigurationValidationService configurationValidationService)
+            IConfigurationValidationService configurationValidationService,
+            IEditorService editorService,
+            IPathProvider pathProvider)
         {
             this.configurationService = configurationService;
             this.logger = logger;
@@ -52,6 +59,8 @@ namespace Logic
             this.processHelper = processHelper;
             this.serviceHelper = serviceHelper;
             this.configurationValidationService = configurationValidationService;
+            this.editorService = editorService;
+            this.pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -64,7 +73,7 @@ namespace Logic
 
             if (didWork)
             {
-                this.configurationService.Edit();
+                this.editorService.EditConfiguration();
                 return;
             }
 

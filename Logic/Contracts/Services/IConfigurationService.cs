@@ -35,10 +35,5 @@ namespace Logic.Contracts.Services
         /// Writes the example configuration file.
         /// </summary>
         void WriteExampleConfigurationFile();
-
-        /// <summary>
-        /// Edits the in notepad.
-        /// </summary>
-        void Edit();
     }
 }

@@ -19,12 +19,17 @@ namespace Infrastructure.Helpers
         /// </summary>
         /// <param name="process">The process.</param>
         /// <returns>Taskkill process.</returns>
-        public IEnumerable<Process?> Kill(string process)
+        public IEnumerable<Process> Kill(string process)
         {
             if (process.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) ||
                 process.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
             {
-                yield return this.Start("taskkill", $"/f /im {process}");
+                var p = this.Start("taskkill", $"/f /im {process}");
+                if (p is not null)
+                {
+                    yield return p;
+                }
+
                 yield break;
             }
             else
@@ -49,7 +54,18 @@ namespace Infrastructure.Helpers
         {
             var processStartInfo = GetBaseProcessInfo(executable, arguments);
 
-            return Process.Start(processStartInfo);
+            try
+            {
+                // Catch exceptions. If the process cannot be started, e.g., the executable cannot be found we do not want
+                // the program to crash, we want to report the problem to the user.
+                return Process.Start(processStartInfo);
+            }
+            catch (System.Exception)
+            {
+                // Return null to signal the outside works this process did not start. The return type is nullable by
+                // contract so null checks are required. I. Love. Nullable.
+                return null;
+            }
         }
 
         private static ProcessStartInfo GetBaseProcessInfo(string executable, string? arguments)

@@ -13,11 +13,13 @@ namespace Infrastructure.Helpers
     public interface IProcessWrapper
     {
         /// <summary>
-        /// Kills the specified process.
+        /// Kills the specified process, yield processes because a single name can hide multiple processes.
         /// </summary>
-        /// <param name="process">The process.</param>
-        /// <returns>Killed processes.</returns>
-        IEnumerable<Process?> Kill(string process);
+        /// <param name="executable">The executable.</param>
+        /// <returns>
+        /// Killed processes.
+        /// </returns>
+        IEnumerable<Process> Kill(string executable);
 
         /// <summary>
         /// Starts the specified executable.

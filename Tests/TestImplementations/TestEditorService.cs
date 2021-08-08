@@ -5,11 +5,12 @@
 namespace Tests.TestImplementations
 {
     using Infrastructure.Services;
+    using Logic.Contracts.Services;
 
     /// <summary>
     /// Test implementation for <see cref="IEditorService"/>.
     /// </summary>
-    /// <seealso cref="Infrastructure.Services.IEditorService" />
+    /// <seealso cref="Logic.Contracts.Services.IEditorService" />
     public class TestEditorService : IEditorService
     {
         /// <summary>
@@ -25,6 +26,14 @@ namespace Tests.TestImplementations
         {
             // Keep track of calls to this method so we can assert them.
             this.EditCalls++;
+        }
+
+        /// <summary>
+        /// Edits the configuration.
+        /// </summary>
+        public void EditConfiguration()
+        {
+            this.Edit("configurationfile");
         }
     }
 }

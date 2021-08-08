@@ -81,27 +81,35 @@ namespace Infrastructure.Parsers
         private void ParseSwitchCommand(LaunchModel returnValue, string currentArgument, string? nextArgument)
         {
             var switchCommand = currentArgument.GetSwitchCommand();
+            this.ParseSwitchCommand(returnValue, nextArgument, switchCommand);
+        }
 
+        private void ParseSwitchCommand(LaunchModel returnValue, string? nextArgument, Logic.SwitchCommands switchCommand)
+        {
             switch (switchCommand)
             {
                 case Logic.SwitchCommands.Unknown:
-                    break;
+                    return;
+
                 case Logic.SwitchCommands.Edit:
                     returnValue.EditConfiguration = true;
-                    break;
+                    return;
+
                 case Logic.SwitchCommands.UseBatch:
                     returnValue.UseBatchFile = true;
-                    break;
+                    return;
+
                 case Logic.SwitchCommands.ShutdownExplorer:
                     returnValue.ShutdownExplorer = true;
-                    break;
+                    return;
+
                 case Logic.SwitchCommands.Priority:
                     if (Enum.TryParse(nextArgument, true, out ProcessPriorityClass processPriorityClass))
                     {
                         returnValue.Priority = processPriorityClass;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.MonitorRestarts:
                     if (bool.TryParse(nextArgument, out bool monitorRestarts))
@@ -109,14 +117,15 @@ namespace Infrastructure.Parsers
                         returnValue.MonitoringConfiguration.MonitorRestarts = monitorRestarts;
                     }
 
-                    break;
+                    return;
+
                 case Logic.SwitchCommands.MonitorInterval:
                     if (int.TryParse(nextArgument, out int monitorInterval))
                     {
                         returnValue.MonitoringConfiguration.MonitoringInterval = monitorInterval;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ServiceShutdownAfterRestart:
                     if (bool.TryParse(nextArgument, out bool serviceShutdownAfterRestart))
@@ -124,7 +133,7 @@ namespace Infrastructure.Parsers
                         returnValue.ServiceShutdownConfiguration.ShutdownAfterRestart = serviceShutdownAfterRestart;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ServiceShutdownOnlyConfigured:
                     if (bool.TryParse(nextArgument, out bool serviceShutdownOnlyConfigured))
@@ -132,7 +141,7 @@ namespace Infrastructure.Parsers
                         returnValue.ServiceShutdownConfiguration.OnlyConfigured = serviceShutdownOnlyConfigured;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ServiceShutdownMaximumAttempts:
                     if (int.TryParse(nextArgument, out int serviceShutdownMaximumAttempts))
@@ -140,7 +149,7 @@ namespace Infrastructure.Parsers
                         returnValue.ServiceShutdownConfiguration.MaximumShutdownAttempts = serviceShutdownMaximumAttempts;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ExecutableShutdownAfterRestart:
                     if (bool.TryParse(nextArgument, out bool executableShutdownAfterRestart))
@@ -148,7 +157,7 @@ namespace Infrastructure.Parsers
                         returnValue.ExecutableShutdownConfiguration.ShutdownAfterRestart = executableShutdownAfterRestart;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ExecutableShutdownOnlyConfigured:
                     if (bool.TryParse(nextArgument, out bool executableShutdownOnlyConfigured))
@@ -156,7 +165,7 @@ namespace Infrastructure.Parsers
                         returnValue.ExecutableShutdownConfiguration.OnlyConfigured = executableShutdownOnlyConfigured;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ExecutableShutdownMaximumAttempts:
                     if (int.TryParse(nextArgument, out int executableShutdownMaximumAttempts))
@@ -164,7 +173,7 @@ namespace Infrastructure.Parsers
                         returnValue.ExecutableShutdownConfiguration.MaximumShutdownAttempts = executableShutdownMaximumAttempts;
                     }
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ShutdownService:
                     if (nextArgument is null)
@@ -174,7 +183,7 @@ namespace Infrastructure.Parsers
 
                     this.services.Add(nextArgument);
 
-                    break;
+                    return;
 
                 case Logic.SwitchCommands.ShutdownExecutable:
                     if (nextArgument is null)
@@ -184,7 +193,7 @@ namespace Infrastructure.Parsers
 
                     this.executables.Add(nextArgument);
 
-                    break;
+                    return;
             }
         }
     }

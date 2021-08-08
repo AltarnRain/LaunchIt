@@ -5,7 +5,9 @@
 namespace Infrastructure.Services
 {
     using Infrastructure.Helpers;
+    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
+    using Logic.Extensions;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -16,16 +18,19 @@ namespace Infrastructure.Services
     {
         private readonly IConfigurationService configurationService;
         private readonly IProcessWrapper processWrapper;
+        private readonly IPathProvider pathProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorService" /> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="processWrapper">The process wrapper.</param>
-        public EditorService(IConfigurationService configurationService, IProcessWrapper processWrapper)
+        /// <param name="pathProvider">The path provider.</param>
+        public EditorService(IConfigurationService configurationService, IProcessWrapper processWrapper, IPathProvider pathProvider)
         {
             this.configurationService = configurationService;
             this.processWrapper = processWrapper;
+            this.pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -35,6 +40,14 @@ namespace Infrastructure.Services
         public void Edit(string file)
         {
             this.processWrapper.Start(this.GetEditor(), file)?.WaitForExit();
+        }
+
+        /// <summary>
+        /// Edits the configuration.
+        /// </summary>
+        public void EditConfiguration()
+        {
+            this.Edit(this.pathProvider.ConfigurationFile());
         }
 
         private string GetEditor()

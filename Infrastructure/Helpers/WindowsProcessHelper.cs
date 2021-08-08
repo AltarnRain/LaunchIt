@@ -156,16 +156,10 @@ namespace Infrastructure.Helpers
         /// <param name="trackCount">if set to <c>true</c> [track count].</param>
         public override void Stop(string executable, bool trackCount = true)
         {
-            if (executable.Equals(Domain.Constants.KnownProcesses.Explorer, System.StringComparison.OrdinalIgnoreCase) || executable.Equals(Domain.Constants.KnownProcesses.ExplorerExe, System.StringComparison.OrdinalIgnoreCase))
+            foreach (var p in this.processWrapper.Kill(executable))
             {
-                this.processWrapper.Kill(executable);
-            }
-            else
-            {
-                foreach (var process in Process.GetProcessesByName(executable))
-                {
-                    process.Kill();
-                }
+                // Sync by waiting for the kill process to end.
+                p.WaitForExit();
             }
 
             if (trackCount)

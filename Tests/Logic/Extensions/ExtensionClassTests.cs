@@ -1,4 +1,6 @@
-﻿// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Logic.Extensions;
+// <copyright file="ExtensionClassTests.cs" company="Antonio Invernizzi V">
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
@@ -119,10 +121,12 @@ namespace Logic.Extensions.Tests
             // Act
             var result1 = "-ShutdownExplorer".GetSwitchCommand();
             var result2 = "-IAMNotSupported".GetSwitchCommand();
+            var result3 = "NotASwitch".GetSwitchCommand();
 
             // Assert
             Assert.AreEqual(SwitchCommands.ShutdownExplorer, result1);
             Assert.AreEqual(SwitchCommands.Unknown, result2);
+            Assert.AreEqual(SwitchCommands.Unknown, result3);
         }
 
         private static LaunchModel GetLaunchModelWithoutMonitoring()

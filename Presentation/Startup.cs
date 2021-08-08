@@ -23,6 +23,7 @@ namespace Presentation
         private readonly ILogEventService logger;
         private readonly IConfigurationService configurationService;
         private readonly LaunchModelProvider launchModelProvider;
+        private readonly IEditorService editorService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -31,16 +32,19 @@ namespace Presentation
         /// <param name="logger">The logger.</param>
         /// <param name="configurationService">The configuration service.</param>
         /// <param name="launchModelProvider">The launch model provider.</param>
+        /// <param name="editorService">The editor service.</param>
         public Startup(
             LaunchIt main,
             ILogEventService logger,
             IConfigurationService configurationService,
-            LaunchModelProvider launchModelProvider)
+            LaunchModelProvider launchModelProvider,
+            IEditorService editorService)
         {
             this.launchIt = main;
             this.logger = logger;
             this.configurationService = configurationService;
             this.launchModelProvider = launchModelProvider;
+            this.editorService = editorService;
         }
 
         /// <summary>
@@ -53,7 +57,7 @@ namespace Presentation
 
             if (launchModel.EditConfiguration)
             {
-                this.configurationService.Edit();
+                this.editorService.EditConfiguration();
                 return;
             }
 

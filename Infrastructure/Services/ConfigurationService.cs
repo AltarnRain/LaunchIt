@@ -19,7 +19,6 @@ namespace Infrastructure.Services
         private readonly IPathProvider pathProvider;
         private readonly ILogEventService logger;
         private readonly ISerializationService serializationService;
-        private readonly IEditorService editorService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationService" /> class.
@@ -31,13 +30,11 @@ namespace Infrastructure.Services
         public ConfigurationService(
             IPathProvider pathProvider,
             ILogEventService logger,
-            ISerializationService serializationService,
-            IEditorService editorService)
+            ISerializationService serializationService)
         {
             this.pathProvider = pathProvider;
             this.logger = logger;
             this.serializationService = serializationService;
-            this.editorService = editorService;
         }
 
         /// <summary>
@@ -110,15 +107,6 @@ namespace Infrastructure.Services
             var content = this.serializationService.Serialize(configuration);
 
             File.WriteAllText(configurationFile, content);
-        }
-
-        /// <summary>
-        /// Edits the in notepad.
-        /// </summary>
-        public void Edit()
-        {
-            var configurationFile = this.pathProvider.ConfigurationFile();
-            this.editorService.Edit(configurationFile);
         }
     }
 }
