@@ -19,11 +19,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <None Include="bin\Debug\net5.0\win-x64\LaunchIt.yml" />
-    <None Include="bin\Release\net5.0\LaunchIt.yml" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
