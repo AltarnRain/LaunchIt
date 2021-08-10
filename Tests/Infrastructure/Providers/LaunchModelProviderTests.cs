@@ -39,6 +39,7 @@ namespace Infrastructure.Providers.Tests
                     "2",
                 },
                 ShutdownExplorer = false,
+                MonitoringInterval = 2906,
             };
 
             configurationService.Write(configurationModel);
@@ -58,6 +59,7 @@ namespace Infrastructure.Providers.Tests
             Assert.AreEqual("2", result.Services[1]);
             Assert.IsTrue(result.UseBatchFile);
             Assert.IsFalse(result.ShutdownExplorer);
+            Assert.AreEqual(2906, result.MonitoringInterval);
         }
     }
 }

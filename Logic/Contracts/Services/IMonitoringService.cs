@@ -4,6 +4,7 @@
 
 namespace Logic.Contracts.Services
 {
+    using Domain.Models.Configuration;
     using Domain.Models.Events;
     using System;
 
@@ -20,7 +21,8 @@ namespace Logic.Contracts.Services
         /// <summary>
         /// Starts the monitoring.
         /// </summary>
-        void StartMonitoring();
+        /// <param name="launchModel">The launch model.</param>
+        void StartMonitoring(LaunchModel launchModel);
 
         /// <summary>
         /// Ends the monitoring.

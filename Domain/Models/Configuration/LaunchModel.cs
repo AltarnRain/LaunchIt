@@ -46,5 +46,10 @@ namespace Domain.Models.Configuration
         /// Gets or sets a value indicating whether [edit configuration].
         /// </summary>
         public bool EditConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the monitoring interval.
+        /// </summary>
+        public int MonitoringInterval { get; set; }
     }
 }

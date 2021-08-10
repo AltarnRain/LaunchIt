@@ -94,7 +94,7 @@ namespace Logic
                 return;
             }
 
-            this.monitoringService.StartMonitoring();
+            this.monitoringService.StartMonitoring(launchModel);
 
             var monitorEventHandler = new MonitorEventHandler(this.logger);
 

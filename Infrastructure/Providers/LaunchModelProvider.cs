@@ -46,6 +46,7 @@ namespace Infrastructure.Providers
                 Priority = Enum.Parse<ProcessPriorityClass>(configuration.Priority),
                 UseBatchFile = false,
                 ShutdownExplorer = configuration.ShutdownExplorer,
+                MonitoringInterval = configuration.MonitoringInterval,
             };
 
             // Now, update the configuration based launch model with command line arguments.

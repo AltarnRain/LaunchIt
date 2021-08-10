@@ -38,7 +38,7 @@ namespace Logic.Handlers.Tests
             Assert.IsTrue(logs.Length > 0);
             var log1 = logs[0];
 
-            Assert.AreEqual("Started: Process 'A name'", log1);
+            Assert.IsTrue(log1.EndsWith("Started: Process 'A name'"));
         }
 
         /// <summary>

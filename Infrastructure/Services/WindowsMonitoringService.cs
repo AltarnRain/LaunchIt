@@ -5,6 +5,7 @@
 namespace Infrastructure.Services
 {
     using Domain.Exceptions;
+    using Domain.Models.Configuration;
     using Domain.Models.Events;
     using Domain.Types;
     using Logic.Contracts.Helpers;
@@ -23,7 +24,6 @@ namespace Infrastructure.Services
         private readonly ILogEventService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
-        private readonly IConfigurationService configurationService;
         private readonly List<Action<MonitoringEventModel>> subscriptions = new();
 
         private Timer? timer;
@@ -41,13 +41,11 @@ namespace Infrastructure.Services
         public WindowsMonitoringService(
             ILogEventService logger,
             IServiceHelper serviceHelper,
-            IProcessHelper processHelper,
-            IConfigurationService configurationService)
+            IProcessHelper processHelper)
         {
             this.logger = logger;
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;
-            this.configurationService = configurationService;
         }
 
         /// <summary>
@@ -82,8 +80,9 @@ namespace Infrastructure.Services
         /// <summary>
         /// Starts the monitoring.
         /// </summary>
-        /// <exception cref="Exception">Already monitoring.</exception>
-        public void StartMonitoring()
+        /// <param name="launchModel">The launch model.</param>
+        /// <exception cref="MonitoringException">Already monitoring.</exception>
+        public void StartMonitoring(LaunchModel launchModel)
         {
             if (this.Monitoring)
             {
@@ -91,8 +90,6 @@ namespace Infrastructure.Services
             }
 
             this.logger.Log($"Building monitoring snapshot...");
-
-            var configuration = this.configurationService.Read();
 
             // First thing. Map which processes and services are running. These collections are our Tabula Rasa. Anything new that
             // that is started will be detected and shut down. For the executable state I'm purposely ommitting
@@ -103,14 +100,14 @@ namespace Infrastructure.Services
             // makes it clear which executables are troublesome when it comes to being shut down.
             this.executableState = this.processHelper
                 .GetRunningExecutables()
-                .Where(e => !configuration.Executables.Contains(e, StringComparer.OrdinalIgnoreCase))
+                .Where(e => !launchModel.Executables.Contains(e, StringComparer.OrdinalIgnoreCase))
                 .ToArray();
 
             this.serviceState = this.serviceHelper
                 .GetRunningServices();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
-            this.timer = new Timer(30000);
+            this.timer = new Timer(launchModel.MonitoringInterval);
             this.logger.Log($"Monitoring activity.");
 
             this.timer.Elapsed += (sender, eventArgs) =>

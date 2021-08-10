@@ -35,6 +35,12 @@ namespace Domain.Models.Configuration
         public string PreferredEditor { get; set; } = "notepad.exe";
 
         /// <summary>
+        /// Gets or sets the monitoring interval.
+        /// </summary>
+        [Description("Interval, in milliseconds, how often I check if something started while you're running you're program.")]
+        public int MonitoringInterval { get; set; } = 30000;
+
+        /// <summary>
         /// Gets or sets the services.
         /// </summary>
         [Description("List services you wish to shut down by their full name in this section. For example: - My Service")]
