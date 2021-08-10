@@ -40,44 +40,9 @@ namespace Logic
         Priority,
 
         /// <summary>
-        /// The monitor restarts
-        /// </summary>
-        MonitorRestarts,
-
-        /// <summary>
         /// The monitor interval
         /// </summary>
         MonitorInterval,
-
-        /// <summary>
-        /// The service shutdown after restart
-        /// </summary>
-        ServiceShutdownAfterRestart,
-
-        /// <summary>
-        /// The service shutdown only configured
-        /// </summary>
-        ServiceShutdownOnlyConfigured,
-
-        /// <summary>
-        /// The service shutdown maximum attempts
-        /// </summary>
-        ServiceShutdownMaximumAttempts,
-
-        /// <summary>
-        /// The service shutdown after restart
-        /// </summary>
-        ExecutableShutdownAfterRestart,
-
-        /// <summary>
-        /// The service shutdown only configured
-        /// </summary>
-        ExecutableShutdownOnlyConfigured,
-
-        /// <summary>
-        /// The service shutdown maximum attempts
-        /// </summary>
-        ExecutableShutdownMaximumAttempts,
 
         /// <summary>
         /// The service

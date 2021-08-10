@@ -5,6 +5,7 @@
 namespace Infrastructure.Services.Tests
 {
     using Domain.Exceptions;
+    using Domain.Models.Configuration;
     using global::Tests.Base;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +27,7 @@ namespace Infrastructure.Services.Tests
             var target = scope.Get<WindowsMonitoringService>();
 
             // Act & Assert. Should not throw.
-            target.StartMonitoring();
+            target.StartMonitoring(new LaunchModel());
             target.EndMonitoring();
         }
 
@@ -55,8 +56,8 @@ namespace Infrastructure.Services.Tests
             var target = scope.Get<WindowsMonitoringService>();
 
             // Act
-            target.StartMonitoring();
-            Assert.ThrowsException<MonitoringException>(() => target.StartMonitoring(), "Already monitoring.");
+            target.StartMonitoring(new LaunchModel());
+            Assert.ThrowsException<MonitoringException>(() => target.StartMonitoring(new LaunchModel()), "Already monitoring.");
         }
 
         /// <summary>
