@@ -1,1 +1,0 @@
-msbuild -m Launchit.sln /property:Configuration=Release
