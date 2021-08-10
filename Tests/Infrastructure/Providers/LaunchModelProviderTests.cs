@@ -38,10 +38,6 @@ namespace Infrastructure.Providers.Tests
                     "1",
                     "2",
                 },
-                ExecutableShutdownConfiguration = new ShutdownConfigurationModel(),
-                ServiceShutdownConfiguration = new ShutdownConfigurationModel(),
-                MonitoringConfiguration = new MonitoringConfiguration(),
-                UseBatchFile = false,
                 ShutdownExplorer = false,
             };
 
@@ -60,9 +56,6 @@ namespace Infrastructure.Providers.Tests
             Assert.AreEqual("B", result.Executables[1]);
             Assert.AreEqual("1", result.Services[0]);
             Assert.AreEqual("2", result.Services[1]);
-            Assert.IsTrue(result.ExecutableShutdownConfiguration == configurationModel.ExecutableShutdownConfiguration);
-            Assert.IsTrue(result.ServiceShutdownConfiguration == configurationModel.ServiceShutdownConfiguration);
-            Assert.IsTrue(result.MonitoringConfiguration == configurationModel.MonitoringConfiguration);
             Assert.IsTrue(result.UseBatchFile);
             Assert.IsFalse(result.ShutdownExplorer);
         }

@@ -9,7 +9,6 @@ namespace Logic
     using Logic.Contracts.Services;
     using Logic.Extensions;
     using Logic.Handlers;
-    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -22,7 +21,6 @@ namespace Logic
         private readonly ILogEventService logger;
         private readonly IMonitoringService monitoringService;
         private readonly IProcessHelper processHelper;
-        private readonly IServiceHelper serviceHelper;
         private readonly IConfigurationValidationService configurationValidationService;
         private readonly IEditorService editorService;
         private readonly IStartupServiceFactory startupServiceFactory;
@@ -34,7 +32,6 @@ namespace Logic
         /// <param name="logger">The logger.</param>
         /// <param name="monitoringService">The monitoring service.</param>
         /// <param name="processHelper">The process helper.</param>
-        /// <param name="serviceHelper">The service helper.</param>
         /// <param name="configurationValidationService">The configuration validation service.</param>
         /// <param name="editorService">The editor service.</param>
         /// <param name="startupServiceFactory">The startup service factory.</param>
@@ -43,7 +40,6 @@ namespace Logic
             ILogEventService logger,
             IMonitoringService monitoringService,
             IProcessHelper processHelper,
-            IServiceHelper serviceHelper,
             IConfigurationValidationService configurationValidationService,
             IEditorService editorService,
             IStartupServiceFactory startupServiceFactory)
@@ -52,7 +48,6 @@ namespace Logic
             this.logger = logger;
             this.monitoringService = monitoringService;
             this.processHelper = processHelper;
-            this.serviceHelper = serviceHelper;
             this.configurationValidationService = configurationValidationService;
             this.editorService = editorService;
             this.startupServiceFactory = startupServiceFactory;
@@ -99,19 +94,11 @@ namespace Logic
                 return;
             }
 
-            Action? unsubscribeMonitorEventHandler = null;
-            if (launchModel.StartMonitoring())
-            {
-                this.monitoringService.StartMonitoring();
+            this.monitoringService.StartMonitoring();
 
-                var monitorEventHandler = new MonitorEventHandler(
-                    this.configurationService,
-                    this.logger,
-                    this.serviceHelper,
-                    this.processHelper);
+            var monitorEventHandler = new MonitorEventHandler(this.logger);
 
-                unsubscribeMonitorEventHandler = this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent);
-            }
+            var unsubscribeMonitorEventHandler = this.monitoringService.Subscribe(monitorEventHandler.HandleMonitoringEvent);
 
             if (process is null)
             {

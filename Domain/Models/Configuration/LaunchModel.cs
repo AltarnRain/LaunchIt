@@ -38,21 +38,6 @@ namespace Domain.Models.Configuration
         public ProcessPriorityClass Priority { get; set; } = ProcessPriorityClass.AboveNormal;
 
         /// <summary>
-        /// Gets or sets the service shutdown configuration.
-        /// </summary>
-        public ShutdownConfigurationModel ServiceShutdownConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the executable shutdown configuration.
-        /// </summary>
-        public ShutdownConfigurationModel ExecutableShutdownConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the monitoring configuration.
-        /// </summary>
-        public MonitoringConfiguration MonitoringConfiguration { get; set; } = new();
-
-        /// <summary>
         /// Gets or sets a value indicating whether [use batch file].
         /// </summary>
         public bool UseBatchFile { get; set; }

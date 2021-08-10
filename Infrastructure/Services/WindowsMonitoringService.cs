@@ -110,7 +110,7 @@ namespace Infrastructure.Services
                 .GetRunningServices();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
-            this.timer = new Timer(configuration.MonitoringConfiguration.MonitoringInterval);
+            this.timer = new Timer(30000);
             this.logger.Log($"Monitoring activity.");
 
             this.timer.Elapsed += (sender, eventArgs) =>

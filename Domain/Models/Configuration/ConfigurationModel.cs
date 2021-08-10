@@ -11,16 +11,10 @@ namespace Domain.Models.Configuration
     /// <summary>
     /// Configuration.
     /// </summary>
-    public class ConfigurationModel : VersionedModel
+    public class ConfigurationModel
     {
         private string[]? executables;
         private string[]? services;
-
-        /// <summary>
-        /// Gets or sets the version.
-        /// </summary>
-        [Description("Version of the configuration file. Do not change this!")]
-        public override int Version { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets a value indicating whether [shutdown explorer].
@@ -39,30 +33,6 @@ namespace Domain.Models.Configuration
         /// </summary>
         [Description("Here you can specify which editor you want to use to edit settings. If your editor can be found using a PATH, just specify the exe. Otherwise use the full path. Default is notepad.exe")]
         public string PreferredEditor { get; set; } = "notepad.exe";
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [use batch file].
-        /// </summary>
-        [Description("I will make a batch file to launch the program you specified and then shut down itself. Default is false.")]
-        public bool UseBatchFile { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets the monitoring configuration.
-        /// </summary>
-        [Description("Configure monitoring options")]
-        public MonitoringConfiguration MonitoringConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the service shutdown configuration.
-        /// </summary>
-        [Description("Configure shutting down services that (re)start.")]
-        public ShutdownConfigurationModel ServiceShutdownConfiguration { get; set; } = new();
-
-        /// <summary>
-        /// Gets or sets the executable shutdown configuration.
-        /// </summary>
-        [Description("Configure shutting down executables that (re)start.")]
-        public ShutdownConfigurationModel ExecutableShutdownConfiguration { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the services.

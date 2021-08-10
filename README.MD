@@ -1,7 +1,18 @@
 # LaunchIt
 
 LaunchIt is a program that shuts down anything you don't need before starting a program.
+
 This can by anything but I wrote it with games in mind.
+
+LaunchIt can run a program in two ways:
+1. Diagnostic mode
+1. Batchfile
+
+## Diagnostic mode
+
+
+## Batchfile
+LaucnhIt will use its configuration and any command line parameter you speficy 
 
 ## Uhm, why? There's plenty of programs that do this.
 

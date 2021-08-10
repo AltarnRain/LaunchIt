@@ -44,10 +44,7 @@ namespace Infrastructure.Providers
                 Executables = configuration.Executables,
                 Services = configuration.Services,
                 Priority = Enum.Parse<ProcessPriorityClass>(configuration.Priority),
-                ExecutableShutdownConfiguration = configuration.ExecutableShutdownConfiguration,
-                ServiceShutdownConfiguration = configuration.ServiceShutdownConfiguration,
-                MonitoringConfiguration = configuration.MonitoringConfiguration,
-                UseBatchFile = configuration.UseBatchFile,
+                UseBatchFile = false,
                 ShutdownExplorer = configuration.ShutdownExplorer,
             };
 
