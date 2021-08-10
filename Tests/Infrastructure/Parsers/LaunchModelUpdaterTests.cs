@@ -235,5 +235,37 @@ namespace Infrastructure.Parsers.Tests
             // Assert
             Assert.AreEqual(0, model.Executables.Length);
         }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseRun()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run", "notepad.exe" }, model);
+
+            // Assert
+            Assert.AreEqual("notepad.exe", model.ExecutableToLaunch);
+        }
+
+        /// <summary>
+        /// Parses the nothing test.
+        /// </summary>
+        [TestMethod]
+        public void ParseRunNothingToRun()
+        {
+            // Arrange
+            var model = new LaunchModel();
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run" }, model);
+
+            // Assert
+            Assert.AreEqual("cmd", model.ExecutableToLaunch);
+        }
     }
 }

@@ -90,7 +90,9 @@ namespace Infrastructure.Parsers
             {
                 case Logic.SwitchCommands.Unknown:
                     return;
-
+                case Logic.SwitchCommands.Run:
+                    returnValue.ExecutableToLaunch = nextArgument ?? "cmd";
+                    return;
                 case Logic.SwitchCommands.Edit:
                     returnValue.EditConfiguration = true;
                     return;
