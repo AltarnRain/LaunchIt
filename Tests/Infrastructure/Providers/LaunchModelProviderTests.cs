@@ -7,7 +7,6 @@ namespace Infrastructure.Providers.Tests
     using Domain.Models.Configuration;
     using global::Tests.Base;
     using Infrastructure.Services;
-    using Logic.Contracts.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

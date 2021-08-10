@@ -4,7 +4,6 @@
 
 namespace Tests.TestImplementations
 {
-    using Infrastructure.Helpers;
     using Logic.Contracts.Helpers;
     using System;
     using System.Collections.Generic;

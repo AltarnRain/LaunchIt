@@ -7,7 +7,6 @@ namespace Logic
     using Domain.Models.Configuration;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
-    using Logic.Extensions;
     using Logic.Handlers;
     using System.Diagnostics.CodeAnalysis;
 
