@@ -63,14 +63,9 @@ namespace Infrastructure.Services
                 throw new MonitoringException("Did not begin monitoring.");
             }
 
-            if (this.timer is null)
-            {
-                throw new MonitoringException("No timer running... now that's weird.");
-            }
-
-            this.timer.Stop();
-            this.timer.Close();
-            this.timer.Dispose();
+            this.timer?.Stop();
+            this.timer?.Close();
+            this.timer?.Dispose();
 
             // Reset.
             this.executableState = null;
