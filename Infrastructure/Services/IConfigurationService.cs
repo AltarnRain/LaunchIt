@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Logic.Contracts.Services
+namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
 

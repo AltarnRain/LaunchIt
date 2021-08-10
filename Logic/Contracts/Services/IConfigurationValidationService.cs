@@ -18,5 +18,11 @@ namespace Logic.Contracts.Services
         /// <param name="configurationModel">The configuration model.</param>
         /// <returns>Warning messages.</returns>
         public IEnumerable<string> Validate(ConfigurationModel configurationModel);
+
+        /// <summary>
+        /// Validates this instance.
+        /// </summary>
+        /// <returns>Error messages.</returns>
+        public IEnumerable<string> Validate();
     }
 }

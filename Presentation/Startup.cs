@@ -6,8 +6,10 @@ namespace Presentation
 {
     using Infrastructure.Loggers;
     using Infrastructure.Providers;
+    using Infrastructure.Services;
     using Logic;
     using Logic.Contracts.Services;
+    using Logic.Extensions;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Versioning;
     using System.Security.Principal;
@@ -23,25 +25,28 @@ namespace Presentation
         private readonly ILogEventService logger;
         private readonly LaunchModelProvider launchModelProvider;
         private readonly IEditorService editorService;
+        private readonly IConfigurationService configurationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="main">The main.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="configurationService">The configuration service.</param>
         /// <param name="launchModelProvider">The launch model provider.</param>
         /// <param name="editorService">The editor service.</param>
+        /// <param name="configurationService">The configuration service.</param>
         public Startup(
             LaunchIt main,
             ILogEventService logger,
             LaunchModelProvider launchModelProvider,
-            IEditorService editorService)
+            IEditorService editorService,
+            IConfigurationService configurationService)
         {
             this.launchIt = main;
             this.logger = logger;
             this.launchModelProvider = launchModelProvider;
             this.editorService = editorService;
+            this.configurationService = configurationService;
         }
 
         /// <summary>
@@ -50,6 +55,14 @@ namespace Presentation
         /// <param name="args">The arguments.</param>
         public void Run(string[] args)
         {
+            var didWork = this.CheckForConfigurationFile();
+
+            if (didWork)
+            {
+                this.editorService.EditConfiguration();
+                return;
+            }
+
             var launchModel = this.launchModelProvider.GetModel(args);
 
             if (launchModel.EditConfiguration)
@@ -115,6 +128,20 @@ namespace Presentation
             this.logger.Log("Click 'X' to close the program.");
             this.logger.Log("Or, press CTRL-C to return to the command prompt.");
             manualResetEvent.WaitOne();
+        }
+
+        private bool CheckForConfigurationFile()
+        {
+            if (!this.configurationService.ConfigurationFileExists())
+            {
+                this.configurationService.WriteExampleConfigurationFile();
+                this.logger.Log($"Looks like you're starting me for the first time. I'll setup an example configuration file and open it in notepad.");
+                this.logger.Log($"If you want to to edit your configuration file just run LaunchIt with the 'edit' switch. For example:");
+                this.logger.Log($"   LaunchIt {SwitchCommands.Edit.GetCommandLineArgument()}");
+                return true;
+            }
+
+            return false;
         }
     }
 }

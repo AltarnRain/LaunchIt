@@ -27,7 +27,7 @@ namespace Infrastructure.Services.Tests
             var target = scope.Get<WindowsMonitoringService>();
 
             // Act & Assert. Should not throw.
-            target.StartMonitoring(new LaunchModel());
+            target.StartMonitoring(new LaunchModel { MonitoringInterval = 5000 });
             target.EndMonitoring();
         }
 
@@ -56,7 +56,7 @@ namespace Infrastructure.Services.Tests
             var target = scope.Get<WindowsMonitoringService>();
 
             // Act
-            target.StartMonitoring(new LaunchModel());
+            target.StartMonitoring(new LaunchModel { MonitoringInterval = 5000 });
             Assert.ThrowsException<MonitoringException>(() => target.StartMonitoring(new LaunchModel()), "Already monitoring.");
         }
 
