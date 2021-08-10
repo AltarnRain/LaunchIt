@@ -59,13 +59,13 @@ namespace Infrastructure.Services
             foreach (var service in launchModel.Services)
             {
                 // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
-                this.serviceHelper.Stop(service, false);
+                this.serviceHelper.Stop(service);
             }
 
             foreach (var exe in launchModel.Executables)
             {
                 // This is the only time we do not track the shutdown count. Initial shutdown do not count towards the shutdown count.
-                this.processHelper.Stop(exe, false);
+                this.processHelper.Stop(exe);
             }
 
             var process = this.processHelper.Start(launchModel.ExecutableToLaunch);

@@ -58,5 +58,32 @@ namespace Infrastructure.Services.Tests
             // Assert
             Assert.IsTrue(result.Length > 0);
         }
+
+        /// <summary>
+        /// Warns the about explorer in executables default call test.
+        /// </summary>
+        [TestMethod]
+        public void WarnAboutExplorerInExecutablesDefaultCallTest()
+        {
+            // Arrange
+            var scope = this.StartTestScope(typeof(ConfigurationValidationService));
+            var target = scope.Get<ConfigurationValidationService>();
+
+            var configurationModel = new ConfigurationModel
+            {
+                Executables = new[]
+                {
+                    "explorer.exe",
+                },
+            };
+
+            scope.SetConfiguration(configurationModel);
+
+            // Act
+            var result = target.Validate().ToArray();
+
+            // Assert
+            Assert.IsTrue(result.Length > 0);
+        }
     }
 }

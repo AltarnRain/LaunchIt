@@ -11,10 +11,10 @@ namespace Tests.TestImplementations
     using System.Diagnostics;
 
     /// <summary>
-    /// Test implementation of <see cref="IProcessHelper"/>.
+    /// Test implementation of <see cref="IProcessHelper" />.
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IProcessHelper" />
-    public class TestProcessHelper : StopHelperBase, IProcessHelper
+    public class TestProcessHelper : IProcessHelper
     {
         /// <summary>
         /// Gets or sets the executables.
@@ -57,11 +57,9 @@ namespace Tests.TestImplementations
         /// Stops the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="tackCount">if set to <c>true</c> [tack count].</param>
-        public override void Stop(string name, bool tackCount = false)
+        public void Stop(string name)
         {
             this.StopCalls.Add(name);
-            this.AddToStopCount(name);
         }
     }
 }

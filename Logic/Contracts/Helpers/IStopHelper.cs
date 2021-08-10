@@ -10,17 +10,9 @@ namespace Logic.Contracts.Helpers
     public interface IStopHelper
     {
         /// <summary>
-        /// Stops the count.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns>Number of times 'name' has been stopped.</returns>
-        int GetStopCount(string name);
-
-        /// <summary>
         /// Stops the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="tackCount">if set to <c>true</c> [tack count].</param>
-        void Stop(string name, bool tackCount = false);
+        void Stop(string name);
     }
 }

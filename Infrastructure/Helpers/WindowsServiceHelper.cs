@@ -18,7 +18,7 @@ namespace Infrastructure.Helpers
     /// <seealso cref="Logic.Contracts.Helpers.IServiceHelper" />
     [SupportedOSPlatform("windows")]
     [ExcludeFromCodeCoverage(Justification = "Wrapper class around ServiceController.")]
-    public class WindowsServiceHelper : StopHelperBase, IServiceHelper
+    public class WindowsServiceHelper : IServiceHelper
     {
         private readonly ILogEventService logger;
 
@@ -50,8 +50,7 @@ namespace Infrastructure.Helpers
         /// Gets the service.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        /// <param name="trackCount">if set to <c>true</c> [track count].</param>
-        public override void Stop(string serviceName, bool trackCount)
+        public void Stop(string serviceName)
         {
             var service = ServiceController.GetServices().SingleOrDefault(s => s.DisplayName == serviceName);
 
@@ -78,13 +77,6 @@ namespace Infrastructure.Helpers
                     (retryCount) => this.logger.Log($"Failed to stop service '{serviceName}' after {retryCount} attempts."),
                     (retryCount) =>
                     {
-                        if (trackCount)
-                        {
-                            this.AddToStopCount(serviceName);
-                            this.logger.LogStopped($"service '{serviceName}' ({this.GetStopCount(serviceName)}).");
-                            return;
-                        }
-
                         this.logger.LogStopped($"service '{serviceName}'.");
                     });
 

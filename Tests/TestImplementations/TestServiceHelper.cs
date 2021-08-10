@@ -13,7 +13,7 @@ namespace Tests.TestImplementations
     /// Test implementation of <see cref="IServiceHelper"/>.
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IServiceHelper" />
-    public class TestServiceHelper : StopHelperBase, IServiceHelper
+    public class TestServiceHelper : IServiceHelper
     {
         /// <summary>
         /// Gets the services.
@@ -40,11 +40,9 @@ namespace Tests.TestImplementations
         /// Stops the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="tackCount">if set to <c>true</c> [tack count].</param>
-        public override void Stop(string name, bool tackCount = false)
+        public void Stop(string name)
         {
             this.StopCalls.Add(name);
-            this.AddToStopCount(name);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Infrastructure.Helpers
     /// </summary>
     /// <seealso cref="Logic.Contracts.Helpers.IProcessHelper" />
     [ExcludeFromCodeCoverage(Justification = "To close to the Process API to really test.")]
-    public class WindowsProcessHelper : StopHelperBase, IProcessHelper
+    public class WindowsProcessHelper : IProcessHelper
     {
         private const int AccessDenied = 5;
         private const int UnableToEnumerateModules = -2147467259;
@@ -153,18 +153,9 @@ namespace Infrastructure.Helpers
         /// Stops the specified executable.
         /// </summary>
         /// <param name="executable">The executable.</param>
-        /// <param name="trackCount">if set to <c>true</c> [track count].</param>
-        public override void Stop(string executable, bool trackCount = true)
+        public void Stop(string executable)
         {
             this.processWrapper.Kill(executable);
-
-            if (trackCount)
-            {
-                this.AddToStopCount(executable);
-                this.logger.LogStopped($"'{executable}' ({this.GetStopCount(executable)})");
-                return;
-            }
-
             this.logger.LogStopped($"'{executable}'");
         }
     }
