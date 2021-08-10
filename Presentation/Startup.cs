@@ -71,6 +71,11 @@ namespace Presentation
                 return;
             }
 
+            if (string.IsNullOrEmpty(launchModel.ExecutableToLaunch))
+            {
+                this.logger.Log($"You didn't tell me what to run. Use the -run switch for that. I'll start a Command Prompt for now.");
+            }
+
             if (!IsElevated())
             {
                 this.logger.Log("Hey, I noticed you're not running me as administrator.");
