@@ -69,22 +69,64 @@ Lets go over the settings:
     * Commandline switches:
       * For example: 
         * launchit -priority=high
-* PrerredEditor
+* __PrerredEditor__
   * Default: notepad.exe
   * What it does
     * Allows you to configure your favorite editor for editing the configuration file.
   * Why
     * Notepad is everywhere but I personally prefer Notepad++. You might have your own preferences.
-* MonitoringInterval
+* __MonitoringInterval__
   * Default: 30000 milliseconds
   * What it does:
     * Sets the interval in milliseconds LaunchIt will check for started processes after your program is started.
-* Services
+* __Services__
   * Default: Nothing.
   * What it does
     * Allows you to specify which services you want LaunchIt to shutdown.
   * Command line switch
-    * launchit -servicestoshutdown
-    
-* Executables:
-```
+    * launchit -services=Service 1, Service 2
+    * NOTE! LaunchIt will combine the services in your configuration file with any you specify using the command line switch.
+      First it will stop services you specified in your configuration file, next, it will stop services you specified in the command line.
+* __Executables__
+  * Identical to services but here you specify which executables you want to stop.
+  * What it does
+    * Allows you to specify which executables you want Launchit to kill.
+      * Yes 'kill'. This is akin to using the Task Manager to stop a program. This is not a nice way to stop
+        A program and if you kill a running program and you have unsaved changes they will be lost.
+  * Command line switch
+    * launchit -executables=Exe 1.exe, Exe 2.exe
+
+
+## Command line switches
+
+LaunchIt supports several command line switches that allow you to customize how you want to run a program.
+
+You configuration is your base, command line switches allow you to overrule that, or, for services and executables, add to it.
+
+### Run
+
+__Example__
+> launchit -run=My Really Cool Program.exe
+
+Tells LaunchIt what to run.
+
+### Edit
+> launchit -edit
+
+Opens your launchit configuration file notepad or your preferred editor.
+
+## UseBatch
+> launchit -usebatch
+
+Instructs LaunchIt to create a batch file to run your program.
+
+## ShutdownExplorer
+> launchit -shutdownexplorer
+
+Instructs LaunchIt to shut down explorer. This command line switch is handly if you don't want to do this by default.
+
+## Priority
+> launchit priority=abovenormal
+
+Allows you to specify which priority you want to run your program.
+
