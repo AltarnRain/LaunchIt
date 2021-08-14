@@ -29,8 +29,6 @@ namespace Logic.Extensions
         /// <returns>The switch command.</returns>
         public static SwitchCommands GetSwitchCommand(this string self)
         {
-            
-            
             if (Enum.TryParse(self, true, out SwitchCommands result))
             {
                 return result;

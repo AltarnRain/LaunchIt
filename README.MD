@@ -8,16 +8,24 @@ LaunchIt can run a program in two ways:
 1. Diagnostic mode
 1. Batchfile mode
 
-You start with `Diagnostic mode` to test which services and executables can be shut down without them being restarted. In this mode LaunchIt stays active and checks periodically what Windows is doing while you're busy with other things.
+You start with `Diagnostic mode` to test which services and executables can be shut down without them being restarted. 
+In this mode LaunchIt stays active and checks periodically what Windows is doing while you're busy with other things.
 
-Once you've figured out which executables/services can be shut down and stay shut down you switch to `Batchfile`. In this mode LaunchIt creates a batch file, runs it, and shuts down.
+Once you've figured out which executables/services can be shut down and stay shut down you switch to `Batchfile` mode. 
+In this mode LaunchIt creates a batch file, runs it, and shuts itself down.
 
 ## Uhm, why? There's plenty of programs that do this.
 
-I know! But none of them offered what I wanted.
+Well... kinda...
 
+### Razer Cortex.
+I tried Razer Cortex and really, really liked what it tried to do. Unfortunately, it required a service itself and made and effect to restart things it shutdown.
+
+That part I did not like so much, especially the need for yet another service on my PC while I was trying to elimate as many off them as I could.
+In addition, Razer Cortex didn't support a lot of services to shut down either.
+
+### My Batch file solution
 I used a batch file with 'net stop' and 'taskkill' commands a long time but what I could do with such a batch file was limited.
-
 For example: stubborn services and executables that restart! Arghh!
 
 Try shutting down 'Windows Search' and see how quickly it is restarted. Very annoying.
