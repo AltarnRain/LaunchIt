@@ -194,7 +194,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument()}, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument() }, model);
 
             // Assert
             Assert.AreEqual(0, model.Services.Length);

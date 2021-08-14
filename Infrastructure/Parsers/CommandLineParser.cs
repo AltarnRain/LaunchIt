@@ -67,7 +67,7 @@ namespace Infrastructure.Parsers
                 else
                 {
                     // Unidentified character so we move on to the next character
-                    stringToParse = stringToParse.Substring(1);
+                    stringToParse = stringToParse[1..];
                 }
             }
 
@@ -79,7 +79,7 @@ namespace Infrastructure.Parsers
             var options = Array.Empty<string>();
 
             // Remove '='
-            stringToParse = stringToParse.Substring(1);
+            stringToParse = stringToParse[1..];
 
             var nextSwitch = stringToParse.IndexOf('-');
 
@@ -88,7 +88,7 @@ namespace Infrastructure.Parsers
                 // We have a position, now substring on the lowest value.
                 var optionString = stringToParse.Substring(0, nextSwitch);
                 options = optionString.Split(',').Select(s => s.Trim()).ToArray();
-                stringToParse = stringToParse.Substring(nextSwitch);
+                stringToParse = stringToParse[nextSwitch..];
             }
             else
             {
@@ -104,7 +104,7 @@ namespace Infrastructure.Parsers
         private static string ParseSwitch(List<CommandLineArgument> parsedArguments, string stringToParse)
         {
             // Remove '-'
-            stringToParse = stringToParse.Substring(1);
+            stringToParse = stringToParse[1..];
 
             var switchCommand = string.Empty;
 
@@ -119,7 +119,8 @@ namespace Infrastructure.Parsers
             if (take.Any())
             {
                 switchCommand = stringToParse.Substring(0, take.Min());
-                stringToParse = stringToParse.Substring(take.Min());
+                var position = take.Min();
+                stringToParse = stringToParse[position..];
             }
             else
             {
@@ -128,10 +129,11 @@ namespace Infrastructure.Parsers
                 stringToParse = string.Empty;
             }
 
-            var commandLineArgument = new CommandLineArgument();
-
-            // We've isolated the command. Trim it to deal with trailing spaces.
-            commandLineArgument.Command = switchCommand.Trim();
+            var commandLineArgument = new CommandLineArgument
+            {
+                // We've isolated the command. Trim it to deal with trailing spaces.
+                Command = switchCommand.Trim(),
+            };
 
             parsedArguments.Add(commandLineArgument);
             return stringToParse;

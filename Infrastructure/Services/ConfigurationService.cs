@@ -38,22 +38,16 @@ namespace Infrastructure.Services
         }
 
         /// <summary>
-        /// Configurations the file exists.
-        /// </summary>
-        /// <returns>
-        /// True if the configuration file exists.
-        /// </returns>
-        public bool ConfigurationFileExists()
-        {
-            var configurationFile = this.pathProvider.ConfigurationFile();
-            return File.Exists(configurationFile);
-        }
-
-        /// <summary>
         /// Writes the example configuration file.
         /// </summary>
-        public void WriteExampleConfigurationFile()
+        /// <returns>True if an example configuration file.</returns>
+        public bool WriteExampleConfigurationFile()
         {
+            if (this.ConfigurationFileExists())
+            {
+                return false;
+            }
+
             var configurationModel = new ConfigurationModel
             {
                 Executables = new[] { "Example executable 1", "Example executable 2" },
@@ -61,6 +55,7 @@ namespace Infrastructure.Services
             };
 
             this.Write(configurationModel);
+            return true;
         }
 
         /// <summary>
@@ -107,6 +102,18 @@ namespace Infrastructure.Services
             var content = this.serializationService.Serialize(configuration);
 
             File.WriteAllText(configurationFile, content);
+        }
+
+        /// <summary>
+        /// Configurations the file exists.
+        /// </summary>
+        /// <returns>
+        /// True if the configuration file exists.
+        /// </returns>
+        private bool ConfigurationFileExists()
+        {
+            var configurationFile = this.pathProvider.ConfigurationFile();
+            return File.Exists(configurationFile);
         }
     }
 }

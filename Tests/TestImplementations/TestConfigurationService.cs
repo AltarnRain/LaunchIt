@@ -19,17 +19,6 @@ namespace Tests.TestImplementations
         public ConfigurationModel ConfigurationModel { get; set; } = new ConfigurationModel();
 
         /// <summary>
-        /// Configurations the file exists.
-        /// </summary>
-        /// <returns>
-        /// True if the configuration file exists.
-        /// </returns>
-        public bool ConfigurationFileExists()
-        {
-            return true;
-        }
-
-        /// <summary>
         /// Reads the default configuration file.
         /// </summary>
         /// <returns>
@@ -52,9 +41,10 @@ namespace Tests.TestImplementations
         /// <summary>
         /// Writes the example configuration file.
         /// </summary>
-        public void WriteExampleConfigurationFile()
+        /// <returns>Always false.</returns>
+        public bool WriteExampleConfigurationFile()
         {
-            // Does nothing.
+            return false;
         }
     }
 }

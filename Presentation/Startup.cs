@@ -35,6 +35,7 @@ namespace Presentation
         /// <param name="launchModelProvider">The launch model provider.</param>
         /// <param name="editorService">The editor service.</param>
         /// <param name="configurationService">The configuration service.</param>
+        /// <param name="inputService">The input service.</param>
         public Startup(
             LaunchIt main,
             ILogEventService logger,
@@ -55,11 +56,8 @@ namespace Presentation
         /// <param name="args">The arguments.</param>
         public void Run(string[] args)
         {
-            var didWork = this.CheckForConfigurationFile();
-
-            if (didWork)
+            if (this.FirstTimeSetup())
             {
-                this.editorService.EditConfiguration();
                 return;
             }
 
@@ -135,14 +133,15 @@ namespace Presentation
             manualResetEvent.WaitOne();
         }
 
-        private bool CheckForConfigurationFile()
+        private bool FirstTimeSetup()
         {
-            if (!this.configurationService.ConfigurationFileExists())
+            if (this.configurationService.WriteExampleConfigurationFile())
             {
-                this.configurationService.WriteExampleConfigurationFile();
                 this.logger.Log($"Looks like you're starting me for the first time. I'll setup an example configuration file and open it in notepad.");
-                this.logger.Log($"If you want to to edit your configuration file just run LaunchIt with the 'edit' switch. For example:");
+                this.logger.Log($"If you want to to edit your configuration file just run LaunchIt with the '{SwitchCommands.Edit.GetCommandLineArgument()}' switch. For example:");
                 this.logger.Log($"   LaunchIt {SwitchCommands.Edit.GetCommandLineArgument()}");
+                this.editorService.EditConfiguration();
+
                 return true;
             }
 

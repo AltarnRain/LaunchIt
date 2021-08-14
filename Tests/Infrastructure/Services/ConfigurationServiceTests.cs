@@ -65,31 +65,6 @@ namespace Infrastructure.Services.Tests
         }
 
         /// <summary>
-        /// Configurations the file exists test.
-        /// </summary>
-        [TestMethod]
-        public void ConfigurationFileExistsTest()
-        {
-            // Arrange
-            using var scope = this.StartTestScope(typeof(ConfigurationService));
-            var target = scope.Get<ConfigurationService>();
-
-            var configurationFile = scope.GetTestConfigurationFileName();
-
-            // Act
-            var result1 = target.ConfigurationFileExists(); // No file
-
-            File.WriteAllText(configurationFile, "Make file");
-
-            // Act
-            var result2 = target.ConfigurationFileExists();
-
-            // Assert
-            Assert.IsFalse(result1);
-            Assert.IsTrue(result2);
-        }
-
-        /// <summary>
         /// Tests the write example configuration file.
         /// </summary>
         [TestMethod]

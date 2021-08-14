@@ -12,12 +12,6 @@ namespace Infrastructure.Services
     public interface IConfigurationService
     {
         /// <summary>
-        /// Configurations the file exists.
-        /// </summary>
-        /// <returns>True if the configuration file exists.</returns>
-        public bool ConfigurationFileExists();
-
-        /// <summary>
         /// Reads the default configuration file.
         /// </summary>
         /// <param name="configurationFile">The configuration file.</param>
@@ -34,6 +28,7 @@ namespace Infrastructure.Services
         /// <summary>
         /// Writes the example configuration file.
         /// </summary>
-        void WriteExampleConfigurationFile();
+        /// <returns>True if an example configuration file was written. False otherwise.</returns>
+        bool WriteExampleConfigurationFile();
     }
 }

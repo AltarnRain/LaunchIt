@@ -49,6 +49,7 @@ namespace Presentation
                         .AddSingleton<IConfigurationValidationService, ConfigurationValidationService>()
                         .AddSingleton<IProcessWrapper, ProcessWrapper>()
                         .AddSingleton<IStartupServiceFactory, StartupServiceFactory>()
+                        .AddSingleton<IKeypressProvider, ConsoleKeypressProvider>()
                         ;
 
                     // Bind classes.
