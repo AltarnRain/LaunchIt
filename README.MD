@@ -68,25 +68,23 @@ Lets go over the settings:
     * Careful with this setting! Not every program 'likes' it to run with a high or lower priority.
     * Commandline switches:
       * For example: 
-        * launchit -high
+        * launchit -priority=high
 * PrerredEditor
   * Default: notepad.exe
   * What it does
     * Allows you to configure your favorite editor for editing the configuration file.
   * Why
-    * Notepad is everywhere but I personally prefer Notepad++.
+    * Notepad is everywhere but I personally prefer Notepad++. You might have your own preferences.
 * MonitoringInterval
   * Default: 30000 milliseconds
   * What it does:
     * Sets the interval in milliseconds LaunchIt will check for started processes after your program is started.
-
+* Services
+  * Default: Nothing.
+  * What it does
+    * Allows you to specify which services you want LaunchIt to shutdown.
+  * Command line switch
+    * launchit -servicestoshutdown
     
-# List services you wish to shut down by their full name in this section. For example: - My Service
-Services:
-- Example Service 1
-- Example Service 2
-# List executables you wish to shut down. For example: - MyExecutable
-Executables:
-- Example executable 1
-- Example executable 2
+* Executables:
 ```

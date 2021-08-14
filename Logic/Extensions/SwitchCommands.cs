@@ -47,11 +47,11 @@ namespace Logic
         /// <summary>
         /// The service
         /// </summary>
-        ShutdownService,
+        Services,
 
         /// <summary>
         /// The shutdown executable
         /// </summary>
-        ShutdownExecutable,
+        Executables,
     }
 }

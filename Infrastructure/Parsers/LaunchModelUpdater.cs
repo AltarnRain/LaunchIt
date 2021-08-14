@@ -108,13 +108,13 @@ namespace Infrastructure.Parsers
 
                     return;
 
-                case Logic.SwitchCommands.ShutdownService:
+                case Logic.SwitchCommands.Services:
 
                     this.services.AddRange(options);
 
                     return;
 
-                case Logic.SwitchCommands.ShutdownExecutable:
+                case Logic.SwitchCommands.Executables:
                     this.executables.AddRange(options);
 
                     return;

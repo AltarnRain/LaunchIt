@@ -5,6 +5,8 @@
 namespace Infrastructure.Parsers.Tests
 {
     using Domain.Models.Configuration;
+    using Logic;
+    using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -23,7 +25,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-edit" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.Edit.GetCommandLineArgument() }, model);
 
             // Assert
             Assert.IsTrue(model.EditConfiguration);
@@ -42,7 +44,7 @@ namespace Infrastructure.Parsers.Tests
             };
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-usebatch" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.UseBatch.GetCommandLineArgument() }, model);
 
             // Assert
             Assert.IsTrue(model.UseBatchFile);
@@ -61,7 +63,7 @@ namespace Infrastructure.Parsers.Tests
             };
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-shutdownexplorer" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.ShutdownExplorer.GetCommandLineArgument() }, model);
 
             // Assert
             Assert.IsTrue(model.ShutdownExplorer);
@@ -77,22 +79,22 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Assert
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=idle" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=idle" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Idle, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=belownormal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=belownormal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.BelowNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=normal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=normal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Normal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=abovenormal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=abovenormal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.AboveNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=high" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=high" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.High, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=realtime" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=realtime" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.RealTime, model.Priority);
         }
 
@@ -115,7 +117,7 @@ namespace Infrastructure.Parsers.Tests
             LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
-                    "-ShutdownService=Service 1,Service 2",
+                    $"{SwitchCommands.Services.GetCommandLineArgument()}=Service 1,Service 2",
                 }, model);
 
             // Assert
@@ -145,7 +147,7 @@ namespace Infrastructure.Parsers.Tests
             LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
-                    "-ShutdownExecutable=Executable 1, Executable 2",
+                    $"{SwitchCommands.Executables.GetCommandLineArgument()}=Executable 1,Executable 2",
                 }, model);
 
             // Assert
@@ -192,7 +194,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-shutdownservice" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument()}, model);
 
             // Assert
             Assert.AreEqual(0, model.Services.Length);
@@ -208,7 +210,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-shutdownexecutable" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument() }, model);
 
             // Assert
             Assert.AreEqual(0, model.Executables.Length);
@@ -224,7 +226,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run=notepad.exe" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { $"{SwitchCommands.Run.GetCommandLineArgument()}=notepad.exe" }, model);
 
             // Assert
             Assert.AreEqual("notepad.exe", model.ExecutableToLaunch);
@@ -240,7 +242,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act & Assert
-            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run" }, model));
+            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Run.GetCommandLineArgument() }, model));
             Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-priority=high,low" }, model));
         }
     }
