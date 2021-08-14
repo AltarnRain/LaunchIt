@@ -30,6 +30,7 @@ namespace Infrastructure.Services
 
         private string[]? serviceState;
         private string[]? executableState;
+        private bool monitoring;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WindowsMonitoringService" /> class.
@@ -49,16 +50,11 @@ namespace Infrastructure.Services
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:Logic.Common.IMonitoringService" /> is monitoring.
-        /// </summary>
-        public bool Monitoring { get; private set; }
-
-        /// <summary>
         /// Ends the monitoring.
         /// </summary>
         public void EndMonitoring()
         {
-            if (this.Monitoring == false)
+            if (this.monitoring == false)
             {
                 throw new MonitoringException("Did not begin monitoring.");
             }
@@ -79,7 +75,7 @@ namespace Infrastructure.Services
         /// <exception cref="MonitoringException">Already monitoring.</exception>
         public void StartMonitoring(LaunchModel launchModel)
         {
-            if (this.Monitoring)
+            if (this.monitoring)
             {
                 throw new MonitoringException("Already monitoring.");
             }
@@ -130,7 +126,7 @@ namespace Infrastructure.Services
             };
 
             this.timer.Start();
-            this.Monitoring = true;
+            this.monitoring = true;
         }
 
         /// <summary>

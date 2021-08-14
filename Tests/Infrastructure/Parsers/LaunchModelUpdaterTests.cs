@@ -30,22 +30,6 @@ namespace Infrastructure.Parsers.Tests
         }
 
         /// <summary>
-        /// Parses the 'cmd' argument.
-        /// </summary>
-        [TestMethod]
-        public void ParseExecutableTest()
-        {
-            // Arrange
-            var model = new LaunchModel() { ExecutableToLaunch = "Something else" };
-
-            // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "cmd" }, model);
-
-            // Assert
-            Assert.AreEqual("cmd", model.ExecutableToLaunch);
-        }
-
-        /// <summary>
         /// Parse -usebatch.
         /// </summary>
         [TestMethod]
@@ -93,22 +77,22 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Assert
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "idle" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=idle" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Idle, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "belownormal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=belownormal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.BelowNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "normal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=normal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Normal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "abovenormal" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=abovenormal" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.AboveNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "high" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=high" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.High, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority", "realtime" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { "-priority=realtime" }, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.RealTime, model.Priority);
         }
 
@@ -131,10 +115,7 @@ namespace Infrastructure.Parsers.Tests
             LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
-                    "-ShutdownService",
-                    "Service 1",
-                    "-ShutdownService",
-                    "Service 2",
+                    "-ShutdownService=Service 1,Service 2",
                 }, model);
 
             // Assert
@@ -164,10 +145,7 @@ namespace Infrastructure.Parsers.Tests
             LaunchModelUpdater.UpdateWithCommandLineArguments(
                 new[]
                 {
-                    "-ShutdownExecutable",
-                    "Executable 1",
-                    "-ShutdownExecutable",
-                    "Executable 2",
+                    "-ShutdownExecutable=Executable 1, Executable 2",
                 }, model);
 
             // Assert
@@ -246,7 +224,7 @@ namespace Infrastructure.Parsers.Tests
             var model = new LaunchModel();
 
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run", "notepad.exe" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run=notepad.exe" }, model);
 
             // Assert
             Assert.AreEqual("notepad.exe", model.ExecutableToLaunch);
@@ -256,16 +234,14 @@ namespace Infrastructure.Parsers.Tests
         /// Parses the nothing test.
         /// </summary>
         [TestMethod]
-        public void ParseRunNothingToRun()
+        public void TestInvalidOptionsThrow()
         {
             // Arrange
             var model = new LaunchModel();
 
-            // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run" }, model);
-
-            // Assert
-            Assert.AreEqual("cmd", model.ExecutableToLaunch);
+            // Act & Assert
+            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-run" }, model));
+            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-priority=high,low" }, model));
         }
     }
 }

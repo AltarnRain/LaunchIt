@@ -16,7 +16,7 @@ namespace Infrastructure.Parsers
     /// </summary>
     public class LaunchModelUpdater
     {
-        private readonly string[] args;
+        private readonly CommandLineArgument[] args;
         private readonly LaunchModel launchModel;
         private readonly List<string> services = new();
         private readonly List<string> executables = new();
@@ -25,7 +25,7 @@ namespace Infrastructure.Parsers
         /// Initializes a new instance of the <see cref="LaunchModelUpdater"/> class.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        private LaunchModelUpdater(string[] args, LaunchModel launchModel)
+        private LaunchModelUpdater(CommandLineArgument[] args, LaunchModel launchModel)
         {
             this.args = args;
             this.launchModel = launchModel;
@@ -34,27 +34,33 @@ namespace Infrastructure.Parsers
         /// <summary>
         /// Parses the specified arguments.
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <param name="launchModel">The launch model.</param>
-        public static void UpdateWithCommandLineArguments(string[] args, LaunchModel launchModel)
+        public static void UpdateWithCommandLineArguments(string[] arguments, LaunchModel launchModel)
         {
-            // Nothing to do.
-            if (args.Length == 0)
+            var parsedArguments = CommandLineParser.Parse(arguments);
+            var updater = new LaunchModelUpdater(parsedArguments, launchModel);
+            updater.Parse();
+        }
+
+        private static void CheckForSingleOption(string[] options, Logic.SwitchCommands switchCommand)
+        {
+            if (options.Length == 0)
             {
-                return;
+                throw new NotSupportedException($"No options provided for switch command '{switchCommand.GetCommandLineArgument()}'");
             }
 
-            var parser = new LaunchModelUpdater(args, launchModel);
-            parser.Parse();
+            if (options.Length > 1)
+            {
+                throw new NotSupportedException($"You can only specify one options for command '{switchCommand.GetCommandLineArgument()}");
+            }
         }
 
         private void Parse()
         {
-            for (int i = 0; i < this.args.Length; i++)
+            foreach (var arg in this.args)
             {
-                var currentArgument = this.args[i];
-                var nextArgument = (i + 1) < this.args.Length ? this.args[i + 1] : null;
-                this.UpdateCommandLineParserResult(this.launchModel, currentArgument, nextArgument);
+                this.ParseCommandLineArgument(this.launchModel, arg);
             }
 
             var allServices = this.launchModel.Services.ToList();
@@ -67,31 +73,17 @@ namespace Infrastructure.Parsers
             this.launchModel.Executables = allExecutables.ToArray();
         }
 
-        private void UpdateCommandLineParserResult(LaunchModel returnValue, string currentArgument, string? nextArgument)
+        private void ParseCommandLineArgument(LaunchModel returnValue, CommandLineArgument commandLineArgument)
         {
-            if (currentArgument.IsSwitchCommand())
-            {
-                this.ParseSwitchCommand(returnValue, currentArgument, nextArgument);
-                return;
-            }
-
-            returnValue.ExecutableToLaunch = currentArgument;
-        }
-
-        private void ParseSwitchCommand(LaunchModel returnValue, string currentArgument, string? nextArgument)
-        {
-            var switchCommand = currentArgument.GetSwitchCommand();
-            this.ParseSwitchCommand(returnValue, nextArgument, switchCommand);
-        }
-
-        private void ParseSwitchCommand(LaunchModel returnValue, string? nextArgument, Logic.SwitchCommands switchCommand)
-        {
+            var switchCommand = commandLineArgument.Command.GetSwitchCommand();
+            var options = commandLineArgument.Options;
             switch (switchCommand)
             {
                 case Logic.SwitchCommands.Unknown:
                     return;
                 case Logic.SwitchCommands.Run:
-                    returnValue.ExecutableToLaunch = nextArgument ?? "cmd";
+                    CheckForSingleOption(options, switchCommand);
+                    returnValue.ExecutableToLaunch = options[0];
                     return;
                 case Logic.SwitchCommands.Edit:
                     returnValue.EditConfiguration = true;
@@ -106,7 +98,10 @@ namespace Infrastructure.Parsers
                     return;
 
                 case Logic.SwitchCommands.Priority:
-                    if (Enum.TryParse(nextArgument, true, out ProcessPriorityClass processPriorityClass))
+
+                    CheckForSingleOption(options, switchCommand);
+
+                    if (Enum.TryParse(options[0], true, out ProcessPriorityClass processPriorityClass))
                     {
                         returnValue.Priority = processPriorityClass;
                     }
@@ -114,22 +109,13 @@ namespace Infrastructure.Parsers
                     return;
 
                 case Logic.SwitchCommands.ShutdownService:
-                    if (nextArgument is null)
-                    {
-                        return;
-                    }
 
-                    this.services.Add(nextArgument);
+                    this.services.AddRange(options);
 
                     return;
 
                 case Logic.SwitchCommands.ShutdownExecutable:
-                    if (nextArgument is null)
-                    {
-                        return;
-                    }
-
-                    this.executables.Add(nextArgument);
+                    this.executables.AddRange(options);
 
                     return;
             }

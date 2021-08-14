@@ -14,11 +14,6 @@ namespace Logic.Contracts.Services
     public interface IMonitoringService
     {
         /// <summary>
-        /// Gets a value indicating whether this <see cref="IMonitoringService"/> is monitoring.
-        /// </summary>
-        bool Monitoring { get; }
-
-        /// <summary>
         /// Starts the monitoring.
         /// </summary>
         /// <param name="launchModel">The launch model.</param>

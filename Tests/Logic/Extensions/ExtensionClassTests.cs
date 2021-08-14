@@ -13,23 +13,6 @@ namespace Logic.Extensions.Tests
     public class ExtensionClassTests
     {
         /// <summary>
-        /// Determines whether [is switch test].
-        /// </summary>
-        [TestMethod]
-        public void IsSwitchTest()
-        {
-            // Act
-            var result1 = "-reset".IsSwitchCommand();
-            var result2 = "/reset".IsSwitchCommand();
-            var result3 = "reset".IsSwitchCommand();
-
-            // Assert
-            Assert.IsTrue(result1);
-            Assert.IsTrue(result2);
-            Assert.IsFalse(result3);
-        }
-
-        /// <summary>
         /// Gets the command line argument test.
         /// </summary>
         [TestMethod]
@@ -49,8 +32,8 @@ namespace Logic.Extensions.Tests
         public void GetSwitchCommandTest()
         {
             // Act
-            var result1 = "-ShutdownExplorer".GetSwitchCommand();
-            var result2 = "-IAMNotSupported".GetSwitchCommand();
+            var result1 = "ShutdownExplorer".GetSwitchCommand();
+            var result2 = "IAMNotSupported".GetSwitchCommand();
             var result3 = "NotASwitch".GetSwitchCommand();
 
             // Assert

@@ -100,11 +100,7 @@ namespace Logic
                 this.processHelper.Start(Domain.Constants.KnownProcesses.ExplorerExe);
             }
 
-            // End monitoring if its running.
-            if (this.monitoringService.Monitoring)
-            {
-                this.monitoringService.EndMonitoring();
-            }
+            this.monitoringService.EndMonitoring();
         }
     }
 }

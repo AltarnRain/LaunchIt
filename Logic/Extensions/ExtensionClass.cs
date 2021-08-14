@@ -23,30 +23,15 @@ namespace Logic.Extensions
         }
 
         /// <summary>
-        /// Determines whether this instance is switch.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified self is switch; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsSwitchCommand(this string self)
-        {
-            return self.StartsWith("/") || self.StartsWith("-");
-        }
-
-        /// <summary>
         /// Gets the switch command.
         /// </summary>
         /// <param name="self">The self.</param>
         /// <returns>The switch command.</returns>
         public static SwitchCommands GetSwitchCommand(this string self)
         {
-            if (!self.IsSwitchCommand())
-            {
-                return SwitchCommands.Unknown;
-            }
-
-            if (Enum.TryParse(self[1..], true, out SwitchCommands result))
+            
+            
+            if (Enum.TryParse(self, true, out SwitchCommands result))
             {
                 return result;
             }
