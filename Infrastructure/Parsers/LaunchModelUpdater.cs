@@ -36,10 +36,9 @@ namespace Infrastructure.Parsers
         /// </summary>
         /// <param name="arguments">The arguments.</param>
         /// <param name="launchModel">The launch model.</param>
-        public static void UpdateWithCommandLineArguments(string[] arguments, LaunchModel launchModel)
+        public static void UpdateWithCommandLineArguments(CommandLineArgument[] arguments, LaunchModel launchModel)
         {
-            var parsedArguments = CommandLineParser.Parse(arguments);
-            var updater = new LaunchModelUpdater(parsedArguments, launchModel);
+            var updater = new LaunchModelUpdater(arguments, launchModel);
             updater.Parse();
         }
 

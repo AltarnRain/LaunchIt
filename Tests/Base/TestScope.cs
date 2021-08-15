@@ -54,6 +54,7 @@ namespace Tests.Base
                         .AddSingleton<IBatchRunnerFactory, TestBatchRunnerFactory>()
                         .AddSingleton<IEditorService, TestEditorService>()
                         .AddSingleton<IProcessWrapper, TestProcessWrapper>()
+                        .AddSingleton<IConfigFileProvider, TestConfigFileProvider>()
                         ;
                 });
 
@@ -158,7 +159,7 @@ namespace Tests.Base
         /// <returns>Returns the configuration file name.</returns>
         public string GetTestConfigurationFileName()
         {
-            return this.Get<IPathProvider>().ConfigurationFile();
+            return this.Get<IConfigFileProvider>().GetConfigFile();
         }
 
         /// <summary>

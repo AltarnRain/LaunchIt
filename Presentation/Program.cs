@@ -4,9 +4,13 @@
 
 namespace Presentation
 {
+    using Infrastructure.Extensions;
+    using Infrastructure.Parsers;
+    using Logic;
     using Microsoft.Extensions.DependencyInjection;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Versioning;
 
     /// <summary>
@@ -26,10 +30,13 @@ namespace Presentation
             // rootpath to resolve other paths.
             var rootPath = GetRootPath();
 
-            var builder = LaunchItHostBuilder.Create(rootPath).Build();
+            var arguments = CommandLineParser.Parse(args);
+
+            var configFile = arguments.GetConfigurationFile();
+            var builder = LaunchItHostBuilder.Create(rootPath, configFile).Build();
             var startup = builder.Services.GetRequiredService<Startup>();
 
-            startup.Run(args);
+            startup.Run(arguments);
         }
 
         /// <summary>

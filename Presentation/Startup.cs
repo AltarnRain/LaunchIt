@@ -4,6 +4,7 @@
 
 namespace Presentation
 {
+    using Domain.Models.Configuration;
     using Infrastructure.Loggers;
     using Infrastructure.Providers;
     using Infrastructure.Services;
@@ -53,15 +54,15 @@ namespace Presentation
         /// <summary>
         /// Runs the specified argument.
         /// </summary>
-        /// <param name="args">The arguments.</param>
-        public void Run(string[] args)
+        /// <param name="arguments">The arguments.</param>
+        public void Run(CommandLineArgument[] arguments)
         {
             if (this.FirstTimeSetup())
             {
                 return;
             }
 
-            var launchModel = this.launchModelProvider.GetModel(args);
+            var launchModel = this.launchModelProvider.GetModel(arguments);
 
             if (launchModel.EditConfiguration)
             {

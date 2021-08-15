@@ -24,8 +24,16 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var arguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Edit.ToString(),
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.Edit.GetCommandLineArgument() }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(arguments, model);
 
             // Assert
             Assert.IsTrue(model.EditConfiguration);
@@ -43,8 +51,16 @@ namespace Infrastructure.Parsers.Tests
                 UseBatchFile = false,
             };
 
+            var arguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.UseBatch.ToString(),
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.UseBatch.GetCommandLineArgument() }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(arguments, model);
 
             // Assert
             Assert.IsTrue(model.UseBatchFile);
@@ -62,8 +78,16 @@ namespace Infrastructure.Parsers.Tests
                 ShutdownExplorer = false,
             };
 
+            var arguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.ShutdownExplorer.ToString(),
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { SwitchCommands.ShutdownExplorer.GetCommandLineArgument() }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(arguments, model);
 
             // Assert
             Assert.IsTrue(model.ShutdownExplorer);
@@ -78,23 +102,40 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArgument = new CommandLineArgument
+            {
+                Command = SwitchCommands.Priority.ToString(),
+                Options = new string[1],
+            };
+
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                commandLineArgument,
+            };
+
             // Assert
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=idle" }, model);
+            commandLineArgument.Options[0] = "idle";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Idle, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=belownormal" }, model);
+            commandLineArgument.Options[0] = "belownormal";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.BelowNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=normal" }, model);
+            commandLineArgument.Options[0] = "normal";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.Normal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=abovenormal" }, model);
+            commandLineArgument.Options[0] = "abovenormal";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.AboveNormal, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=high" }, model);
+            commandLineArgument.Options[0] = "high";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.High, model.Priority);
 
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new[] { $"{SwitchCommands.Priority.GetCommandLineArgument()}=realtime" }, model);
+            commandLineArgument.Options[0] = "realtime";
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
             Assert.AreEqual(System.Diagnostics.ProcessPriorityClass.RealTime, model.Priority);
         }
 
@@ -113,12 +154,17 @@ namespace Infrastructure.Parsers.Tests
                 },
             };
 
-            // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(
-                new[]
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
                 {
-                    $"{SwitchCommands.Services.GetCommandLineArgument()}=Service 1,Service 2",
-                }, model);
+                    Command = SwitchCommands.Services.ToString(),
+                    Options = new[] { "Service 1", "Service 2" },
+                },
+            };
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
 
             // Assert
             Assert.AreEqual(4, model.Services.Length);
@@ -143,12 +189,21 @@ namespace Infrastructure.Parsers.Tests
                 },
             };
 
-            // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(
-                new[]
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
                 {
-                    $"{SwitchCommands.Executables.GetCommandLineArgument()}=Executable 1,Executable 2",
-                }, model);
+                    Command = SwitchCommands.Executables.ToString(),
+                    Options = new[]
+                    {
+                        "Executable 1",
+                        "Executable 2",
+                    },
+                },
+            };
+
+            // Act
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
 
             // Assert
             Assert.AreEqual(4, model.Executables.Length);
@@ -167,8 +222,10 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArguments = System.Array.Empty<CommandLineArgument>();
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(System.Array.Empty<string>(), model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
         }
 
         /// <summary>
@@ -180,8 +237,16 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = "nope",
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-nope" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
         }
 
         /// <summary>
@@ -193,8 +258,16 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Services.ToString(),
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument() }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
 
             // Assert
             Assert.AreEqual(0, model.Services.Length);
@@ -209,8 +282,16 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Services.ToString(),
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Services.GetCommandLineArgument() }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
 
             // Assert
             Assert.AreEqual(0, model.Executables.Length);
@@ -225,8 +306,17 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Run.ToString(),
+                    Options = new[] { "notepad.exe" },
+                },
+            };
+
             // Act
-            LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { $"{SwitchCommands.Run.GetCommandLineArgument()}=notepad.exe" }, model);
+            LaunchModelUpdater.UpdateWithCommandLineArguments(commandLineArguments, model);
 
             // Assert
             Assert.AreEqual("notepad.exe", model.ExecutableToLaunch);
@@ -241,9 +331,25 @@ namespace Infrastructure.Parsers.Tests
             // Arrange
             var model = new LaunchModel();
 
+            var invalidRun = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Run.ToString(),
+                },
+            };
+
+            var invalidPriority = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.Priority.ToString(),
+                },
+            };
+
             // Act & Assert
-            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { SwitchCommands.Run.GetCommandLineArgument() }, model));
-            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(new string[] { "-priority=high,low" }, model));
+            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(invalidRun, model));
+            Assert.ThrowsException<System.NotSupportedException>(() => LaunchModelUpdater.UpdateWithCommandLineArguments(invalidPriority, model));
         }
     }
 }

@@ -13,16 +13,6 @@ namespace Logic.Extensions
     public static class ExtensionClass
     {
         /// <summary>
-        /// Gets the action file path.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <returns>Location of the actions.txt file.</returns>
-        public static string ConfigurationFile(this IPathProvider self)
-        {
-            return self.MapPath("~/LaunchIt.yml");
-        }
-
-        /// <summary>
         /// Gets the switch command.
         /// </summary>
         /// <param name="self">The self.</param>

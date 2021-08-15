@@ -7,6 +7,7 @@ namespace Infrastructure.Providers.Tests
     using Domain.Models.Configuration;
     using global::Tests.Base;
     using Infrastructure.Services;
+    using Logic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -44,13 +45,21 @@ namespace Infrastructure.Providers.Tests
 
             configurationService.Write(configurationModel);
 
+            var commandLineArguments = new CommandLineArgument[]
+            {
+                new CommandLineArgument
+                {
+                    Command = SwitchCommands.UseBatch.ToString(),
+                },
+            };
+
             var args = new[]
             {
                 "-usebatch",
             };
 
             // Act
-            var result = target.GetModel(args);
+            var result = target.GetModel(commandLineArguments);
 
             // Assert
             Assert.AreEqual("A", result.Executables[0]);

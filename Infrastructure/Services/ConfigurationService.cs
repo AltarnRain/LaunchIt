@@ -5,9 +5,7 @@
 namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
-    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
-    using Logic.Extensions;
     using System.IO;
 
     /// <summary>
@@ -16,25 +14,24 @@ namespace Infrastructure.Services
     /// <seealso cref="IConfigurationService" />
     public class ConfigurationService : IConfigurationService
     {
-        private readonly IPathProvider pathProvider;
         private readonly ILogEventService logger;
         private readonly ISerializationService serializationService;
+        private readonly IConfigFileProvider configFileProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationService" /> class.
         /// </summary>
-        /// <param name="pathProvider">The path provider.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="editorService">The editor service.</param>
+        /// <param name="configFileProvider">The configuration file provider.</param>
         public ConfigurationService(
-            IPathProvider pathProvider,
             ILogEventService logger,
-            ISerializationService serializationService)
+            ISerializationService serializationService,
+            IConfigFileProvider configFileProvider)
         {
-            this.pathProvider = pathProvider;
             this.logger = logger;
             this.serializationService = serializationService;
+            this.configFileProvider = configFileProvider;
         }
 
         /// <summary>
@@ -64,7 +61,7 @@ namespace Infrastructure.Services
         /// <returns>A ConfigurationModel.</returns>
         public ConfigurationModel Read()
         {
-            var configurationFile = this.pathProvider.ConfigurationFile();
+            var configurationFile = this.configFileProvider.GetConfigFile();
 
             // No file exists yet. Return the default configuration.
             if (!File.Exists(configurationFile))
@@ -98,7 +95,7 @@ namespace Infrastructure.Services
         /// <param name="configuration">The configuration.</param>
         public void Write(ConfigurationModel configuration)
         {
-            var configurationFile = this.pathProvider.ConfigurationFile();
+            var configurationFile = this.configFileProvider.GetConfigFile();
             var content = this.serializationService.Serialize(configuration);
 
             File.WriteAllText(configurationFile, content);
@@ -112,7 +109,7 @@ namespace Infrastructure.Services
         /// </returns>
         private bool ConfigurationFileExists()
         {
-            var configurationFile = this.pathProvider.ConfigurationFile();
+            var configurationFile = this.configFileProvider.GetConfigFile();
             return File.Exists(configurationFile);
         }
     }

@@ -27,10 +27,11 @@ namespace Presentation
         /// Creates the host builder.
         /// </summary>
         /// <param name="rootPath">The root path.</param>
+        /// <param name="configFile">The configuration file.</param>
         /// <returns>
         /// An IHostBuilder.
         /// </returns>
-        public static IHostBuilder Create(string rootPath)
+        public static IHostBuilder Create(string rootPath, string configFile)
         {
             return Host.CreateDefaultBuilder()
                 .ConfigureServices((services) =>
@@ -50,6 +51,7 @@ namespace Presentation
                         .AddSingleton<IProcessWrapper, ProcessWrapper>()
                         .AddSingleton<IStartupServiceFactory, StartupServiceFactory>()
                         .AddSingleton<IKeypressProvider, ConsoleKeypressProvider>()
+                        .AddSingleton<IConfigFileProvider>((sp) => ActivatorUtilities.CreateInstance<ConfigFileProvider>(sp, configFile))
                         ;
 
                     // Bind classes.

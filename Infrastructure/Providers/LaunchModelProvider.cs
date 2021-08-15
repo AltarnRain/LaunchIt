@@ -34,7 +34,7 @@ namespace Infrastructure.Providers
         /// <returns>
         /// A LaunchModel.
         /// </returns>
-        public LaunchModel GetModel(string[] args)
+        public LaunchModel GetModel(CommandLineArgument[] args)
         {
             var configuration = this.configurationService.Read();
 
