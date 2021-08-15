@@ -53,5 +53,6 @@ namespace Logic
         /// The shutdown executable
         /// </summary>
         Executables,
+        Config,
     }
 }

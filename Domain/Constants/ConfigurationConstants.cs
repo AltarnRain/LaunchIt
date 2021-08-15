@@ -13,5 +13,10 @@ namespace Domain.Constants
         /// The default configuration file name.
         /// </summary>
         public const string DefaultConfigurationFileName = "LaunchIt.yml";
+
+        /// <summary>
+        /// Gets or sets the configuration file extension.
+        /// </summary>
+        public const string ConfigFileExtension = "yml";
     }
 }

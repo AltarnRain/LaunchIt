@@ -2,7 +2,7 @@
   "profiles": {
     "Presentation": {
       "commandName": "Project",
-      "commandLineArgs": "-run=cmd"
+      "commandLineArgs": "-edit -config=MyFile"
     }
   }
 }

@@ -19,12 +19,19 @@ namespace Infrastructure.Extensions
         /// <returns>The configuration file.</returns>
         public static string GetConfigurationFile(this Domain.Models.Configuration.CommandLineArgument[] arguments)
         {
-            var configFileArgument = arguments.FirstOrDefault(a => a.Command.Equals(SwitchCommands.Edit.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            var configArgument = arguments.FirstOrDefault(a => a.Command.Equals(SwitchCommands.Config.ToString(), System.StringComparison.OrdinalIgnoreCase));
+
             var configFile = Domain.Constants.ConfigurationConstants.DefaultConfigurationFileName;
 
-            if (configFileArgument is not null && configFileArgument.Options.Length > 0)
+            // Edit over config.
+            if (configArgument is not null && configArgument.Options.Length > 0)
             {
-                configFile = configFileArgument.Options[0];
+                configFile = configArgument.Options[0];
+
+                if (!configFile.EndsWith(Domain.Constants.ConfigurationConstants.ConfigFileExtension))
+                {
+                    configFile += $".{Domain.Constants.ConfigurationConstants.ConfigFileExtension}";
+                }
             }
 
             return configFile;
