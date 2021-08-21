@@ -25,11 +25,15 @@ namespace Infrastructure.Factories.Tests
             var target = scope.Get<BatchRunnerFactory>();
 
             // Act
-            var result = target.Create("Some content");
+            var result1 = target.Create("Some content");
+            var result2 = target.Create("Some content");
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result is BatchRunner);
+            Assert.IsNotNull(result1);
+            Assert.IsTrue(result1 is BatchRunner);
+
+            // Factory, should always create a new object.
+            Assert.IsFalse(result1 == result2);
         }
     }
 }
