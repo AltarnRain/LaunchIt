@@ -5,16 +5,14 @@
 namespace Tests.Base
 {
     using Domain.Models.Configuration;
-    using global::Infrastructure.Factories;
-    using global::Infrastructure.Providers;
-    using global::Infrastructure.Serialization;
-    using global::Infrastructure.Services;
     using Infrastructure.Contracts.Factories;
     using Infrastructure.Helpers;
+    using Infrastructure.Providers;
+    using Infrastructure.Serialization;
+    using Infrastructure.Services;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
-    using Logic.Extensions;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using System;
