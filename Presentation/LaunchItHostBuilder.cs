@@ -4,6 +4,7 @@
 
 namespace Presentation
 {
+    using Infrastructure.Contracts.Factories;
     using Infrastructure.Factories;
     using Infrastructure.Helpers;
     using Infrastructure.Providers;
@@ -52,6 +53,7 @@ namespace Presentation
                         .AddSingleton<IStartupServiceFactory, StartupServiceFactory>()
                         .AddSingleton<IKeypressProvider, ConsoleKeypressProvider>()
                         .AddSingleton<IConfigFileProvider>((sp) => ActivatorUtilities.CreateInstance<ConfigFileProvider>(sp, configFile))
+                        .AddSingleton<ITimerFactory, TimerFactory>()
                         ;
 
                     // Bind classes.

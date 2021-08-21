@@ -4,13 +4,13 @@
 
 namespace Tests.TestImplementations
 {
-    using Infrastructure.Factories;
+    using Infrastructure.Contracts.Factories;
     using Infrastructure.Helpers;
 
     /// <summary>
     /// Test implementation for <see cref="IBatchRunnerFactory"/>.
     /// </summary>
-    /// <seealso cref="Infrastructure.Factories.IBatchRunnerFactory" />
+    /// <seealso cref="Infrastructure.Contracts.Factories.IBatchRunnerFactory" />
     public class TestBatchRunnerFactory : IBatchRunnerFactory
     {
         /// <summary>

@@ -9,6 +9,7 @@ namespace Tests.Base
     using global::Infrastructure.Providers;
     using global::Infrastructure.Serialization;
     using global::Infrastructure.Services;
+    using Infrastructure.Contracts.Factories;
     using Infrastructure.Helpers;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Providers;
@@ -55,6 +56,7 @@ namespace Tests.Base
                         .AddSingleton<IEditorService, TestEditorService>()
                         .AddSingleton<IProcessWrapper, TestProcessWrapper>()
                         .AddSingleton<IConfigFileProvider, TestConfigFileProvider>()
+                        .AddSingleton<ITimerFactory, TestTimerFactory>()
                         ;
                 });
 

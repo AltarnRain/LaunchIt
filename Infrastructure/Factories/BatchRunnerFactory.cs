@@ -4,6 +4,7 @@
 
 namespace Infrastructure.Factories
 {
+    using Infrastructure.Contracts.Factories;
     using Infrastructure.Helpers;
     using Microsoft.Extensions.DependencyInjection;
     using System;

@@ -2,7 +2,7 @@
 // Copyright (c) Antonio Invernizzi V. All rights reserved.
 // </copyright>
 
-namespace Infrastructure.Factories
+namespace Infrastructure.Contracts.Factories
 {
     using Infrastructure.Helpers;
 

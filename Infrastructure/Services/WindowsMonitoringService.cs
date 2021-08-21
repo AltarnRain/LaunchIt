@@ -8,6 +8,8 @@ namespace Infrastructure.Services
     using Domain.Models.Configuration;
     using Domain.Models.Events;
     using Domain.Types;
+    using Infrastructure.Contracts.DotNETAbstractions;
+    using Infrastructure.Contracts.Factories;
     using Logic.Contracts.Helpers;
     using Logic.Contracts.Services;
     using System;
@@ -24,9 +26,10 @@ namespace Infrastructure.Services
         private readonly ILogEventService logger;
         private readonly IServiceHelper serviceHelper;
         private readonly IProcessHelper processHelper;
+        private readonly ITimerFactory timerFactory;
         private readonly List<Action<MonitoringEventModel>> subscriptions = new();
 
-        private Timer? timer;
+        private ITimer? timer;
 
         private string[]? serviceState;
         private string[]? executableState;
@@ -38,15 +41,17 @@ namespace Infrastructure.Services
         /// <param name="logger">The logger.</param>
         /// <param name="serviceHelper">The service helper.</param>
         /// <param name="processHelper">The process helper.</param>
-        /// <param name="configurationService">The configuration service.</param>
+        /// <param name="timerFactory">The timer factory.</param>
         public WindowsMonitoringService(
             ILogEventService logger,
             IServiceHelper serviceHelper,
-            IProcessHelper processHelper)
+            IProcessHelper processHelper,
+            ITimerFactory timerFactory)
         {
             this.logger = logger;
             this.serviceHelper = serviceHelper;
             this.processHelper = processHelper;
+            this.timerFactory = timerFactory;
         }
 
         /// <summary>
@@ -98,32 +103,8 @@ namespace Infrastructure.Services
                 .GetRunningServices();
 
             // Now we'll use a timer to check every X milli seconds if new processes or services were started.
-            this.timer = new Timer(launchModel.MonitoringInterval);
+            this.timer = this.timerFactory.Create(launchModel.MonitoringInterval, this.OnElapsed);
             this.logger.Log($"Monitoring activity.");
-
-            this.timer.Elapsed += (sender, eventArgs) =>
-            {
-                var runningServices = this.serviceHelper.GetRunningServices();
-                var runningProcesses = this.processHelper.GetRunningExecutables();
-
-                var startedServices = runningServices.Except(this.serviceState)
-                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Service });
-
-                var startedProcesses = runningProcesses.Except(this.executableState)
-                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Process });
-
-                var allEvents = new List<MonitoringEventModel>(startedServices);
-                allEvents.AddRange(startedProcesses);
-
-                // Notify all subscribers there's been an event.
-                foreach (var subscription in this.subscriptions)
-                {
-                    foreach (var e in allEvents)
-                    {
-                        subscription(e);
-                    }
-                }
-            };
 
             this.timer.Start();
             this.monitoring = true;
@@ -139,6 +120,39 @@ namespace Infrastructure.Services
             this.subscriptions.Add(subscription);
 
             return () => this.subscriptions.Remove(subscription);
+        }
+
+        private void OnElapsed(object sender, ElapsedEventArgs eventArgs)
+        {
+            var runningServices = this.serviceHelper.GetRunningServices();
+            var runningProcesses = this.processHelper.GetRunningExecutables();
+
+            var allEvents = new List<MonitoringEventModel>();
+
+            if (this.serviceState is not null)
+            {
+                var startedServices = runningServices.Except(this.serviceState)
+                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Service });
+
+                allEvents.AddRange(startedServices);
+            }
+
+            if (this.executableState is not null)
+            {
+                var startedProcesses = runningProcesses.Except(this.executableState)
+                    .Select(s => new MonitoringEventModel { Name = s, ProcessType = ProcessType.Process });
+
+                allEvents.AddRange(startedProcesses);
+            }
+
+            // Notify all subscribers there's been an event.
+            foreach (var subscription in this.subscriptions)
+            {
+                foreach (var e in allEvents)
+                {
+                    subscription(e);
+                }
+            }
         }
     }
 }

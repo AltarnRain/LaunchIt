@@ -5,7 +5,7 @@
 namespace Infrastructure.Services
 {
     using Domain.Models.Configuration;
-    using Infrastructure.Factories;
+    using Infrastructure.Contracts.Factories;
     using Infrastructure.Helpers;
     using Logic.Contracts.Services;
     using System;
