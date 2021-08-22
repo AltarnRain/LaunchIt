@@ -172,6 +172,15 @@ namespace Tests.Base
         }
 
         /// <summary>
+        /// Gets the test timer factory.
+        /// </summary>
+        /// <returns>The Test Timer factory.</returns>
+        public TestTimerFactory GetTestTimerFactory()
+        {
+            return (TestTimerFactory)this.Get<ITimerFactory>();
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()

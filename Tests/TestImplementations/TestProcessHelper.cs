@@ -18,7 +18,7 @@ namespace Tests.TestImplementations
         /// <summary>
         /// Gets or sets the executables.
         /// </summary>
-        public string[] Executables { get; set; } = Array.Empty<string>();
+        public Func<string[]>? HandleGetRunningExecutables { get; set; }
 
         /// <summary>
         /// Gets or sets the start calls.
@@ -38,7 +38,12 @@ namespace Tests.TestImplementations
         /// </returns>
         public string[] GetRunningExecutables()
         {
-            return this.Executables;
+            if (this.HandleGetRunningExecutables is null)
+            {
+                return Array.Empty<string>();
+            }
+
+            return this.HandleGetRunningExecutables();
         }
 
         /// <summary>
