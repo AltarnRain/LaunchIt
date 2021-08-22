@@ -84,10 +84,11 @@ namespace Infrastructure.Services.Tests
         }
 
         /// <summary>
-        /// Detectses the new services.
+        /// Tests if the <see cref="WindowsMonitoringService"/> returns an event for services and processes that it thinks
+        /// have started.
         /// </summary>
         [TestMethod]
-        public void DetectsNewServices()
+        public void DetectsStartupsTest()
         {
             // Arrange
             using var scope = this.StartTestScope(typeof(WindowsMonitoringService));
@@ -95,26 +96,32 @@ namespace Infrastructure.Services.Tests
 
             var testTimerFactory = scope.GetTestTimerFactory();
             var testProcessHelper = scope.GetTestProcessHelper();
+            var testServiceHelper = scope.GetTestServiceHelper();
 
             // Keep track how often GetRunningExecutables is called so we can return an array with some values
             // on the second call.
-            var callCount = 0;
-
+            var processCallCount = 0;
             testProcessHelper.HandleGetRunningExecutables = () =>
             {
-                callCount++;
-                if (callCount == 1)
-                {
-                    // Exe 3 is already running. It should not trigger a monitoring event.
-                    return new[] { "Exe 3" };
-                }
-
-                if (callCount == 2)
+                processCallCount++;
+                if (processCallCount == 2)
                 {
                     return new[] { "Exe 1", "Exe 2", "Exe 3" };
                 }
 
-                return Array.Empty<string>();
+                return new[] { "Exe 3" };
+            };
+
+            var serviceCallCount = 0;
+            testServiceHelper.HandleGetRunningServices = () =>
+            {
+                serviceCallCount++;
+                if (serviceCallCount == 2)
+                {
+                    return new[] { "Service 1", "Service 2", "Service 3" };
+                }
+
+                return new[] { "Service 3" };
             };
 
             var launchModel = new LaunchModel();
@@ -133,12 +140,15 @@ namespace Infrastructure.Services.Tests
                 monitoringEvents.Add(monitoringEventModel);
             });
 
-            // Call once to set the monitoring service state.
             timerEvent.Invoke(null, null);
 
-            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Exe 1"));
-            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Exe 2"));
+            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Exe 1" && me.ProcessType == Domain.Types.ProcessType.Process));
+            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Exe 2" && me.ProcessType == Domain.Types.ProcessType.Process));
             Assert.IsFalse(monitoringEvents.Any(me => me.Name == "Exe 3"));
+
+            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Service 1" && me.ProcessType == Domain.Types.ProcessType.Service));
+            Assert.IsTrue(monitoringEvents.Any(me => me.Name == "Service 2" && me.ProcessType == Domain.Types.ProcessType.Service));
+            Assert.IsFalse(monitoringEvents.Any(me => me.Name == "Service 3"));
         }
     }
 }

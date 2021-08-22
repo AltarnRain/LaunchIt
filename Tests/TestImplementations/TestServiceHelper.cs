@@ -15,9 +15,9 @@ namespace Tests.TestImplementations
     public class TestServiceHelper : IServiceHelper
     {
         /// <summary>
-        /// Gets the services.
+        /// Gets or sets the handle get running services.
         /// </summary>
-        public string[] Services { get; private set; } = Array.Empty<string>();
+        public Func<string[]>? HandleGetRunningServices { get; set; }
 
         /// <summary>
         /// Gets or sets the stop calls.
@@ -32,7 +32,12 @@ namespace Tests.TestImplementations
         /// </returns>
         public string[] GetRunningServices()
         {
-            return this.Services;
+            if (this.HandleGetRunningServices is null)
+            {
+                return Array.Empty<string>();
+            }
+
+            return this.HandleGetRunningServices.Invoke();
         }
 
         /// <summary>
