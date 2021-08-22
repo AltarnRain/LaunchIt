@@ -4,7 +4,6 @@
 
 namespace Logic.Extensions
 {
-    using Logic.Contracts.Providers;
     using System;
 
     /// <summary>

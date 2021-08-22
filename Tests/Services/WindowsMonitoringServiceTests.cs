@@ -8,9 +8,7 @@ namespace Infrastructure.Services.Tests
     using Domain.Models.Configuration;
     using Domain.Models.Events;
     using global::Tests.Base;
-    using Infrastructure.Contracts.Factories;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

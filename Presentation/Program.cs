@@ -6,11 +6,9 @@ namespace Presentation
 {
     using Infrastructure.Extensions;
     using Infrastructure.Parsers;
-    using Logic;
     using Microsoft.Extensions.DependencyInjection;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Linq;
     using System.Runtime.Versioning;
 
     /// <summary>

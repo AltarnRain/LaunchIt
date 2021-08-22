@@ -5,7 +5,6 @@
 namespace Tests.TestImplementations
 {
     using Infrastructure.Contracts.DotNETAbstractions;
-    using System;
     using System.Timers;
 
     /// <summary>

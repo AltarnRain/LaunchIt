@@ -6,7 +6,6 @@ namespace Infrastructure.Parsers.Tests
 {
     using Domain.Models.Configuration;
     using Logic;
-    using Logic.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

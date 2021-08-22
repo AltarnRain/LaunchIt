@@ -6,7 +6,6 @@ namespace Infrastructure.Factories
 {
     using Infrastructure.Contracts.DotNETAbstractions;
     using Infrastructure.Contracts.Factories;
-    using System;
     using System.Timers;
 
     /// <summary>
@@ -26,7 +25,7 @@ namespace Infrastructure.Factories
         public ITimer Create(int time, params ElapsedEventHandler[] elapsed)
         {
             var timer = new Infrastructure.DotNETAbstractions.Timer(time);
-            foreach(var e in elapsed)
+            foreach (var e in elapsed)
             {
                 timer.Elapsed += e;
             }

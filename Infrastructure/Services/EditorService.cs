@@ -5,7 +5,6 @@
 namespace Infrastructure.Services
 {
     using Infrastructure.Helpers;
-    using Logic.Contracts.Providers;
     using Logic.Contracts.Services;
     using System.Diagnostics.CodeAnalysis;
 

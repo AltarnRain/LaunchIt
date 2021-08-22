@@ -5,7 +5,6 @@
 namespace Infrastructure.Contracts.Factories
 {
     using Infrastructure.Contracts.DotNETAbstractions;
-    using System;
     using System.Timers;
 
     /// <summary>
